@@ -6,6 +6,7 @@
     "build": "svite build"
   },
   "dependencies": {
+    "pixi.js": "^5.3.3",
     "svelte": "3.24.1",
     "svelte-hmr": "0.10.2"
   },
