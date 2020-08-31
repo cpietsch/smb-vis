@@ -10,6 +10,8 @@
     "d3-array": "^2.7.0",
     "d3-fetch": "^2.0.0",
     "d3-scale": "^3.2.2",
+    "d3-selection": "^2.0.0",
+    "d3-zoom": "^2.0.0",
     "pixi.js": "^5.3.3",
     "svelte": "3.24.1",
     "svelte-hmr": "0.10.2"

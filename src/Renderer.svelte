@@ -13,6 +13,7 @@
   setContext("renderer", () => ({
     renderer,
     container,
+    outerContainer,
   }));
 
   dimensions.subscribe(({ width, height }) => {
@@ -43,21 +44,21 @@
     });
     renderer.render(container);
 
-    // let frame;
-    // (function loop() {
-    //   frame = requestAnimationFrame(loop);
-    //   const x = (1.5 + Math.sin(window.performance.now() / 1000)) * 4;
-    //   container.scale.set(x);
-    //   renderer.render(container);
-    // })();
-
     return () => {
-      cancelAnimationFrame(frame);
+      //cancelAnimationFrame(frame);
       container.destroy();
       renderer.destroy();
       resizeObserver.disconnect();
     };
   });
+
+  // let frame;
+  // (function loop() {
+  //   frame = requestAnimationFrame(loop);
+  //   const x = (1.5 + Math.sin(window.performance.now() / 1000)) * 4;
+  //   container.scale.set(x);
+  //   renderer.render(container);
+  // })();
 </script>
 
 <style>
