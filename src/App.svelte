@@ -2,35 +2,34 @@
   import Renderer from "./Renderer.svelte";
   import TextureLoader from "./TextureLoader.svelte";
   import Stage from "./Stage.svelte";
+  import Layout from "./Layout.svelte";
 
   export let name;
 </script>
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-
   @media (min-width: 640px) {
     main {
       max-width: none;
     }
   }
+
+  :global(html, body) {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  main {
+    height: 100%;
+  }
 </style>
 
 <main>
-  <h1>Hello {name}!</h1>
   <Renderer>
-    <TextureLoader />
+    <TextureLoader>
+      <Layout />
+    </TextureLoader>
   </Renderer>
 </main>

@@ -34,6 +34,8 @@ function extractSpriteTexture(texture, sprite) {
 
 export async function* getTextureStream(url) {
 
+    console.log("getTextureStream")
+
     const baseUrl = url.substring(0, url.lastIndexOf('/')) + "/"
     const data = await fetch(url).then(r => r.json())
 

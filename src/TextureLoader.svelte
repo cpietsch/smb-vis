@@ -1,5 +1,5 @@
 <script>
-  import { onDestroy, getContext } from "svelte";
+  import { onDestroy, getContext, setContext } from "svelte";
   import { getTextureStream } from "./utils/textureloader.js";
   import { Sprite } from "pixi.js";
 
@@ -7,14 +7,12 @@
   let loaded = 0;
   let sprites = new Map();
 
+  setContext("sprites", () => sprites);
+
   const url =
     "https://vikusviewer.fh-potsdam.de/smb/beide/data/sprites-jpg/web_web_full.json";
 
-  // let { renderer } = getContext("renderer")();
-  // console.log(getContext("renderer")());
   const { width, height, renderer, container } = getContext("renderer")();
-  // console.log(width, height, renderer, container)
-
   const textureStream = getTextureStream(url);
 
   (async () => {
@@ -46,7 +44,7 @@
 </script>
 
 {#if loading}
-  <div>LOADING {loaded}</div>
+  <div>LOADING! {loaded}</div>
 {:else}
   <slot />
 {/if}
