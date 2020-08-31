@@ -1,15 +1,14 @@
 <script>
   import { onMount, getContext, setContext } from "svelte";
-  import { csv } from "d3-fetch";
   import { scaleLinear } from "d3-scale";
-  import { extent } from "d3-array";
-  import { dimensions } from "./stores.js";
+  import { scales, umapData, dimensions } from "./stores.js";
 
   const { renderer, container } = getContext("renderer")();
   const sprites = getContext("sprites")();
-  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
-  let umap = [];
+  //   let umap = [];
+
+  //   $: console.log($umapData);
 
   //   const x = scaleLinear().nice();
   //   const y = scaleLinear().nice();
@@ -19,23 +18,19 @@
   //     y.range([$dimensions.height - margin.bottom, margin.top]);
   //   }
 
-  $: x = scaleLinear()
-    .nice()
-    .range([margin.left, $dimensions.width - margin.right])
-    .domain(extent(umap, (d) => d.x));
-
-  $: y = scaleLinear()
-    .nice()
-    .range([$dimensions.height - margin.bottom, margin.top])
-    .domain(extent(umap, (d) => d.y));
+  //   $: y = scaleLinear()
+  //     .nice()
+  //     .range([$dimensions.height - margin.bottom, margin.top])
+  //     .domain(extent($umapData, (d) => d.y));
 
   $: scale =
-    Math.sqrt(($dimensions.width * $dimensions.height) / umap.length) / 400;
+    Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
+    400;
 
-  $: umapProjection = umap.map((d, i) => ({
+  $: umapProjection = $umapData.map((d, i) => ({
     id: d.id,
-    x: x(d.x),
-    y: y(d.y),
+    x: $scales.x(d.x),
+    y: $scales.y(d.y),
     scale,
     alpha: 1,
     zIndex: 0,
@@ -44,15 +39,15 @@
 
   $: render(umapProjection, sprites, renderer, container);
 
-  (async () => {
-    umap = await csv("data/umap.csv", ({ id, x, y }) => ({
-      id,
-      x: +x,
-      y: +y,
-    }));
-    // x.domain(extent(umap, (d) => d.x));
-    // y.domain(extent(umap, (d) => d.y));
-  })();
+  //   (async () => {
+  //     umap = await csv("data/umap.csv", ({ id, x, y }) => ({
+  //       id,
+  //       x: +x,
+  //       y: +y,
+  //     }));
+  //     // x.domain(extent(umap, (d) => d.x));
+  //     // y.domain(extent(umap, (d) => d.y));
+  //   })();
 
   const render = (projection, sprites, renderer, container) => {
     console.log("render");

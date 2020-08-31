@@ -2,7 +2,7 @@
   import Renderer from "./Renderer.svelte";
   import TextureLoader from "./TextureLoader.svelte";
   import Stage from "./Stage.svelte";
-  import Layout from "./Layout.svelte";
+  import LayoutStore from "./LayoutStore.svelte";
 
   export let name;
 </script>
@@ -29,7 +29,7 @@
 <main>
   <Renderer>
     <TextureLoader>
-      <Layout />
+      <LayoutStore />
     </TextureLoader>
   </Renderer>
 </main>
