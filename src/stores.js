@@ -2,6 +2,8 @@ import { writable, derived, readable } from 'svelte/store';
 import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv } from "d3-fetch";
+import { Sprite, Texture } from "pixi.js";
+
 
 export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
@@ -12,6 +14,17 @@ export const umapData = readable([], set => {
         y: +y,
     })).then(set)
 });
+
+export const sprites = derived(umapData, $data => {
+    const sprites = new Map()
+    for (const d of $data) {
+        const sprite = new Sprite(Texture.WHITE)
+        sprite.scale.x = sprite.scale.y = 0.5
+        sprite.anchor.set(0.5);
+        sprites.set(d.id, sprite)
+    }
+    return sprites
+})
 
 export const dimensions = writable({ width: 70, height: 70 });
 

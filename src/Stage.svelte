@@ -1,14 +1,20 @@
 <script>
-  import { onMount, setContext } from "svelte";
+  import { onDestroy, getContext } from "svelte";
   import { Container } from "pixi.js";
+  import { dimensions, sprites } from "./stores.js";
 
-  export let sprites;
+  const { renderer, container } = getContext("renderer")();
 
-  console.log("Container", sprites);
+  sprites.subscribe((sprites) => {
+    for (const sprite of sprites.values()) {
+      container.addChild(sprite);
+    }
+  });
 
-  onMount(() => {
-    console.log(sprites);
-    return () => {};
+  onDestroy(() => {
+    for (const sprite of sprites.values()) {
+      container.removeChild(sprite);
+    }
   });
 </script>
 

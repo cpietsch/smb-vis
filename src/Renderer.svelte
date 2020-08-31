@@ -69,7 +69,6 @@
 </style>
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->
-<!-- svelte-ignore non-top-level-reactive-declaration -->
 <div class="renderer" bind:this={outerContainer}>
   <canvas
     bind:this={canvas}
