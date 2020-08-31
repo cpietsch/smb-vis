@@ -2,6 +2,7 @@
   import { onDestroy, getContext, setContext } from "svelte";
   import { getTextureStream } from "./utils/textureloader.js";
   import { Sprite } from "pixi.js";
+  import { dimensions } from "./stores.js";
 
   let loading = true;
   let loaded = 0;
@@ -12,7 +13,8 @@
   const url =
     "https://vikusviewer.fh-potsdam.de/smb/beide/data/sprites-jpg/web_web_full.json";
 
-  const { width, height, renderer, container } = getContext("renderer")();
+  const { renderer, container } = getContext("renderer")();
+  const { width, height } = $dimensions;
   const textureStream = getTextureStream(url);
 
   (async () => {

@@ -7,32 +7,31 @@
   let canvas;
   let outerContainer;
   let renderer;
-  let width;
-  let height;
-
   let container = new Container();
   let backgroundColor = 0xeeeeee;
 
   setContext("renderer", () => ({
     renderer,
-    width,
-    height,
     container,
   }));
 
-  onMount(() => {
-    let boundingRect = outerContainer.getBoundingClientRect();
-    width = parseInt(boundingRect.width);
-    height = parseInt(boundingRect.height);
+  dimensions.subscribe(({ width, height }) => {
+    if (!renderer) return;
+    console.log("resize", width, height);
+    renderer.resize(width, height);
+    renderer.render(container);
+  });
 
+  onMount(() => {
     const resizeObserver = new ResizeObserver(([entry]) => {
-      width = parseInt(entry.contentRect.width);
-      height = parseInt(entry.contentRect.height);
-      renderer.resize(width, height);
-      // console.log("resizeObserver", width, height);
+      dimensions.set({
+        width: parseInt(entry.contentRect.width),
+        height: parseInt(entry.contentRect.height),
+      });
     });
     resizeObserver.observe(outerContainer);
 
+    const { width, height } = outerContainer.getBoundingClientRect();
     renderer = new Renderer({
       view: canvas,
       width,
@@ -72,7 +71,10 @@
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <div class="renderer" bind:this={outerContainer}>
-  <canvas bind:this={canvas} {width} {height} />
+  <canvas
+    bind:this={canvas}
+    width={$dimensions.width}
+    height={$dimensions.height} />
   {#if renderer}
     <slot />
   {/if}
