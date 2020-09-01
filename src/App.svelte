@@ -3,6 +3,7 @@
   import TextureLoader from "./TextureLoader.svelte";
   import Stage from "./Stage.svelte";
   import Layout from "./Layout.svelte";
+  import Details from "./Details.svelte";
 </script>
 
 <style>
@@ -30,9 +31,6 @@
     <Stage>
       <Layout />
     </Stage>
-
-    <!-- <TextureLoader>
-      <Layout />
-    </TextureLoader> -->
   </Renderer>
+  <Details />
 </main>

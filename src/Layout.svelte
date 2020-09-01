@@ -31,13 +31,14 @@
   $: lastProjection = umapProjection;
 
   let lastSelected;
+  const distanceCutoff = 5;
 
   $: quadtree = d3quadtree()
     .x((d) => d.x)
     .y((d) => d.y)
     .addAll(umapProjection);
 
-  select(outerContainer).on("pointermove", mousemove);
+  const selection = select(outerContainer).on("pointermove", mousemove);
 
   // $: console.log($sprites);
 
@@ -46,16 +47,21 @@
   function mousemove(e) {
     const m = pointer(e);
     const p = zoomTransform(this).invert(m);
-    const selected = quadtree.find(p[0], p[1]);
+    let selected = quadtree.find(p[0], p[1]);
     if (!selected) return;
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
 
+    if (distance > distanceCutoff) {
+      selected = null;
+    }
+    selection.style("cursor", selected ? "pointer" : "auto");
+
     if (lastSelected !== selected) {
       lastSelected = selected;
-      selectedItem.set(selected);
+      selectedItem.set(lastSelected);
 
       const newProjection = umapProjection.map((d) => {
-        const active = selected ? selected.id === d.id : false;
+        const active = lastSelected ? lastSelected.id === d.id : false;
         return { ...d, scale: active ? scale * 1.2 : d.scale };
       });
       lastProjection = newProjection;

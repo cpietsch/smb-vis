@@ -23,6 +23,14 @@
   $: selection = select(outerContainer).call(zoom).on("click", click);
 
   function click() {
+    if ($selectedItem === null) {
+      selection.transition().duration(1000).call(zoom.transform, zoomIdentity);
+      return;
+    }
+    if (lastTransform.k == maxZoom) {
+      console.log("make animation");
+      return;
+    }
     if (lastTransform.k !== maxZoom) {
       selection
         .transition()
