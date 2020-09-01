@@ -26,6 +26,10 @@ export const sprites = derived(umapData, $data => {
     return sprites
 })
 
+export const transfrom = writable({ k: 1, x: 0, y: 0 })
+
+export const mouse = writable([0, 0])
+
 export const dimensions = writable({ width: 70, height: 70 });
 
 export const scales = derived(

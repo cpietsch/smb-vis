@@ -1,9 +1,12 @@
 <script>
   import { onMount, getContext, setContext } from "svelte";
   import { scaleLinear } from "d3-scale";
+  import { quadtree as d3quadtree } from "d3-quadtree";
   import { scales, umapData, dimensions, sprites } from "./stores.js";
+  import { select, pointer } from "d3-selection";
+  import { zoomTransform } from "d3-zoom";
 
-  const { renderer, container } = getContext("renderer")();
+  const { renderer, container, outerContainer } = getContext("renderer")();
 
   $: scale =
     Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
@@ -19,11 +22,39 @@
     visible: true,
   }));
 
-  $: console.log($sprites);
+  $: lastProjection = umapProjection;
+
+  let lastSelected;
+
+  $: quadtree = d3quadtree()
+    .x((d) => d.x)
+    .y((d) => d.y)
+    .addAll(umapProjection);
+
+  select(outerContainer).on("mousemove", mousemove);
+
+  // $: console.log($sprites);
 
   $: render(umapProjection, renderer, container);
 
-  const render = (projection, renderer, container) => {
+  function mousemove(e) {
+    const m = pointer(e);
+    const p = zoomTransform(this).invert(m);
+    const selected = quadtree.find(p[0], p[1]);
+    const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
+
+    if (lastSelected !== selected) {
+      lastSelected = selected;
+      const newProjection = umapProjection.map((d) => {
+        const active = selected ? selected.id === d.id : false;
+        return { ...d, scale: active ? scale * 1.2 : d.scale };
+      });
+      lastProjection = newProjection;
+      render(lastProjection);
+    }
+  }
+
+  function render(projection) {
     console.log("render");
     for (const d of projection) {
       const s = $sprites.get(d.id);
@@ -39,7 +70,7 @@
       s.visible = d.visible;
     }
     renderer.render(container);
-  };
+  }
 </script>
 
 <slot />
