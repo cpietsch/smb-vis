@@ -41,6 +41,7 @@
     const m = pointer(e);
     const p = zoomTransform(this).invert(m);
     const selected = quadtree.find(p[0], p[1]);
+    if (!selected) return;
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
 
     if (lastSelected !== selected) {
