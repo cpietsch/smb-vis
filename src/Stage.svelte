@@ -1,13 +1,14 @@
 <script>
   import { onDestroy, getContext } from "svelte";
   import { Container } from "pixi.js";
-  import { dimensions, sprites, transfrom } from "./stores.js";
-  import { zoom as d3zoom } from "d3-zoom";
+  import { dimensions, sprites, transfrom, selectedItem } from "./stores.js";
+  import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { select } from "d3-selection";
 
   const { renderer, container, outerContainer } = getContext("renderer")();
 
   const maxZoom = 20;
+  let lastTransform = zoomIdentity;
 
   $: zoom = d3zoom()
     .scaleExtent([1, maxZoom])
@@ -19,9 +20,22 @@
     .on("zoom", zoomed)
     .on("end", end);
 
-  $: select(outerContainer).call(zoom);
+  $: selection = select(outerContainer).call(zoom).on("click", click);
 
+  function click() {
+    if (lastTransform.k !== maxZoom) {
+      selection
+        .transition()
+        .duration(1000)
+        .call(
+          zoom.scaleTo,
+          maxZoom,
+          lastTransform.apply([$selectedItem.x, $selectedItem.y])
+        );
+    }
+  }
   function zoomed({ transform }) {
+    lastTransform = transform;
     container.scale.set(transform.k);
     container.position.x = transform.x;
     container.position.y = transform.y;

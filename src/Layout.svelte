@@ -2,7 +2,13 @@
   import { onMount, getContext, setContext } from "svelte";
   import { scaleLinear } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
-  import { scales, umapData, dimensions, sprites } from "./stores.js";
+  import {
+    scales,
+    umapData,
+    dimensions,
+    sprites,
+    selectedItem,
+  } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { zoomTransform } from "d3-zoom";
 
@@ -31,7 +37,7 @@
     .y((d) => d.y)
     .addAll(umapProjection);
 
-  select(outerContainer).on("mousemove", mousemove);
+  select(outerContainer).on("pointermove", mousemove);
 
   // $: console.log($sprites);
 
@@ -46,6 +52,8 @@
 
     if (lastSelected !== selected) {
       lastSelected = selected;
+      selectedItem.set(selected);
+
       const newProjection = umapProjection.map((d) => {
         const active = selected ? selected.id === d.id : false;
         return { ...d, scale: active ? scale * 1.2 : d.scale };
