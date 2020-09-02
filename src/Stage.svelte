@@ -8,6 +8,7 @@
     transfrom,
     selectedItem,
   } from "./stores.js";
+  import { distanceTensors } from "./distances.js";
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { select } from "d3-selection";
 
@@ -27,6 +28,8 @@
     .on("end", end);
 
   $: selection = select(outerContainer).call(zoom).on("click", click);
+
+  // $: console.log($distanceTensors);
 
   function click() {
     if ($selectedItem === null) {

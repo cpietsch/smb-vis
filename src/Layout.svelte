@@ -11,6 +11,10 @@
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { zoomTransform } from "d3-zoom";
+  import { distanceTensors } from "./distances.js";
+  import { get } from "svelte/store";
+
+  // const distances = get(distanceTensors);
 
   const { renderer, container, outerContainer } = getContext("renderer")();
 
@@ -60,11 +64,19 @@
       lastSelected = selected;
       selectedItem.set(lastSelected);
 
-      const newProjection = umapProjection.map((d) => {
-        const active = lastSelected ? lastSelected.id === d.id : false;
-        return { ...d, scale: active ? scale * 1.2 : d.scale };
-      });
-      lastProjection = newProjection;
+      if (lastSelected) {
+        const distance = $distanceTensors.find((d) => d.id === lastSelected.id);
+
+        const newProjection = umapProjection.map((d) => {
+          const alpha = distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
+          const active = lastSelected ? lastSelected.id === d.id : false;
+          return { ...d, scale: active ? scale * 1.2 : d.scale, alpha };
+        });
+        lastProjection = newProjection;
+      } else {
+        lastProjection = umapProjection;
+      }
+
       render(lastProjection);
     }
   }
