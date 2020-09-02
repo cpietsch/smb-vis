@@ -1,7 +1,13 @@
 <script>
   import { onDestroy, getContext } from "svelte";
   import { Container } from "pixi.js";
-  import { dimensions, sprites, transfrom, selectedItem } from "./stores.js";
+  import {
+    dimensions,
+    sprites,
+    umapData,
+    transfrom,
+    selectedItem,
+  } from "./stores.js";
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { select } from "d3-selection";
 
@@ -67,4 +73,6 @@
   });
 </script>
 
-<slot />
+{#if $umapData.length}
+  <slot />
+{/if}

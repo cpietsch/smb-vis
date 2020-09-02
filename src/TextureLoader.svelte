@@ -12,10 +12,11 @@
   const { renderer, container } = getContext("renderer")();
   const { width, height } = $dimensions;
 
-  const textureStream = getTextureStream(url);
   const textures = new Map();
 
   (async () => {
+    const textureStream = getTextureStream(url);
+
     for await (const [id, texture] of textureStream) {
       textures.set(id, texture);
       const sprite = $sprites.get(id);

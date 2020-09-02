@@ -27,8 +27,8 @@
 
 <main>
   <Renderer>
-    <TextureLoader />
     <Stage>
+      <TextureLoader />
       <Layout />
     </Stage>
   </Renderer>
