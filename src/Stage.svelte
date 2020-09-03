@@ -3,10 +3,10 @@
   import { Container } from "pixi.js";
   import {
     dimensions,
-    sprites,
     umapData,
     transfrom,
     selectedItem,
+    state,
   } from "./stores.js";
   import { distanceTensors } from "./distances.js";
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
@@ -38,6 +38,7 @@
     }
     if (lastTransform.k == maxZoom) {
       console.log("make animation");
+      state.set("list");
       return;
     }
     if (lastTransform.k !== maxZoom) {
@@ -62,18 +63,6 @@
   function end({ transform }) {
     transfrom.set({ ...transform });
   }
-
-  sprites.subscribe((sprites) => {
-    for (const sprite of sprites.values()) {
-      container.addChild(sprite);
-    }
-  });
-
-  onDestroy(() => {
-    for (const sprite of sprites.values()) {
-      container.removeChild(sprite);
-    }
-  });
 </script>
 
 {#if $umapData.length}

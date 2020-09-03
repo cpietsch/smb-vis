@@ -32,5 +32,5 @@
       <Layout />
     </Stage>
   </Renderer>
-  <Details />
+  <!-- <Details /> -->
 </main>

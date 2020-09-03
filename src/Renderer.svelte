@@ -1,7 +1,7 @@
 <script>
   import { onMount, setContext } from "svelte";
   import { Renderer, Container } from "pixi.js";
-  import { dimensions } from "./stores.js";
+  import { dimensions, sprites } from "./stores.js";
 
   console.log("renderer");
   let canvas;
@@ -22,6 +22,18 @@
     renderer.resize(width, height);
     renderer.render(container);
   });
+
+  sprites.subscribe((sprites) => {
+    for (const sprite of sprites.values()) {
+      container.addChild(sprite);
+    }
+  });
+
+  // onDestroy(() => {
+  //   for (const sprite of sprites.values()) {
+  //     container.removeChild(sprite);
+  //   }
+  // });
 
   onMount(() => {
     const resizeObserver = new ResizeObserver(([entry]) => {
@@ -46,6 +58,9 @@
 
     return () => {
       //cancelAnimationFrame(frame);
+      for (const sprite of sprites.values()) {
+        container.removeChild(sprite);
+      }
       container.destroy();
       renderer.destroy();
       resizeObserver.disconnect();

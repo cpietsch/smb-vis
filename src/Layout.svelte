@@ -8,21 +8,22 @@
     dimensions,
     sprites,
     selectedItem,
+    distances,
+    state,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { zoomTransform } from "d3-zoom";
-  import { distanceTensors } from "./distances.js";
   import { get } from "svelte/store";
 
   // const distances = get(distanceTensors);
 
   const { renderer, container, outerContainer } = getContext("renderer")();
 
-  $: scale =
+  let scale =
     Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
     400;
 
-  $: umapProjection = $umapData.map((d, i) => ({
+  let umapProjection = $umapData.map((d, i) => ({
     id: d.id,
     x: $scales.x(d.x),
     y: $scales.y(d.y),
@@ -32,21 +33,49 @@
     visible: true,
   }));
 
-  $: lastProjection = umapProjection;
-
-  let lastSelected;
-  const distanceCutoff = 5;
-
-  $: quadtree = d3quadtree()
+  let quadtree = d3quadtree()
     .x((d) => d.x)
     .y((d) => d.y)
     .addAll(umapProjection);
 
-  const selection = select(outerContainer).on("pointermove", mousemove);
+  let lastProjection = umapProjection;
+  let lastSelected;
 
+  const distanceCutoff = 5;
+  // const selection = select(outerContainer).on("pointermove", mousemove);
   // $: console.log($sprites);
+  // $: render(umapProjection, renderer, container);
 
-  $: render(umapProjection, renderer, container);
+  state.subscribe((state) => {
+    console.log("state", state);
+
+    if (state === "cloud") {
+      select(outerContainer).on("pointermove", mousemove);
+    } else {
+      select(outerContainer).on("pointermove", null);
+      animateToList();
+    }
+  });
+
+  function animateToList() {}
+
+  selectedItem.subscribe((selectedItem) => {
+    if (selectedItem) {
+      const distance = $distances.get(selectedItem.id);
+
+      const newProjection = umapProjection.map((d) => {
+        const alpha =
+          distance && distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
+        const active = lastSelected ? lastSelected.id === d.id : false;
+        return { ...d, scale: active ? scale * 1.2 : d.scale, alpha };
+      });
+      lastProjection = newProjection;
+    } else {
+      lastProjection = umapProjection;
+    }
+
+    render(lastProjection);
+  });
 
   function mousemove(e) {
     const m = pointer(e);
@@ -56,28 +85,13 @@
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
 
     if (distance > distanceCutoff) {
-      selected = null;
+      selected = undefined;
     }
-    selection.style("cursor", selected ? "pointer" : "auto");
+    // selection.style("cursor", selected ? "pointer" : "auto");
 
     if (lastSelected !== selected) {
       lastSelected = selected;
       selectedItem.set(lastSelected);
-
-      if (lastSelected) {
-        const distance = $distanceTensors.find((d) => d.id === lastSelected.id);
-
-        const newProjection = umapProjection.map((d) => {
-          const alpha = distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
-          const active = lastSelected ? lastSelected.id === d.id : false;
-          return { ...d, scale: active ? scale * 1.2 : d.scale, alpha };
-        });
-        lastProjection = newProjection;
-      } else {
-        lastProjection = umapProjection;
-      }
-
-      render(lastProjection);
     }
   }
 

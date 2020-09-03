@@ -1,6 +1,7 @@
 // module.exports = {
 //     optimizeDeps: {
-//         allowNodeBuiltinss: ["seedrandom"]
+//         allowNodeBuiltinss: ["seedrandom"],
+//          exclude: ['seedrandom'],
 //     }
 // }
 
