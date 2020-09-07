@@ -4,6 +4,7 @@ import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
 import { Sprite, Texture } from "pixi.js";
 
+console.log("STORE INIT")
 
 export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
@@ -28,7 +29,7 @@ export const sprites = derived(umapData, $data => {
 
 export const state = writable("cloud")
 
-export const transfrom = writable({ k: 1, x: 0, y: 0 })
+export const lastTransfrom = writable({ k: 1, x: 0, y: 0 })
 
 export const mouse = writable([0, 0])
 
@@ -49,6 +50,28 @@ export const scales = derived(
             .domain(extent($umapData, (d) => d.y))
     })
 );
+
+export const spriteScale = derived(
+    [dimensions, umapData],
+    ([$dimensions, $umapData]) => (Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
+        400)
+);
+
+export const umapProjection = derived(
+    [umapData, spriteScale, scales],
+    ([$umapData, $spriteScale, $scales]) => ($umapData
+        .map(d => ({
+            id: d.id,
+            x: $scales.x(d.x),
+            y: $scales.y(d.y),
+            scale: $spriteScale,
+            alpha: 1,
+            zIndex: 0,
+            visible: true,
+        })))
+);
+
+
 
 export const distances = readable(new Map(), set => {
     json("data/pca-titel-bild-embeds.json")

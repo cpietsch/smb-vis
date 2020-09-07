@@ -15,12 +15,12 @@
   import { zoomTransform } from "d3-zoom";
   import { get } from "svelte/store";
 
-  // const distances = get(distanceTensors);
-
   const { renderer, container, outerContainer } = getContext("renderer")();
   const distanceCutoff = 5;
 
-  console.log($dimensions);
+  // console.log($dimensions);
+
+  // test("HALLLOO");
 
   let scale =
     Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /

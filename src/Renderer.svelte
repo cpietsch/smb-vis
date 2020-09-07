@@ -81,6 +81,10 @@
     height: 100%;
     overflow: hidden;
   }
+
+  canvas {
+    position: absolute;
+  }
 </style>
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->

@@ -49,6 +49,8 @@
       .on("end", () => (stale = true));
   }
 
+  function zoomToExtend() {}
+
   function click() {
     if ($selectedItem === null) {
       return resetZoom();

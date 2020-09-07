@@ -1,11 +1,13 @@
 <script>
   import Renderer from "./Renderer.svelte";
   import TextureLoader from "./TextureLoader.svelte";
-  import Stage from "./Stage.svelte";
-  import Layout from "./Layout.svelte";
+  // import Stage from "./Stage.svelte";
+  // import Layout from "./Layout.svelte";
   import Details from "./Details.svelte";
   import Dataloader from "./Dataloader.svelte";
-  // import Cloud from "./Cloud.svelte";
+  import Cloud from "./Cloud.svelte";
+  import List from "./List.svelte";
+  import { state } from "./stores";
 </script>
 
 <style>
@@ -30,12 +32,16 @@
 <main>
   <Dataloader>
     <Renderer>
+      {#if $state === 'list'}
+        <List />
+      {/if}
       <!-- <Cloud>
         <TextureLoader />
       </Cloud> -->
-      <Stage />
+      <!-- <Stage /> -->
       <TextureLoader />
-      <Layout />
+      <!-- <Layout /> -->
+      <Cloud />
     </Renderer>
   </Dataloader>
 
