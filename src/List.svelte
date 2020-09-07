@@ -14,6 +14,11 @@
 
   let outerContainer;
   let mapped;
+  let animate = false;
+
+  //   setTimeout(() => {
+  //     animate = true;
+  //   }, 300);
 
   $: {
     const { x, y, k } = $lastTransfrom;
@@ -37,40 +42,59 @@
     console.log(mapped, items);
   }
 
+  function style(item) {
+    return `width:${item.frame.width}px;
+        height:${item.frame.height}px;
+        transform: translate(${item.x}px,${item.y}px) scale(0.1);
+        background: url(${item.src});
+        background-position: -${item.frame.x}px -${item.frame.y}px;
+        positions: absolute;
+      `;
+  }
+
   onMount(() => {
     return () => {};
   });
 </script>
 
 <style>
-  .list {
+  .outer {
     width: 100%;
     height: 100%;
     overflow: hidden;
     position: absolute;
+  }
+
+  .normal {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+  .list {
+    overflow: hidden;
+    position: absolute;
     display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
     z-index: 10;
   }
   .image {
-    width: 10px;
-    height: 10px;
     background: #000;
-    position: absolute;
+    transition: transform 1s;
     display: inline-block;
     transform-origin: 0 0;
   }
 </style>
 
-<div class="list" bind:this={outerContainer}>
-  {#each mapped as item}
-    <div
-      class="image"
-      style="
-      width:{item.frame.width}px;
-      height:{item.frame.height}px;
-      transform: translate({item.x}px,{item.y}px) scale(0.1);
-      background: url({item.src});
-      background-position: -{item.frame.x}px -{item.frame.y}px;
-    " />
-  {/each}
+<div class="outer" on:click={() => (animate = !animate)}>
+  <div
+    class="list"
+    bind:this={outerContainer}
+    class:list={animate}
+    class:normal={!animate}>
+    {#each mapped as item}
+      <div class="image" style={style(item)} />
+    {/each}
+  </div>
 </div>
