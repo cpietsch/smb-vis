@@ -1,24 +1,75 @@
 <script>
-  import { onMount, getContext, setContext } from "svelte";
-  import { scaleLinear } from "d3-scale";
-  import { quadtree as d3quadtree } from "d3-quadtree";
+  import { onDestroy, getContext } from "svelte";
+  import { Container } from "pixi.js";
   import {
-    scales,
-    umapData,
     dimensions,
-    sprites,
+    umapData,
+    transfrom,
     selectedItem,
+    sprites,
     distances,
+    scales,
     state,
   } from "./stores.js";
+  import { distanceTensors } from "./distances.js";
+  import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { select, pointer } from "d3-selection";
-  import { zoomTransform } from "d3-zoom";
-  import { get } from "svelte/store";
-
-  // const distances = get(distanceTensors);
+  import { quadtree as d3quadtree } from "d3-quadtree";
 
   const { renderer, container, outerContainer } = getContext("renderer")();
+
   const distanceCutoff = 5;
+  const maxZoom = 20;
+  let lastTransform = zoomIdentity;
+
+  $: zoom = d3zoom()
+    .scaleExtent([1, maxZoom])
+    .translateExtent([
+      [0, 0],
+      [$dimensions.width, $dimensions.height],
+    ])
+    .clickDistance(2)
+    .on("zoom", zoomed)
+    .on("end", end);
+
+  $: selection = select(outerContainer)
+    .call(zoom)
+    .on("click", click)
+    .on("pointermove", mousemove);
+
+  function click() {
+    if ($selectedItem === null) {
+      selection.transition().duration(1000).call(zoom.transform, zoomIdentity);
+      return;
+    }
+    if (lastTransform.k == maxZoom) {
+      console.log("make animation");
+      state.set("list");
+      return;
+    }
+    if (lastTransform.k !== maxZoom) {
+      selection
+        .transition()
+        .duration(1000)
+        .call(
+          zoom.scaleTo,
+          maxZoom,
+          lastTransform.apply([$selectedItem.x, $selectedItem.y])
+        );
+    }
+  }
+
+  function zoomed({ transform }) {
+    lastTransform = transform;
+    container.scale.set(transform.k);
+    container.position.x = transform.x;
+    container.position.y = transform.y;
+    renderer.render(container);
+  }
+
+  function end({ transform }) {
+    transfrom.set({ ...transform });
+  }
 
   let scale =
     Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
@@ -41,16 +92,16 @@
     .y((d) => d.y)
     .addAll(umapProjection);
 
-  state.subscribe((state) => {
-    console.log("state", state);
+  // state.subscribe((state) => {
+  //   console.log("state", state);
 
-    if (state === "cloud") {
-      select(outerContainer).on("pointermove", mousemove);
-    } else {
-      select(outerContainer).on("pointermove", null);
-      animateToList();
-    }
-  });
+  //   if (state === "cloud") {
+  //     select(outerContainer).on("pointermove", mousemove);
+  //   } else {
+  //     select(outerContainer).on("pointermove", null);
+  //     animateToList();
+  //   }
+  // });
 
   function animateToList() {}
 
@@ -109,4 +160,6 @@
   }
 </script>
 
-<slot />
+{#if $umapData.length}
+  <slot />
+{/if}

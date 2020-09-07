@@ -4,6 +4,7 @@
   import Stage from "./Stage.svelte";
   import Layout from "./Layout.svelte";
   import Details from "./Details.svelte";
+  import Cloud from "./Cloud.svelte";
 </script>
 
 <style>
@@ -27,10 +28,14 @@
 
 <main>
   <Renderer>
-    <Stage>
+    <Cloud>
+      <TextureLoader />
+    </Cloud>
+
+    <!-- <Stage>
       <TextureLoader />
       <Layout />
-    </Stage>
+    </Stage> -->
   </Renderer>
   <!-- <Details /> -->
 </main>
