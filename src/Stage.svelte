@@ -16,6 +16,7 @@
 
   const maxZoom = 20;
   let lastTransform = zoomIdentity;
+  let stale = true;
 
   $: zoom = d3zoom()
     .scaleExtent([1, maxZoom])
@@ -24,32 +25,43 @@
       [$dimensions.width, $dimensions.height],
     ])
     .clickDistance(2)
+    .filter((e) => stale)
     .on("zoom", zoomed)
     .on("end", end);
 
   $: selection = select(outerContainer).call(zoom).on("click", click);
 
-  // $: console.log($distanceTensors);
+  function resetZoom() {
+    stale = false;
+    return selection
+      .transition()
+      .duration(1000)
+      .call(zoom.transform, zoomIdentity)
+      .on("end", () => (stale = true));
+  }
+
+  function zoomToPos(x, y, scale) {
+    stale = false;
+    return selection
+      .transition()
+      .duration(1000)
+      .call(zoom.scaleTo, scale, lastTransform.apply([x, y]))
+      .on("end", () => (stale = true));
+  }
 
   function click() {
     if ($selectedItem === null) {
-      selection.transition().duration(1000).call(zoom.transform, zoomIdentity);
-      return;
+      return resetZoom();
     }
-    if (lastTransform.k == maxZoom) {
-      console.log("make animation");
-      state.set("list");
-      return;
-    }
+    // if (lastTransform.k == maxZoom) {
+    //   console.log("make animation");
+    //   state.set("list");
+
+    //   return;
+    // }
+
     if (lastTransform.k !== maxZoom) {
-      selection
-        .transition()
-        .duration(1000)
-        .call(
-          zoom.scaleTo,
-          maxZoom,
-          lastTransform.apply([$selectedItem.x, $selectedItem.y])
-        );
+      return zoomToPos($selectedItem.x, $selectedItem.y, maxZoom);
     }
   }
   function zoomed({ transform }) {
@@ -65,6 +77,4 @@
   }
 </script>
 
-{#if $umapData.length}
-  <slot />
-{/if}
+<slot />

@@ -18,7 +18,6 @@
 
   dimensions.subscribe(({ width, height }) => {
     if (!renderer) return;
-    console.log("resize", width, height);
     renderer.resize(width, height);
     renderer.render(container);
   });
@@ -29,32 +28,32 @@
     }
   });
 
-  // onDestroy(() => {
-  //   for (const sprite of sprites.values()) {
-  //     container.removeChild(sprite);
-  //   }
-  // });
-
-  onMount(() => {
-    const resizeObserver = new ResizeObserver(([entry]) => {
-      dimensions.set({
-        width: parseInt(entry.contentRect.width),
-        height: parseInt(entry.contentRect.height),
-      });
-    });
-    resizeObserver.observe(outerContainer);
-
-    const { width, height } = outerContainer.getBoundingClientRect();
-    renderer = new Renderer({
+  function createRenderer(width, height) {
+    return new Renderer({
       view: canvas,
       width,
       height,
       antialias: false,
       transparent: false,
-      resolution: 1,
+      autoDensity: true,
+      resolution: window.devicePixelRatio,
       backgroundColor,
     });
-    renderer.render(container);
+  }
+
+  onMount(() => {
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      const width = parseInt(entry.contentRect.width);
+      const height = parseInt(entry.contentRect.height);
+
+      if (!renderer) renderer = createRenderer(width, height);
+
+      dimensions.set({
+        width,
+        height,
+      });
+    });
+    resizeObserver.observe(outerContainer);
 
     return () => {
       //cancelAnimationFrame(frame);
@@ -86,10 +85,7 @@
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <div class="renderer" bind:this={outerContainer}>
-  <canvas
-    bind:this={canvas}
-    width={$dimensions.width}
-    height={$dimensions.height} />
+  <canvas bind:this={canvas} />
   {#if renderer}
     <slot />
   {/if}

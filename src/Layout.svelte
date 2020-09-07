@@ -20,6 +20,8 @@
   const { renderer, container, outerContainer } = getContext("renderer")();
   const distanceCutoff = 5;
 
+  console.log($dimensions);
+
   let scale =
     Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
     400;
@@ -80,7 +82,7 @@
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
 
     if (distance > distanceCutoff) {
-      selected = undefined;
+      selected = null;
     }
     // selection.style("cursor", selected ? "pointer" : "auto");
 
