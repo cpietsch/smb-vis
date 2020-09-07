@@ -69,7 +69,7 @@
 
   selectedItem.subscribe((selectedItem) => {
     // if( && lastTransform.k > 1)
-    if (selectedItem) {
+    if (selectedItem && lastTransform.k > 2) {
       const distance = $distances.get(selectedItem.id);
 
       const newProjection = $umapProjection.map((d) => {

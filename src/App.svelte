@@ -6,7 +6,7 @@
   import Details from "./Details.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
-  import List from "./List.svelte";
+  import List from "./ListFlip.svelte";
   import { state } from "./stores";
 </script>
 

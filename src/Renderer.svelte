@@ -1,7 +1,7 @@
 <script>
   import { onMount, setContext } from "svelte";
   import { Renderer, Container } from "pixi.js";
-  import { dimensions, sprites } from "./stores.js";
+  import { dimensions, sprites, state } from "./stores.js";
 
   console.log("renderer");
   let canvas;
@@ -80,6 +80,10 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+
+  .hide {
+    display: none;
   }
 
   canvas {

@@ -15,7 +15,7 @@
 
   let outerContainer;
   let mapped;
-  let animate = false;
+  let animate = true;
 
   //   setTimeout(() => {
   //     animate = true;
@@ -30,7 +30,7 @@
     const items = $umapProjection.filter(
       (d) => distance && distance.distances.find((e) => e[0] == d.id)
     );
-    mapped = items.map((d) => {
+    mapped = items.map((d, i) => {
       const id = d.id;
       const x = transform.applyX(d.x);
       const y = transform.applyY(d.y);
@@ -38,7 +38,7 @@
       const texture = sprite.texture;
       const frame = texture.frame;
       const src = texture.baseTexture.resource.source.src;
-      return { frame, src, x, y, id };
+      return { frame, src, x, y, id, i };
     });
 
     console.log(mapped, items);
@@ -46,12 +46,30 @@
 
   function style(item) {
     return `width:${item.frame.width}px;
-        height:${item.frame.height}px;
-        transform: translate(${item.x}px,${item.y}px) scale(0.1);
-        background: url(${item.src});
-        background-position: -${item.frame.x}px -${item.frame.y}px;
-        position: absolute;
-      `;
+          height:${item.frame.height}px;
+          transform: translate(${item.x}px,${item.y}px) scale(0.1);
+          background: url(${item.src});
+          background-position: -${item.frame.x}px -${item.frame.y}px;
+          position: absolute;
+          transition-delay: ${item.i / 100}s;
+          z-index: ${100 - item.i};
+        `;
+  }
+
+  function style2(item) {
+    return `width:${item.frame.width}px;
+          height:${item.frame.height}px;
+          transform: translate(${
+            $dimensions.width / 2 - item.frame.width / 2
+          }px,${
+      128 / 2 + 50 + item.i * 128 - item.frame.height / 2
+    }px) scale(1);
+          background: url(${item.src});
+          background-position: -${item.frame.x}px -${item.frame.y}px;
+          position: absolute;
+          transition-delay: ${item.i / 100}s;
+          z-index: ${100 - item.i};
+        `;
   }
 
   onMount(() => {
@@ -65,6 +83,7 @@
     height: 100%;
     overflow: auto;
     position: absolute;
+    background-color: #eeeeee;
   }
 
   .liste {
@@ -84,16 +103,17 @@
   }
   .image {
     background: #000;
-    transition: transform 1s;
+    transition: transform 2s;
+    transition-timing-function: ease-in-out;
     display: inline-block;
     transform-origin: 0 0;
   }
 </style>
 
 <div class="outer" on:click={() => (animate = !animate)}>
-  <div class="liste" bind:this={outerContainer} class:list={animate}>
+  <div class="liste" bind:this={outerContainer} class:listss={animate}>
     {#each mapped as item (item.id)}
-      <div class="image" animate:flip style={style(item)} />
+      <div class="image" style={animate ? style(item) : style2(item)} />
     {/each}
   </div>
 </div>
