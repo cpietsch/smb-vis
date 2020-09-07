@@ -7,6 +7,8 @@
     distances,
     umapProjection,
     lastTransfrom,
+    spriteScale,
+    state,
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -17,9 +19,16 @@
   let mapped;
   let animate = true;
 
-  //   setTimeout(() => {
-  //     animate = true;
-  //   }, 300);
+  setTimeout(() => {
+    animate = false;
+  }, 500);
+
+  function comeBack() {
+    animate = true;
+    setTimeout(() => {
+      state.set("cloud");
+    }, 3000);
+  }
 
   $: {
     const { x, y, k } = $lastTransfrom;
@@ -27,8 +36,9 @@
     const transform = zoomIdentity.translate(x, y).scale(k);
     const { id } = $selectedItem;
     const distance = $distances.get(id);
-    const items = $umapProjection.filter(
-      (d) => distance && distance.distances.find((e) => e[0] == d.id)
+    console.log(distance);
+    const items = distance.distances.map((e) =>
+      $umapProjection.find((d) => e[0] == d.id)
     );
     mapped = items.map((d, i) => {
       const id = d.id;
@@ -47,7 +57,11 @@
   function style(item) {
     return `width:${item.frame.width}px;
           height:${item.frame.height}px;
-          transform: translate(${item.x}px,${item.y}px) scale(0.1);
+          transform: translate(${
+            item.x - ($spriteScale * $lastTransfrom.k * item.frame.width) / 2
+          }px,${
+      item.y - ($spriteScale * $lastTransfrom.k * item.frame.height) / 2
+    }px) scale(${$spriteScale * $lastTransfrom.k});
           background: url(${item.src});
           background-position: -${item.frame.x}px -${item.frame.y}px;
           position: absolute;
@@ -110,7 +124,7 @@
   }
 </style>
 
-<div class="outer" on:click={() => (animate = !animate)}>
+<div class="outer" on:click={() => comeBack()}>
   <div class="liste" bind:this={outerContainer} class:listss={animate}>
     {#each mapped as item (item.id)}
       <div class="image" style={animate ? style(item) : style2(item)} />

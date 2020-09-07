@@ -67,6 +67,15 @@
 
   function animateToList() {}
 
+  let lastState;
+  state.subscribe((state) => {
+    console.log("STATE", state, lastState);
+    if (lastState === "list" && state === "cloud") {
+      fadeInAll().then(resetZoom);
+    }
+    lastState = state;
+  });
+
   selectedItem.subscribe((selectedItem) => {
     // if( && lastTransform.k > 1)
     if (selectedItem && lastTransform.k > 2) {
@@ -106,7 +115,7 @@
   }
 
   function renderProjection(projection) {
-    console.log("render");
+    // console.log("render");
     for (const d of projection) {
       const s = $sprites.get(d.id);
       if (!s) {
@@ -155,6 +164,20 @@
           return { ...d, scale: $spriteScale, alpha };
         });
         const interpolate = d3interpolate(lastProjection, newProjection);
+        return function (t) {
+          lastProjection = interpolate(t);
+          renderProjection(lastProjection);
+        };
+      })
+      .end();
+  }
+
+  function fadeInAll() {
+    return selection
+      .transition()
+      .duration(1000)
+      .tween("list", function () {
+        const interpolate = d3interpolate(lastProjection, $umapProjection);
         return function (t) {
           lastProjection = interpolate(t);
           renderProjection(lastProjection);
