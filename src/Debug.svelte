@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { distancesCutoffScore } from "./stores.js";
+  import { distancesCutoffScore, selectedItem } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
 
@@ -21,16 +21,23 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     display: flex;
+    flex-flow: column;
   }
 
   .item {
     display: flex;
     justify-content: space-between;
-    flex-flow: column-reverse;
+    flex-flow: column;
+    width: 100%;
   }
 
   .item * {
     padding: 0.5rem;
+  }
+
+  img {
+    width: 30%;
+    position: relative;
   }
 </style>
 
@@ -44,4 +51,13 @@
       max="100"
       name="distancesCutoffScore" />
   </div>
+
+  {#if $selectedItem}
+    <div class="item">
+      <p>id: {$selectedItem.id}</p>
+      <!-- <img
+        src="https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/{$selectedItem.id}.jpg"
+        alt="detail Image" /> -->
+    </div>
+  {/if}
 </div>

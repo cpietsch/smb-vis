@@ -71,7 +71,7 @@ export const umapProjection = derived(
         })))
 );
 
-export const distancesCutoffScore = writable(40)
+export const distancesCutoffScore = writable(30)
 export const distances = readable(new Map(), set => {
     json("data/pca-titel-bild-embeds.json")
         .then(data =>
