@@ -7,6 +7,7 @@
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
   import List from "./ListFlip.svelte";
+  import Debug from "./Debug.svelte";
   import { state } from "./stores";
 </script>
 
@@ -44,6 +45,6 @@
       <Cloud />
     </Renderer>
   </Dataloader>
-
+  <Debug />
   <!-- <Details /> -->
 </main>

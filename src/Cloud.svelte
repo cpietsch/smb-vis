@@ -1,5 +1,5 @@
 <script>
-  import { onMount, getContext, setContext } from "svelte";
+  import { onMount, getContext, setContext, tick } from "svelte";
   import { scaleLinear } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
   import {
@@ -67,14 +67,14 @@
     lastState = state;
   });
 
-  selectedItem.subscribe((selectedItem) => {
+  selectedItem.subscribe(async (selectedItem) => {
     // if( && lastTransform.k > 1)
     if (selectedItem && lastTransform.k > 2) {
+      await tick();
       const distancesFiltered = $selectedDistances;
-
       const newProjection = $umapProjection.map((d) => {
         const alpha = distancesFiltered.find((e) => e[0] == d.id) ? 1 : 0.2;
-        const active = lastSelected ? lastSelected.id === d.id : false;
+        const active = selectedItem ? selectedItem.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,

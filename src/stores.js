@@ -81,6 +81,7 @@ export const distances = readable(new Map(), set => {
 export const selectedDistances = derived(
     [selectedItem, distances, distancesCutoffScore],
     ([$item, $distances, $score]) => {
+        console.log($item, $distances, $score)
         if (!$item || !$distances.size) { return [] }
         else {
             return $distances.get($item.id).distances.filter((d) => d[1] > $score)
