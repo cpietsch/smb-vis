@@ -62,7 +62,7 @@
   state.subscribe((state) => {
     console.log("STATE", state, lastState);
     if (lastState === "list" && state === "cloud") {
-      fadeInAll().then(resetZoom);
+      fadeInAll().then(() => (stale = false)); //.then(resetZoom);
     }
     lastState = state;
   });
