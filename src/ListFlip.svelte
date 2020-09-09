@@ -6,7 +6,7 @@
     selectedItem,
     distances,
     umapProjection,
-    lastTransfrom,
+    lastTransformed,
     spriteScale,
     state,
   } from "./stores.js";
@@ -31,7 +31,7 @@
   }
 
   $: {
-    const { x, y, k } = $lastTransfrom;
+    const { x, y, k } = $lastTransformed;
     console.log(x, y, k);
     const transform = zoomIdentity.translate(x, y).scale(k);
     const { id } = $selectedItem;
@@ -58,10 +58,10 @@
     return `width:${item.frame.width}px;
           height:${item.frame.height}px;
           transform: translate(${
-            item.x - ($spriteScale * $lastTransfrom.k * item.frame.width) / 2
+            item.x - ($spriteScale * $lastTransformed.k * item.frame.width) / 2
           }px,${
-      item.y - ($spriteScale * $lastTransfrom.k * item.frame.height) / 2
-    }px) scale(${$spriteScale * $lastTransfrom.k});
+      item.y - ($spriteScale * $lastTransformed.k * item.frame.height) / 2
+    }px) scale(${$spriteScale * $lastTransformed.k});
           background: url(${item.src});
           background-position: -${item.frame.x}px -${item.frame.y}px;
           position: absolute;

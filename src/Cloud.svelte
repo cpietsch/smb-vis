@@ -12,7 +12,7 @@
     state,
     umapProjection,
     spriteScale,
-    lastTransfrom,
+    lastTransformed,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -24,6 +24,7 @@
   const { renderer, container, outerContainer } = getContext("renderer")();
   const distanceCutoff = 5;
   const maxZoom = 20;
+  let clusterZoom = 8;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
@@ -60,7 +61,7 @@
   state.subscribe((state) => {
     console.log("STATE", state, lastState);
     if (lastState === "list" && state === "cloud") {
-      fadeInAll().then(resetZoom)
+      fadeInAll().then(resetZoom);
     }
     lastState = state;
   });
@@ -74,7 +75,12 @@
         const alpha =
           distance && distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
         const active = lastSelected ? lastSelected.id === d.id : false;
-        return { ...d, scale: active ? $spriteScale * 1.2 : d.scale, zIndex: active ? 1 : 0, alpha };
+        return {
+          ...d,
+          scale: active ? $spriteScale * 1.2 : d.scale,
+          zIndex: active ? 1 : 0,
+          alpha,
+        };
       });
       lastProjection = newProjection;
     } else {
@@ -130,7 +136,7 @@
       .duration(1000)
       .call(zoom.transform, zoomIdentity)
       .on("end", () => (stale = false))
-      .end()
+      .end();
   }
 
   function zoomToPos(x, y, scale) {
@@ -140,7 +146,7 @@
       .duration(1000)
       .call(zoom.scaleTo, scale, lastTransform.apply([x, y]))
       .on("end", () => (stale = false))
-      .end()
+      .end();
   }
 
   function fadeOutOthers() {
@@ -177,15 +183,20 @@
       .end();
   }
 
-  function zoomToExtend() {
-    stale = true;
-    const { width, height } = $dimensions;
+  function zoomToSimilars() {
     const { x, y, id } = $selectedItem;
     const distance = $distances.get(id);
 
     const items = $umapProjection.filter(
       (d) => distance && distance.distances.find((e) => e[0] == d.id)
     );
+
+    return zoomToExtend(items);
+  }
+
+  function zoomToExtend(items) {
+    stale = true;
+    const { width, height } = $dimensions;
     const [x0, x1] = extent(items, (d) => d.x);
     const [y0, y1] = extent(items, (d) => d.y);
     console.log(x0, x1, y0, y1);
@@ -201,19 +212,20 @@
           .scale(
             Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height))
           )
-          .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
-        [x, y]
+          .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
+        //[x, y] // do i need the anchor ?
       )
       .end();
   }
 
   function click() {
+    console.log("lastTransform", lastTransform.k);
     if (stale) return;
     if ($selectedItem === null) {
       return resetZoom();
     }
-    if (lastTransform.k == maxZoom) {
-      return zoomToExtend()
+    if (lastTransform.k >= clusterZoom) {
+      return zoomToSimilars()
         .then(fadeOutOthers)
         .then((d) => {
           // console.log(d);
@@ -222,8 +234,13 @@
         });
     }
 
-    if (lastTransform.k !== maxZoom) {
-      return zoomToPos($selectedItem.x, $selectedItem.y, maxZoom);
+    if (lastTransform.k !== clusterZoom) {
+      const zoomTo = 5;
+      return zoomToExtend([$selectedItem]).then(() => {
+        stale = false;
+        console.log(lastTransform);
+      });
+      //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
     }
   }
   function zoomed({ transform }) {
@@ -235,7 +252,8 @@
   }
 
   function end({ transform }) {
-    lastTransfrom.set({ ...transform });
+    lastTransform = transform;
+    lastTransformed.set({ ...transform });
   }
 </script>
 

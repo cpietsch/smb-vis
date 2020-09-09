@@ -29,7 +29,7 @@ export const sprites = derived(umapData, $data => {
 
 export const state = writable("cloud")
 
-export const lastTransfrom = writable({ k: 1, x: 0, y: 0 })
+export const lastTransformed = writable({ k: 1, x: 0, y: 0 })
 
 export const mouse = writable([0, 0])
 
