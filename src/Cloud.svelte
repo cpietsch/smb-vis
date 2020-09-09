@@ -54,24 +54,13 @@
     .y((d) => d.y)
     .addAll($umapProjection);
 
-  // state.subscribe((state) => {
-  //   console.log("state", state);
-
-  //   if (state === "cloud") {
-  //     select(outerContainer).on("pointermove", mousemove);
-  //   } else {
-  //     select(outerContainer).on("pointermove", null);
-  //     animateToList();
-  //   }
-  // });
-
   function animateToList() {}
 
   let lastState;
   state.subscribe((state) => {
     console.log("STATE", state, lastState);
     if (lastState === "list" && state === "cloud") {
-      fadeInAll().then(resetZoom);
+      fadeInAll().then(resetZoom)
     }
     lastState = state;
   });
@@ -85,7 +74,7 @@
         const alpha =
           distance && distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
         const active = lastSelected ? lastSelected.id === d.id : false;
-        return { ...d, scale: active ? $spriteScale * 1.2 : d.scale, alpha };
+        return { ...d, scale: active ? $spriteScale * 1.2 : d.scale, zIndex: active ? 1 : 0, alpha };
       });
       lastProjection = newProjection;
     } else {
@@ -140,7 +129,8 @@
       .transition()
       .duration(1000)
       .call(zoom.transform, zoomIdentity)
-      .on("end", () => (stale = false));
+      .on("end", () => (stale = false))
+      .end()
   }
 
   function zoomToPos(x, y, scale) {
@@ -149,7 +139,8 @@
       .transition()
       .duration(1000)
       .call(zoom.scaleTo, scale, lastTransform.apply([x, y]))
-      .on("end", () => (stale = false));
+      .on("end", () => (stale = false))
+      .end()
   }
 
   function fadeOutOthers() {

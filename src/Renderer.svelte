@@ -8,6 +8,8 @@
   let outerContainer;
   let renderer;
   let container = new Container();
+  container.sortableChildren = true
+
   let backgroundColor = 0xeeeeee;
 
   setContext("renderer", () => ({
@@ -36,7 +38,8 @@
       antialias: false,
       transparent: false,
       autoDensity: true,
-      resolution: window.devicePixelRatio,
+      resolution: 1,
+      //resolution: window.devicePixelRatio,
       backgroundColor,
     });
   }
@@ -56,8 +59,7 @@
     resizeObserver.observe(outerContainer);
 
     return () => {
-      //cancelAnimationFrame(frame);
-      for (const sprite of sprites.values()) {
+      for (const sprite of $sprites.values()) {
         container.removeChild(sprite);
       }
       container.destroy();
@@ -66,13 +68,6 @@
     };
   });
 
-  // let frame;
-  // (function loop() {
-  //   frame = requestAnimationFrame(loop);
-  //   const x = (1.5 + Math.sin(window.performance.now() / 1000)) * 4;
-  //   container.scale.set(x);
-  //   renderer.render(container);
-  // })();
 </script>
 
 <style>
