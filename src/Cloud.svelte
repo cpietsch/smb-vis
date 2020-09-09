@@ -8,7 +8,7 @@
     dimensions,
     sprites,
     selectedItem,
-    distances,
+    selectedDistances,
     state,
     umapProjection,
     spriteScale,
@@ -22,15 +22,16 @@
   import { xml } from "d3-fetch";
 
   const { renderer, container, outerContainer } = getContext("renderer")();
+  const maxZoomLevel = 20;
   const distanceCutoff = 5;
-  const maxZoom = 20;
-  let clusterZoom = 8;
+
+  let clusterZoomLevel = 8;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
 
   $: zoom = d3zoom()
-    .scaleExtent([1, maxZoom])
+    .scaleExtent([1, maxZoomLevel])
     .translateExtent([
       [0, 0],
       [$dimensions.width, $dimensions.height],
@@ -69,11 +70,10 @@
   selectedItem.subscribe((selectedItem) => {
     // if( && lastTransform.k > 1)
     if (selectedItem && lastTransform.k > 2) {
-      const distance = $distances.get(selectedItem.id);
+      const distancesFiltered = $selectedDistances;
 
       const newProjection = $umapProjection.map((d) => {
-        const alpha =
-          distance && distance.distances.find((e) => e[0] == d.id) ? 1 : 0.2;
+        const alpha = distancesFiltered.find((e) => e[0] == d.id) ? 1 : 0.2;
         const active = lastSelected ? lastSelected.id === d.id : false;
         return {
           ...d,
@@ -150,14 +150,14 @@
   }
 
   function fadeOutOthers() {
-    const distance = $distances.get($selectedItem.id);
+    const distances = $selectedDistances;
     return selection
       .transition()
       .duration(1000)
       .tween("list", function () {
         const newProjection = $umapProjection.map((d) => {
           const alpha =
-            distance && distance.distances.find((e) => e[0] == d.id) ? 1 : 0;
+            distances && distances.find((e) => e[0] == d.id) ? 1 : 0;
           return { ...d, scale: $spriteScale, alpha };
         });
         const interpolate = d3interpolate(lastProjection, newProjection);
@@ -185,16 +185,16 @@
 
   function zoomToSimilars() {
     const { x, y, id } = $selectedItem;
-    const distance = $distances.get(id);
+    const distances = $selectedDistances;
 
     const items = $umapProjection.filter(
-      (d) => distance && distance.distances.find((e) => e[0] == d.id)
+      (d) => distances && distances.find((e) => e[0] == d.id)
     );
 
     return zoomToExtend(items);
   }
 
-  function zoomToExtend(items) {
+  function zoomToExtend(items, minZoom = maxZoomLevel) {
     stale = true;
     const { width, height } = $dimensions;
     const [x0, x1] = extent(items, (d) => d.x);
@@ -210,7 +210,10 @@
         zoomIdentity
           .translate(width / 2, height / 2)
           .scale(
-            Math.min(8, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height))
+            Math.min(
+              minZoom,
+              0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+            )
           )
           .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
         //[x, y] // do i need the anchor ?
@@ -224,7 +227,7 @@
     if ($selectedItem === null) {
       return resetZoom();
     }
-    if (lastTransform.k >= clusterZoom) {
+    if (lastTransform.k >= clusterZoomLevel) {
       return zoomToSimilars()
         .then(fadeOutOthers)
         .then((d) => {
@@ -234,9 +237,8 @@
         });
     }
 
-    if (lastTransform.k !== clusterZoom) {
-      const zoomTo = 5;
-      return zoomToExtend([$selectedItem]).then(() => {
+    if (lastTransform.k !== clusterZoomLevel) {
+      return zoomToExtend([$selectedItem], clusterZoomLevel).then(() => {
         stale = false;
         console.log(lastTransform);
       });

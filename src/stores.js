@@ -71,15 +71,18 @@ export const umapProjection = derived(
         })))
 );
 
-
-
+export const distancesCutoffScore = writable(40)
 export const distances = readable(new Map(), set => {
     json("data/pca-titel-bild-embeds.json")
         .then(data =>
             set(new Map(data.map(d => [d.id, d])))
         )
 });
-
-// export const selectedDistances = derived([selectedItem, distances], ([$item, $distances]) => {
-//     return $distances.get($item.id)
-// })
+export const selectedDistances = derived(
+    [selectedItem, distances, distancesCutoffScore],
+    ([$item, $distances, $score]) => {
+        if (!$item || !$distances.size) { return [] }
+        else {
+            return $distances.get($item.id).distances.filter((d) => d[1] > $score)
+        }
+    })
