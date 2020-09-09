@@ -4,7 +4,7 @@
     dimensions,
     sprites,
     selectedItem,
-    distances,
+    selectedDistances,
     umapProjection,
     lastTransformed,
     spriteScale,
@@ -35,9 +35,9 @@
     console.log(x, y, k);
     const transform = zoomIdentity.translate(x, y).scale(k);
     const { id } = $selectedItem;
-    const distance = $distances.get(id);
-    console.log(distance);
-    const items = distance.distances.map((e) =>
+    const distances = $selectedDistances;
+    console.log(distances);
+    const items = distances.map((e) =>
       $umapProjection.find((d) => e[0] == d.id)
     );
     mapped = items.map((d, i) => {
