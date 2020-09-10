@@ -48,7 +48,7 @@
       type="range"
       bind:value={$distancesCutoffScore}
       min="1"
-      max="100"
+      max="80"
       name="distancesCutoffScore" />
   </div>
 
