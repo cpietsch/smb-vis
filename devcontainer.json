@@ -1,3 +1,4 @@
 {
-    "appPort": [ 3000 ]
+    "appPort": 3000,
+    "devPort": 3000
 }
