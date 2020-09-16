@@ -2,8 +2,12 @@
   "name": "svelte-svite",
   "version": "0.0.0",
   "scripts": {
-    "dev": "svite",
-    "build": "svite build",
+    "dev": "run-p dev:routify dev:svite",
+    "dev:routify": "routify run",
+    "dev:svite": "svite",
+    "build": "run-s build:routify build:svite",
+    "build:routify": "routify run -b",
+    "build:svite": "svite build",
     "deploy": "svite build --base /smb-svelte --assetsDir assets && gh-pages -d dist"
   },
   "dependencies": {
@@ -16,10 +20,12 @@
     "d3-zoom": "^2.0.0",
     "pixi.js": "^5.3.3",
     "svelte": "3.24.1",
-    "svelte-hmr": "0.10.2"
+    "svelte-hmr": "0.10.3",
+    "@roxi/routify": "^2.0.0"
   },
   "devDependencies": {
     "gh-pages": "^3.1.0",
-    "svite": "^0.6.0"
+    "npm-run-all": "^4.1.5",
+    "svite": "latest"
   }
 }

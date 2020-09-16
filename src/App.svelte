@@ -9,6 +9,7 @@
   import List from "./ListFlip.svelte";
   import Debug from "./Debug.svelte";
   import { state } from "./stores";
+  import { Router } from "@roxi/routify/runtime";
 </script>
 
 <style>
@@ -30,21 +31,6 @@
   }
 </style>
 
-<main>
-  <Dataloader>
-    <Renderer>
-      {#if $state === 'list'}
-        <List />
-      {/if}
-      <!-- <Cloud>
-        <TextureLoader />
-      </Cloud> -->
-      <!-- <Stage /> -->
-      <TextureLoader />
-      <!-- <Layout /> -->
-      <Cloud />
-    </Renderer>
-  </Dataloader>
-  <Debug />
-  <!-- <Details /> -->
-</main>
+<Router />
+
+

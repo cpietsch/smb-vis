@@ -19,3 +19,9 @@
 //     // if you don't use svite cli, you should provide rollupDedupe option, otherwise you risk duplicate svelte instances and errors
 //     rollupDedupe: ['svelte/animate', 'svelte/easing', 'svelte/internal', 'svelte/motion', 'svelte/store', 'svelte/transition', 'svelte'],
 // };
+
+module.exports = {
+  optimizeDeps: {
+    exclude: ["@roxi/routify"],
+  },
+};
