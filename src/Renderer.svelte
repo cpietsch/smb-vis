@@ -8,7 +8,7 @@
   let outerContainer;
   let renderer;
   let container = new Container();
-  container.sortableChildren = true
+  container.sortableChildren = true;
 
   let backgroundColor = 0xeeeeee;
 
@@ -67,7 +67,6 @@
       resizeObserver.disconnect();
     };
   });
-
 </script>
 
 <style>

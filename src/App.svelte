@@ -28,9 +28,8 @@
 
 <main>
   <Router {basePath}>
-    <Route path="cloud/:action?/:id?" let:params component={Home} />
-    <!-- <Route path="cloud/:id?" let:params component={Home} />
-    <Route path="detail/:id" let:params component={Home} /> -->
+    <Route path="/" component={Home} />
+    <Route path="cloud/:action?/:id?" let:params component={Vis} />
 
     <NotFound>
       <h2>Sorry. Page not found.</h2>

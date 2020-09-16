@@ -6,10 +6,13 @@
   import Details from "./Details.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
-  import List from "./ListFlip.svelte";
+  import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
 
   import { state } from "./stores";
+
+  export let action;
+  export let id;
 </script>
 
 <style>
@@ -34,9 +37,6 @@
 <main>
   <Dataloader>
     <Renderer>
-      <!-- {#if $state === 'list'}
-        <List />
-      {/if} -->
       <!-- <Cloud>
         <TextureLoader />
       </Cloud> -->
@@ -45,6 +45,9 @@
       <!-- <Layout /> -->
       <Cloud />
     </Renderer>
+    {#if action === 'close'}
+      <List {id} />
+    {/if}
   </Dataloader>
   <Debug />
   <!-- <Details /> -->

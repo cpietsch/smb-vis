@@ -1,4 +1,4 @@
-import { writable, derived, readable } from 'svelte/store';
+import { writable, derived, readable, get } from 'svelte/store';
 import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
@@ -14,6 +14,9 @@ export const umapData = readable([], set => {
         x: +x,
         y: +y,
     })).then(set)
+});
+export const detailData = readable(new Map(), set => {
+    csv("data/export1305-bitlabels.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
 export const sprites = derived(umapData, $data => {
@@ -81,9 +84,20 @@ export const distances = readable(new Map(), set => {
 export const selectedDistances = derived(
     [selectedItem, distances, distancesCutoffScore],
     ([$item, $distances, $score]) => {
-        console.log($item, $distances, $score)
+        // console.log($item, $distances, $score)
         if (!$item || !$distances.size) { return [] }
         else {
             return $distances.get($item.id).distances.filter((d) => d[1] > $score)
+        }
+    })
+
+export const getSelectedDistances = derived(
+    [distances, distancesCutoffScore],
+    ([$distances, $score]) => {
+        return (id) => {
+            if (!$distances.size) { return [] }
+            else {
+                return $distances.get(id).distances.filter((d) => d[1] > $score)
+            }
         }
     })

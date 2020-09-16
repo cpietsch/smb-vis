@@ -1,13 +1,17 @@
 <script>
-  export let action;
-  export let id;
-  import { activeRoute } from "./pager/Router.svelte";
-  console.log("init home");
-
-  $: {
-    console.log(id, action);
-  }
 </script>
 
-<h1>SMB goes wild {action}{id}</h1>
-<p>{JSON.stringify($activeRoute)}</p>
+<style>
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<div class="box">
+  <div class="welcome">
+    <h1>SMB Visualisierung</h1>
+    <p><a href="cloud/">lets go</a></p>
+  </div>
+</div>
