@@ -34,9 +34,9 @@
 <main>
   <Dataloader>
     <Renderer>
-      {#if $state === 'list'}
+      <!-- {#if $state === 'list'}
         <List />
-      {/if}
+      {/if} -->
       <!-- <Cloud>
         <TextureLoader />
       </Cloud> -->
