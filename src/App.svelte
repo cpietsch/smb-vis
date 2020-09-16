@@ -1,14 +1,10 @@
 <script>
-  import Renderer from "./Renderer.svelte";
-  import TextureLoader from "./TextureLoader.svelte";
-  // import Stage from "./Stage.svelte";
-  // import Layout from "./Layout.svelte";
-  import Details from "./Details.svelte";
-  import Dataloader from "./Dataloader.svelte";
-  import Cloud from "./Cloud.svelte";
-  import List from "./ListFlip.svelte";
-  import Debug from "./Debug.svelte";
+  const basePath = "/"; //"/svelte-pagejs";
+
   import { state } from "./stores";
+  import { Router, Route, NotFound, redirect } from "./pager";
+  import Home from "./Home.svelte";
+  import Vis from "./Vis.svelte";
 </script>
 
 <style>
@@ -31,20 +27,16 @@
 </style>
 
 <main>
-  <Dataloader>
-    <Renderer>
-      {#if $state === 'list'}
-        <List />
-      {/if}
-      <!-- <Cloud>
-        <TextureLoader />
-      </Cloud> -->
-      <!-- <Stage /> -->
-      <TextureLoader />
-      <!-- <Layout /> -->
-      <Cloud />
-    </Renderer>
-  </Dataloader>
-  <Debug />
-  <!-- <Details /> -->
+  <Router {basePath}>
+    <Route path="/" let:params component={Home} />
+    <!-- <Route path="/vis" let:params component={Vis} /> -->
+    <Route path="test" let:params component={Home} />
+    <Route path="vis/:username?" let:params component={Home} />
+    <!-- <Route path="/about" component={About} />
+    <Route path="/login" component={Login} />
+    <Route path="/profile/:username" let:params /> -->
+    <NotFound>
+      <h2>Sorry. Page not found.</h2>
+    </NotFound>
+  </Router>
 </main>
