@@ -30,6 +30,16 @@
   let stale = false;
   let lastSelected;
 
+  export let query;
+
+  $: {
+    console.log("clid", query);
+    const { x, y, scale } = query;
+    if ((x, y, scale, selection)) {
+      zoomToExtend([{ x: parseFloat(x), y: parseFloat(y) }], parseFloat(scale));
+    }
+  }
+
   $: zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
@@ -69,7 +79,7 @@
 
   selectedItem.subscribe(async (selectedItem) => {
     // if( && lastTransform.k > 1)
-    if (selectedItem && lastTransform.k > 2) {
+    if (selectedItem && lastTransform.k > 10) {
       await tick();
       const distancesFiltered = $selectedDistances;
       const newProjection = $umapProjection.map((d) => {
@@ -254,6 +264,21 @@
   }
 
   function end({ transform }) {
+    // console.log(transform);
+
+    const center = transform.invert([
+      $dimensions.width / 2,
+      $dimensions.height / 2,
+    ]);
+    var queryParams = new URLSearchParams(
+      window.location.hash.replace("#", "?")
+    );
+    // queryParams.set("center", center.map((d) => d.toFixed(0)).join("."));
+    queryParams.set("x", center[0].toFixed(2));
+    queryParams.set("y", center[1].toFixed(2));
+    queryParams.set("scale", transform.k.toFixed(2));
+    history.pushState(null, null, "#" + queryParams.toString());
+    // window.location.hash = "#" + queryParams.toString();
     lastTransform = transform;
     lastTransformed.set({ ...transform });
   }

@@ -25,7 +25,7 @@
   $: {
     console.log(id);
     items = $getSelectedDistances(id).map((d) => {
-        const data = 
+      // const data =
     });
     console.log(items);
   }

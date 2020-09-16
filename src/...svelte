@@ -1,17 +1,8 @@
 <script>
   import { onMount } from "svelte";
-
-  import Renderer from "./Renderer.svelte";
-  import TextureLoader from "./TextureLoader.svelte";
-  // import Stage from "./Stage.svelte";
-  // import Layout from "./Layout.svelte";
-  import Details from "./Details.svelte";
-  import Dataloader from "./Dataloader.svelte";
-  import Cloud from "./Cloud.svelte";
-  import List from "./ListSimple.svelte";
-  import Debug from "./Debug.svelte";
-
   import { state } from "./stores";
+  import Home from "./Home.svelte";
+  import Vis from "./App.svelte";
 
   let query;
 
@@ -22,6 +13,10 @@
     console.log(Object.fromEntries(queryParams.entries()));
     query = Object.fromEntries(queryParams.entries());
   }
+
+  // async function popstate(event) {
+  //   console.log("pop", event);
+  // }
 
   onMount(hashchange);
 </script>
@@ -48,15 +43,5 @@
 <svelte:window on:hashchange={hashchange} />
 
 <main>
-  <Dataloader>
-    <Renderer>
-      <TextureLoader />
-      <Cloud {query} />
-    </Renderer>
-    <!-- {#if action === 'close'}
-      <List {id} />
-    {/if} -->
-  </Dataloader>
-  <Debug />
-  <!-- <Details /> -->
+  <Vis />
 </main>
