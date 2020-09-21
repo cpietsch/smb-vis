@@ -84,30 +84,37 @@
     width: 100px;
     transition: width 0.5s;
   }
+  .selected {
+    z-index: 10;
+  }
   .selected img {
-    width: 45vw;
+    width: 35vw;
   }
 
   .additional {
     opacity: 0;
-    transition: visibility 0s, opacity 0.5s;
+
     visibility: hidden;
     position: absolute;
     display: flex;
     flex-direction: column;
+    /* width: 45vw; */
   }
   .selected .additional {
     opacity: 1;
     visibility: visible;
+    transition: visibility 0s, opacity 0.5s;
+    transition-delay: 0.5s;
   }
   .meta {
     flex-grow: 1;
     color: #515151;
     position: relative;
-    margin-left: 1em;
+    padding-left: 1em;
   }
   .selected .meta {
-    margin-left: 2em;
+    padding-left: 2em;
+    background-color: #eee;
   }
 
   h2 {
