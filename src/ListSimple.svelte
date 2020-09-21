@@ -20,6 +20,7 @@
   export let id;
 
   let current = id;
+  let large = false;
 
   console.log("hello from list", id);
 
@@ -75,21 +76,55 @@
     display: flex;
     /* margin: 0.5em; */
   }
-  picture {
+  .picture {
     /* margin-right: 1em; */
     /* z-index: 10; */
     cursor: pointer;
-  }
-  img {
+    position: relative;
     width: 100px;
     transition: width 0.5s;
   }
+  .picture img {
+    width: 100%;
+  }
+  .resize {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    right: 5px;
+    top: 5px;
+    position: absolute;
+    display: none;
+  }
+  .selected .resize {
+    display: block;
+  }
+
   .selected {
     z-index: 10;
   }
-  .selected img {
+  .selected .picture {
     width: 35vw;
   }
+
+  .selected.large .picture {
+    width: 80vw;
+  }
+
+  .selected.large .detail {
+    flex-direction: column;
+  }
+  .selected.large .additional {
+    position: relative;
+  }
+
+  .selected.large .meta {
+    padding-left: 1em;
+  }
+
+  /* .large .meta {
+    width: 80vw;
+  } */
 
   .additional {
     opacity: 0;
@@ -138,15 +173,19 @@
   Id: {id}
   <div class="liste">
     {#each items as item (item.id)}
-      <div class="item" class:selected={item.id === current}>
-        <div class="row">
-          <picture
-            on:click={() => (current = current === item.id ? undefined : item.id)}>
-            <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
-          </picture>
+      <div class="item" class:large class:selected={item.id === current}>
+        <div class="row detail">
+          <div class="picture">
+            <picture
+              on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
+              <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
+            </picture>
+            <div class="resize" on:click={() => (large = !large)} />
+          </div>
+
           <div class="meta">
             <h2
-              on:click={() => (current = current === item.id ? undefined : item.id)}>
+              on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
               {item.data._titel}
             </h2>
             <div class="additional">
