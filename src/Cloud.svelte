@@ -34,9 +34,13 @@
 
   $: {
     console.log("clid", query);
-    const { x, y, scale } = query;
-    if ((x, y, scale, selection)) {
-      zoomToExtend([{ x: parseFloat(x), y: parseFloat(y) }], parseFloat(scale));
+    // const { x, y, scale } = query;
+    const x = parseFloat(query.x);
+    const y = parseFloat(query.y);
+    const scale = parseFloat(query.scale);
+
+    if (x && y && scale && selection) {
+      zoomToExtend([{ x, y }], scale);
     }
   }
 
