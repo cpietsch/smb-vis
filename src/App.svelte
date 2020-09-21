@@ -13,14 +13,18 @@
 
   import { state } from "./stores";
 
-  let query;
+  let route = {
+    view: "cloud",
+    payload: undefined,
+    extra: undefined,
+  };
 
   async function hashchange() {
-    var queryParams = new URLSearchParams(
-      window.location.hash.replace("#", "?")
-    );
-    console.log(Object.fromEntries(queryParams.entries()));
-    query = Object.fromEntries(queryParams.entries());
+    const r = window.location.hash.substring(2).split("/");
+    route.view = r[0] ? r[0] : route.view;
+    route.payload = r[1] ? r[1] : route.payload;
+    route.extra = r[2] ? r[2] : route.extra;
+    console.log(route);
   }
 
   onMount(hashchange);
@@ -40,8 +44,15 @@
     box-sizing: border-box;
   }
 
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
   main {
     height: 100%;
+    font-family: Helvetica, sans-serif;
   }
 </style>
 
@@ -49,13 +60,13 @@
 
 <main>
   <Dataloader>
-    <Renderer>
+    <!-- <Renderer>
       <TextureLoader />
       <Cloud {query} />
-    </Renderer>
-    <!-- {#if action === 'close'}
-      <List {id} />
-    {/if} -->
+    </Renderer> -->
+    {#if route.view === 'list'}
+      <List id={route.payload} />
+    {/if}
   </Dataloader>
   <Debug />
   <!-- <Details /> -->
