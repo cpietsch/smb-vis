@@ -108,18 +108,25 @@
   }
 
   .selected.large .picture {
-    width: 80vw;
+    width: 1024px;
   }
 
-  .selected.large .detail {
+  /* .selected.large .detail {
     flex-direction: column;
   }
   .selected.large .additional {
     position: relative;
+  } */
+
+  .selected.large .additional {
+    transition: none;
+    visibility: hidden;
   }
 
   .selected.large .meta {
-    padding-left: 1em;
+    /* padding-left: 1em; */
+    visibility: hidden;
+    transition: none;
   }
 
   /* .large .meta {
@@ -146,6 +153,8 @@
     color: #515151;
     position: relative;
     padding-left: 1em;
+    transition: visibility 0s;
+    transition-delay: 0.5s;
   }
   .selected .meta {
     padding-left: 2em;
