@@ -159,7 +159,7 @@
 
         <div class="row distance">
           <div
-            style="height: {(10 + item.distance * 2) / 2}px;width: {10 + item.distance * 2}px;" />
+            style="height: {(20 + item.distance * 2) / 2}px;width: {20 + item.distance * 2}px;" />
         </div>
       </div>
     {/each}
