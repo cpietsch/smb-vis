@@ -1,5 +1,5 @@
 <script>
-  import { onMount, setContext } from "svelte";
+  import { onMount, setContext, tick } from "svelte";
   import {
     dimensions,
     sprites,
@@ -28,9 +28,14 @@
 
   let items = [];
 
-  function link(id) {
-    window.scrollTo(0, 0);
+  async function link(id) {
+    // event.preventDefault()
+    console.log("id", id);
+    window.scrollTo({ top: 0 });
     window.location.hash = "#/list/" + id;
+    // await tick();
+    // window.scrollTo(0, 0);
+    // return false;
   }
 
   $: {
@@ -56,11 +61,11 @@
 <style>
   .container {
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    /* height: 100%; */
     position: absolute;
     background-color: #eeeeee;
     top: 0;
+    padding-bottom: 10em;
   }
 
   .liste {
@@ -214,7 +219,7 @@
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
               <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
-            <div class="center" on:click={link(item.id)} />
+            <div class="center" on:click|preventDefault={() => link(item.id)} />
             <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
 

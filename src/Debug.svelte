@@ -22,6 +22,7 @@
     border-radius: 6px;
     display: flex;
     flex-flow: column;
+    z-index: 100;
   }
 
   .item {
