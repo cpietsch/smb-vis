@@ -28,6 +28,11 @@
 
   let items = [];
 
+  function link(id) {
+    window.scrollTo(0, 0);
+    window.location.hash = "#/list/" + id;
+  }
+
   $: {
     const distances = $getSelectedDistances(id);
 
@@ -66,6 +71,7 @@
     z-index: 10;
     margin-left: 5em;
     margin-right: 5em;
+    max-width: 1200px;
   }
 
   .item {
@@ -83,6 +89,7 @@
     position: relative;
     width: 100px;
     transition: width 0.5s;
+    max-width: 1024px;
   }
   .picture img {
     width: 100%;
@@ -104,7 +111,7 @@
     z-index: 10;
   }
   .selected .picture {
-    width: 35vw;
+    width: 30%;
   }
 
   .selected.large .picture {
@@ -158,12 +165,30 @@
   }
   .selected .meta {
     padding-left: 2em;
-    background-color: #eee;
+    /* background: #f9f9f9; */
+  }
+
+  .center {
+    position: absolute;
+    display: none;
+    left: -20px;
+    top: calc(50% - 20px);
+    width: 20px;
+    height: 40px;
+    background-color: #424242;
+  }
+
+  .selected .center {
+    display: inline;
   }
 
   h2 {
     font-size: 1em;
     cursor: pointer;
+  }
+
+  .item:last-child .distance {
+    display: none;
   }
 
   .distance div {
@@ -189,7 +214,8 @@
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
               <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
-            <div class="resize" on:click={() => (large = !large)} />
+            <div class="center" on:click={link(item.id)} />
+            <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
 
           <div class="meta">
