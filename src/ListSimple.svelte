@@ -13,6 +13,7 @@
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
+  import { slide, fade, fly } from "svelte/transition";
 
   import { zoomIdentity } from "d3-zoom";
   import { style } from "d3-selection";
@@ -21,6 +22,7 @@
 
   let current = id;
   let large = false;
+  let animating = false;
 
   console.log("hello from list", id);
 
@@ -28,14 +30,17 @@
 
   let items = [];
 
-  async function link(id) {
-    // event.preventDefault()
-    console.log("id", id);
+  async function link(id, internal) {
     window.scrollTo({ top: 0 });
+
+    if (!internal) {
+      window.location.hash = "#/cloud/" + id;
+      return;
+    }
+    animating = true;
+    // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
-    // await tick();
-    // window.scrollTo(0, 0);
-    // return false;
+    setTimeout(() => (animating = false), 1000);
   }
 
   $: {
@@ -177,13 +182,27 @@
     position: absolute;
     display: none;
     left: -20px;
-    top: calc(50% - 20px);
+    top: calc(30%);
     width: 20px;
     height: 40px;
     background-color: #424242;
   }
 
   .selected .center {
+    display: inline;
+  }
+
+  .cloud {
+    position: absolute;
+    display: none;
+    left: -20px;
+    top: calc(60%);
+    width: 20px;
+    height: 40px;
+    background-color: aqua;
+  }
+
+  .selected .cloud {
     display: inline;
   }
 
@@ -196,6 +215,11 @@
     display: none;
   }
 
+  .distance {
+    opacity: 1;
+    transition: visibility 0s, opacity 1s;
+  }
+
   .distance div {
     /* width: 10px; */
     border: 2px solid rgb(89, 89, 89);
@@ -206,20 +230,34 @@
     z-index: 2;
     /* background-color: blueviolet; */
   }
+
+  .animating .distance {
+    visibility: hidden;
+    opacity: 0;
+  }
 </style>
 
 <div class="container">
   Id: {id}
-  <div class="liste">
+  <div class="liste" class:animating>
     {#each items as item (item.id)}
-      <div class="item" class:large class:selected={item.id === current}>
+      <div
+        class="item"
+        class:large
+        class:selected={item.id === current}
+        animate:flip={{ duration: 1000 }}>
         <div class="row detail">
           <div class="picture">
             <picture
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
               <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
-            <div class="center" on:click|preventDefault={() => link(item.id)} />
+            <div
+              class="center"
+              on:click|preventDefault={() => link(item.id, true)} />
+            <div
+              class="cloud"
+              on:click|preventDefault={() => link(item.id, false)} />
             <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
 
