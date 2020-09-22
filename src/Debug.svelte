@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { distancesCutoffScore, selectedItem } from "./stores.js";
+  import { distancesCutoffScore, selectedItem, darkmode } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
 
@@ -53,6 +53,10 @@
       name="distancesCutoffScore" />
   </div>
 
+  <div class="item">
+    <label for="darkmode">darkmode</label>
+    <input type="checkbox" id="darkmode" bind:checked={$darkmode} />
+  </div>
   {#if $selectedItem}
     <div class="item">
       <p>id: {$selectedItem.id}</p>

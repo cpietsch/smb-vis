@@ -13,6 +13,7 @@
     umapProjection,
     spriteScale,
     lastTransformed,
+    getSelectedDistances,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -30,19 +31,19 @@
   let stale = false;
   let lastSelected;
 
-  export let query;
+  export let route;
 
-  $: {
-    console.log("clid", query);
-    // const { x, y, scale } = query;
-    const x = parseFloat(query.x);
-    const y = parseFloat(query.y);
-    const scale = parseFloat(query.scale);
+  // $: {
+  //   console.log("clid", query);
+  //   // const { x, y, scale } = query;
+  //   const x = parseFloat(query.x);
+  //   const y = parseFloat(query.y);
+  //   const scale = parseFloat(query.scale);
 
-    if (x && y && scale && selection) {
-      zoomToExtend([{ x, y }], scale);
-    }
-  }
+  //   if (x && y && scale && selection) {
+  //     zoomToExtend([{ x, y }], scale);
+  //   }
+  // }
 
   $: zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
@@ -72,18 +73,32 @@
 
   function animateToList() {}
 
-  let lastState;
-  state.subscribe((state) => {
-    console.log("STATE", state, lastState);
-    if (lastState === "list" && state === "cloud") {
-      fadeInAll().then(() => (stale = false)); //.then(resetZoom);
+  let lastRoute = { ...route };
+  $: {
+    console.log(route, lastRoute);
+    if (lastRoute.view === "list" && route.view === "cloud") {
+      fadeInAll().then(() => {
+        console.log(route.id);
+        if (route.payload) {
+          zoomToId(route.payload).then(() => (stale = false));
+        }
+      });
     }
-    lastState = state;
-  });
+    lastRoute = { ...route };
+  }
+
+  // let lastState;
+  // state.subscribe((state) => {
+  //   console.log("STATE", state, lastState);
+  //   if (lastState === "list" && state === "cloud") {
+  //     fadeInAll().then(() => (stale = false)); //.then(resetZoom);
+  //   }
+  //   lastState = state;
+  // });
 
   selectedItem.subscribe(async (selectedItem) => {
     // if( && lastTransform.k > 1)
-    if (selectedItem && lastTransform.k > 10) {
+    if (selectedItem && lastTransform.k > 3) {
       await tick();
       const distancesFiltered = $selectedDistances;
       const newProjection = $umapProjection.map((d) => {
@@ -208,6 +223,12 @@
     return zoomToExtend(items);
   }
 
+  function zoomToId(id) {
+    const item = $umapProjection.find((d) => d.id == id);
+
+    return zoomToExtend([item]);
+  }
+
   function zoomToExtend(items, minZoom = maxZoomLevel) {
     stale = true;
     const { width, height } = $dimensions;
@@ -247,7 +268,8 @@
         .then((d) => {
           // console.log(d);
           // stale = false;
-          state.set("list");
+          // state.set("list");
+          window.location.hash = "/list/" + $selectedItem.id;
         });
     }
 
@@ -270,19 +292,20 @@
   function end({ transform }) {
     // console.log(transform);
 
-    const center = transform.invert([
-      $dimensions.width / 2,
-      $dimensions.height / 2,
-    ]);
-    var queryParams = new URLSearchParams(
-      window.location.hash.replace("#", "?")
-    );
-    // queryParams.set("center", center.map((d) => d.toFixed(0)).join("."));
-    queryParams.set("x", center[0].toFixed(2));
-    queryParams.set("y", center[1].toFixed(2));
-    queryParams.set("scale", transform.k.toFixed(2));
-    history.pushState(null, null, "#" + queryParams.toString());
-    // window.location.hash = "#" + queryParams.toString();
+    // const center = transform.invert([
+    //   $dimensions.width / 2,
+    //   $dimensions.height / 2,
+    // ]);
+    // var queryParams = new URLSearchParams(
+    //   window.location.hash.replace("#", "?")
+    // );
+    // // queryParams.set("center", center.map((d) => d.toFixed(0)).join("."));
+    // queryParams.set("x", center[0].toFixed(2));
+    // queryParams.set("y", center[1].toFixed(2));
+    // queryParams.set("scale", transform.k.toFixed(2));
+    // history.pushState(null, null, "#" + queryParams.toString());
+    // // window.location.hash = "#" + queryParams.toString();
+
     lastTransform = transform;
     lastTransformed.set({ ...transform });
   }

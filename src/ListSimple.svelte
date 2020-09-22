@@ -23,6 +23,7 @@
   let current = id;
   let large = false;
   let animating = false;
+  let container;
 
   console.log("hello from list", id);
 
@@ -31,7 +32,8 @@
   let items = [];
 
   async function link(id, internal) {
-    window.scrollTo({ top: 0 });
+    // window.scrollTo({ top: 0 });
+    container.scrollTop = 0;
 
     if (!internal) {
       window.location.hash = "#/cloud/" + id;
@@ -70,7 +72,8 @@
     position: absolute;
     background-color: #eeeeee;
     top: 0;
-    padding-bottom: 10em;
+    height: 100%;
+    overflow-y: scroll;
   }
 
   .liste {
@@ -237,7 +240,7 @@
   }
 </style>
 
-<div class="container">
+<div class="container" bind:this={container}>
   Id: {id}
   <div class="liste" class:animating>
     {#each items as item (item.id)}

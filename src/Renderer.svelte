@@ -1,7 +1,7 @@
 <script>
   import { onMount, setContext } from "svelte";
   import { Renderer, Container } from "pixi.js";
-  import { dimensions, sprites, state } from "./stores.js";
+  import { dimensions, sprites, state, darkmode } from "./stores.js";
 
   console.log("renderer");
   let canvas;
@@ -10,7 +10,8 @@
   let container = new Container();
   container.sortableChildren = true;
 
-  let backgroundColor = 0xeeeeee;
+  let backgroundColorLight = 0xeeeeee;
+  let backgroundColorDark = 0x000000;
 
   setContext("renderer", () => ({
     renderer,
@@ -18,16 +19,32 @@
     outerContainer,
   }));
 
-  dimensions.subscribe(({ width, height }) => {
+  const s1 = dimensions.subscribe(({ width, height }) => {
     if (!renderer) return;
     renderer.resize(width, height);
     renderer.render(container);
   });
 
-  sprites.subscribe((sprites) => {
+  const s2 = sprites.subscribe((sprites) => {
     for (const sprite of sprites.values()) {
       container.addChild(sprite);
     }
+  });
+
+  // $: {
+  //   if (renderer) {
+  //     console.log($darkmode);
+  //     const color = $darkmode ? backgroundColorDark : backgroundColorLight;
+  //     renderer.backgroundColor = color;
+  //     renderer.render(container);
+  //   }
+  // }
+
+  const s3 = darkmode.subscribe((darkmode) => {
+    if (!renderer) return;
+    const color = darkmode ? backgroundColorDark : backgroundColorLight;
+    renderer.backgroundColor = color;
+    renderer.render(container);
   });
 
   function createRenderer(width, height) {
@@ -40,7 +57,7 @@
       autoDensity: true,
       resolution: 1,
       //resolution: window.devicePixelRatio,
-      backgroundColor,
+      backgroundColor: backgroundColorLight,
     });
   }
 
@@ -59,6 +76,10 @@
     resizeObserver.observe(outerContainer);
 
     return () => {
+      console.log("destroy");
+      s1();
+      s2();
+      s3();
       for (const sprite of $sprites.values()) {
         container.removeChild(sprite);
       }

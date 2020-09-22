@@ -60,10 +60,12 @@
 
 <main>
   <Dataloader>
-    <!-- <Renderer>
+    <!-- {#if route.view === 'cloud' || route.view === undefined} -->
+    <Renderer>
       <TextureLoader />
-      <Cloud {query} />
-    </Renderer> -->
+      <Cloud {route} />
+    </Renderer>
+    <!-- {/if} -->
     {#if route.view === 'list'}
       <List id={route.payload} />
     {/if}
