@@ -14,6 +14,7 @@
     spriteScale,
     lastTransformed,
     getSelectedDistances,
+    history,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -45,7 +46,7 @@
   //   }
   // }
 
-  $: zoom = d3zoom()
+  const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
       [0, 0],
@@ -56,7 +57,7 @@
     .on("zoom", zoomed)
     .on("end", end);
 
-  $: selection = select(outerContainer)
+  const selection = select(outerContainer)
     .call(zoom)
     .on("click", click)
     .on("pointermove", mousemove);
@@ -83,6 +84,9 @@
           zoomToId(route.payload).then(() => (stale = false));
         }
       });
+    } else if (route.payload) {
+      // console.log(selection, "DOIT");
+      zoomToId(route.payload).then(() => (stale = false));
     }
     lastRoute = { ...route };
   }
@@ -263,6 +267,8 @@
       return resetZoom();
     }
     if (lastTransform.k >= clusterZoomLevel) {
+      console.log(history);
+      history.update((h) => [...h, $selectedItem.id]);
       return zoomToSimilars()
         .then(fadeOutOthers)
         .then((d) => {

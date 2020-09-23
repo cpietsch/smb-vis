@@ -1,6 +1,11 @@
 <script>
   import { onMount } from "svelte";
-  import { distancesCutoffScore, selectedItem, darkmode } from "./stores.js";
+  import {
+    distancesCutoffScore,
+    selectedItem,
+    darkmode,
+    history,
+  } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
 
@@ -54,15 +59,21 @@
   </div>
 
   <div class="item">
-    <label for="darkmode">darkmode</label>
-    <input type="checkbox" id="darkmode" bind:checked={$darkmode} />
+    <div>
+      <input type="checkbox" id="darkmode" bind:checked={$darkmode} />
+      <label for="darkmode">darkmode</label>
+    </div>
   </div>
-  {#if $selectedItem}
+
+  <div class="item">
+    {#each $history as id}<a href="#/cloud/{id}">{id}</a>{/each}
+  </div>
+  <!-- {#if $selectedItem}
     <div class="item">
       <p>id: {$selectedItem.id}</p>
-      <!-- <img
+       <img
         src="https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/{$selectedItem.id}.jpg"
-        alt="detail Image" /> -->
+        alt="detail Image" /> 
     </div>
-  {/if}
+  {/if} -->
 </div>

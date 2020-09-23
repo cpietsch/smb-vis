@@ -30,6 +30,8 @@ export const sprites = derived(umapData, $data => {
     return sprites
 })
 
+export const history = writable([])
+
 export const darkmode = writable(false)
 
 export const state = writable("cloud")
