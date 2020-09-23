@@ -25,7 +25,19 @@
   let animating = false;
   let container;
 
-  const fields = ["_sammlung","_idnr","_titel","keywords","_actors","_ort","_datum","_material","_abmessung","year","_stichwort"]
+  const fields = [
+    "_sammlung",
+    "_idnr",
+    "_titel",
+    "keywords",
+    "_actors",
+    "_ort",
+    "_datum",
+    "_material",
+    "_abmessung",
+    "year",
+    "_stichwort",
+  ];
 
   console.log("hello from list", id);
 
@@ -76,6 +88,7 @@
     top: 0;
     height: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .liste {
@@ -158,7 +171,7 @@
 
   .additional {
     opacity: 0;
-    background: #EEE;
+    background: #eee;
     visibility: hidden;
     position: absolute;
     display: flex;
@@ -185,6 +198,7 @@
     padding-left: 1em;
     transition: visibility 0s;
     transition-delay: 0.5s;
+    font-size: 0.9em;
   }
   .selected .meta {
     padding-left: 2em;
@@ -228,10 +242,19 @@
   }
   .selected h2 {
     white-space: inherit;
+    /* font-size: 1.5em; */
+    /* margin-top: 0.5em; */
+    /* margin-bottom: 2em; */
   }
   p {
     line-height: 1.4em;
     margin-top: 0;
+  }
+
+  b {
+    width: 137px;
+    display: inline-block;
+    text-align: end;
   }
 
   .item:last-child .distance {
@@ -290,10 +313,12 @@
               {item.data._titel}
             </h2>
             <div class="additional">
-              <p class="beschreibung"><b>Beschreibung</b>: {item.data._beschreibung}</p>
+              <p class="beschreibung">
+                <b>Beschreibung</b>: {item.data._beschreibung}
+              </p>
               <p><b>Score</b>: {item.score}</p>
               {#each fields as field}
-              <p><b>{field.replace("_","")}</b>: {item.data[field]}</p>
+                <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
               {/each}
             </div>
           </div>
