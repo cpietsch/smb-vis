@@ -155,12 +155,18 @@
 
   .additional {
     opacity: 0;
-
+    background: #EEE;
     visibility: hidden;
     position: absolute;
     display: flex;
     flex-direction: column;
     /* width: 45vw; */
+  }
+  .additional .beschreibung {
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .selected .additional {
     opacity: 1;
@@ -170,6 +176,7 @@
   }
   .meta {
     flex-grow: 1;
+    max-width: 60%;
     color: #515151;
     position: relative;
     padding-left: 1em;
@@ -212,6 +219,15 @@
   h2 {
     font-size: 1em;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .selected h2 {
+    white-space: inherit;
+  }
+  p {
+    line-height: 1.4em;
   }
 
   .item:last-child .distance {
@@ -270,7 +286,7 @@
               {item.data._titel}
             </h2>
             <div class="additional">
-              <p>Beschreibung: {item.data._beschreibung}</p>
+              <p class="beschreibung">Beschreibung: {item.data._beschreibung}</p>
               <p>Score: {item.score}</p>
               <p>Jahr: {item.data.year}</p>
             </div>
