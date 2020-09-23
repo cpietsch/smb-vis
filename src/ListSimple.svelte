@@ -25,6 +25,8 @@
   let animating = false;
   let container;
 
+  const fields = ["_sammlung","_idnr","_titel","keywords","_actors","_ort","_datum","_material","_abmessung","year","_stichwort"]
+
   console.log("hello from list", id);
 
   const baseUrl = "https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/";
@@ -102,7 +104,8 @@
     position: relative;
     width: 100px;
     transition: width 0.5s;
-    max-width: 1024px;
+    /*max-width: 1024px;*/
+    display: flex;
   }
   .picture img {
     width: 100%;
@@ -228,6 +231,7 @@
   }
   p {
     line-height: 1.4em;
+    margin-top: 0;
   }
 
   .item:last-child .distance {
@@ -262,7 +266,7 @@
     {#each items as item (item.id)}
       <div
         class="item"
-        class:large
+        class:large={item.id === current && large}
         class:selected={item.id === current}
         animate:flip={{ duration: 1000 }}>
         <div class="row detail">
@@ -286,9 +290,11 @@
               {item.data._titel}
             </h2>
             <div class="additional">
-              <p class="beschreibung">Beschreibung: {item.data._beschreibung}</p>
-              <p>Score: {item.score}</p>
-              <p>Jahr: {item.data.year}</p>
+              <p class="beschreibung"><b>Beschreibung</b>: {item.data._beschreibung}</p>
+              <p><b>Score</b>: {item.score}</p>
+              {#each fields as field}
+              <p><b>{field.replace("_","")}</b>: {item.data[field]}</p>
+              {/each}
             </div>
           </div>
         </div>
