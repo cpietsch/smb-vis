@@ -46,16 +46,19 @@ export const dimensions = writable({ width: 70, height: 70 });
 
 export const scales = derived(
     [dimensions, umapData],
-    ([$dimensions, $umapData]) => ({
-        x: scaleLinear()
-            .nice()
-            .range([margin.left, $dimensions.width - margin.right])
-            .domain(extent($umapData, (d) => d.x)),
-        y: scaleLinear()
-            .nice()
-            .range([$dimensions.height - margin.bottom, margin.top])
-            .domain(extent($umapData, (d) => d.y))
-    })
+    ([$dimensions, $umapData]) => {
+
+        return {
+            x: scaleLinear()
+                .nice()
+                .range([margin.left, $dimensions.width - margin.right])
+                .domain(extent($umapData, (d) => d.x)),
+            y: scaleLinear()
+                .nice()
+                .range([$dimensions.height - margin.bottom, margin.top])
+                .domain(extent($umapData, (d) => d.y))
+        }
+    }
 );
 
 export const spriteScale = derived(

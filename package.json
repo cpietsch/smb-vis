@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "d3-array": "^2.7.0",
+    "d3-ease": "^2.0.0",
     "d3-fetch": "^2.0.0",
     "d3-interpolate": "^2.0.1",
     "d3-quadtree": "^2.0.0",

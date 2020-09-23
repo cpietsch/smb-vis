@@ -14,9 +14,16 @@
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
   import { slide, fade, fly } from "svelte/transition";
+  import { select, pointer, selection } from "d3-selection";
+  import {
+    interpolate as d3interpolate,
+    interpolateNumber,
+  } from "d3-interpolate";
 
   import { zoomIdentity } from "d3-zoom";
   import { style } from "d3-selection";
+
+  import { cubicInOut } from "svelte/easing";
 
   export let id;
 
@@ -29,13 +36,11 @@
     "_sammlung",
     "_idnr",
     "_titel",
-    "keywords",
     "_actors",
     "_ort",
     "_datum",
     "_material",
     "_abmessung",
-    "year",
     "_stichwort",
   ];
 
@@ -47,13 +52,27 @@
 
   async function link(id, internal) {
     // window.scrollTo({ top: 0 });
-    container.scrollTop = 0;
+    // container.scrollTop = 0;
+    // console.log(container.scrollTop);
 
     if (!internal) {
+      window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
       return;
     }
+
     animating = true;
+    selection()
+      .transition("scroll")
+      .duration(1000)
+      .ease(cubicInOut)
+      .tween("scroll", function () {
+        const scroll = interpolateNumber(container.scrollTop, 0);
+        return function (t) {
+          container.scrollTop = scroll(t);
+        };
+      });
+
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
@@ -291,7 +310,7 @@
         class="item"
         class:large={item.id === current && large}
         class:selected={item.id === current}
-        animate:flip={{ duration: 1000 }}>
+        animate:flip={{ duration: 1000, easing: cubicInOut }}>
         <div class="row detail">
           <div class="picture">
             <picture
