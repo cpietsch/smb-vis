@@ -24,6 +24,7 @@
   import { style } from "d3-selection";
 
   import { cubicInOut } from "svelte/easing";
+  import { tweened } from "svelte/motion";
 
   export let id;
 
@@ -35,7 +36,6 @@
   const fields = [
     "_sammlung",
     "_idnr",
-    "_titel",
     "_actors",
     "_ort",
     "_datum",
@@ -50,11 +50,19 @@
 
   let items = [];
 
+  // const size = tweened(1, {
+  //   duration: 300,
+  //   easing: cubicInOut,
+  // });
+
+  // $: {
+  //   console.log($size);
+  // }
+
   async function link(id, internal) {
     // window.scrollTo({ top: 0 });
     // container.scrollTop = 0;
     // console.log(container.scrollTop);
-
     if (!internal) {
       window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
@@ -173,14 +181,14 @@
     position: relative;
   } */
 
-  .selected.large .additional {
+  /* .selected.large .additional {
     transition: none;
-    visibility: hidden;
-  }
+    display:none;
+  } */
 
   .selected.large .meta {
     /* padding-left: 1em; */
-    visibility: hidden;
+    display: none;
     transition: none;
   }
 
@@ -190,10 +198,9 @@
 
   .additional {
     opacity: 0;
-    background: #eee;
-    visibility: hidden;
-    position: absolute;
-    display: flex;
+
+    display: none;
+    /* position: absolute; */
     flex-direction: column;
     /* width: 45vw; */
   }
@@ -204,23 +211,32 @@
     overflow: hidden;
   }
   .selected .additional {
+    display: flex;
+
     opacity: 1;
-    visibility: visible;
+    /* visibility: visible;
     transition: visibility 0s, opacity 0.5s;
-    transition-delay: 0.5s;
+    transition-delay: 0.5s; */
+  }
+  .metacontainer {
+    margin: 20px;
+    display: table;
+    overflow: hidden;
   }
   .meta {
     flex-grow: 1;
     max-width: 60%;
     color: #515151;
-    position: relative;
+    position: absolute;
     padding-left: 1em;
     transition: visibility 0s;
     transition-delay: 0.5s;
     font-size: 0.9em;
+    background: #eee;
   }
   .selected .meta {
     padding-left: 2em;
+    box-shadow: 10px 0 5px -2px #888;
     /* background: #f9f9f9; */
   }
 
@@ -273,7 +289,6 @@
   b {
     width: 137px;
     display: inline-block;
-    text-align: end;
   }
 
   .item:last-child .distance {
@@ -325,24 +340,24 @@
               on:click|preventDefault={() => link(item.id, false)} />
             <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
-
-          <div class="meta">
-            <h2
-              on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
-              {item.data._titel}
-            </h2>
-            <div class="additional">
-              <p class="beschreibung">
-                <b>Beschreibung</b>: {item.data._beschreibung}
-              </p>
-              <p><b>Score</b>: {item.score}</p>
-              {#each fields as field}
-                <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
-              {/each}
+          <div class="metacontainer">
+            <div class="meta">
+              <h2
+                on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
+                {item.data._titel}
+              </h2>
+              <div class="additional">
+                <p class="beschreibung">
+                  <b>Beschreibung</b>: {item.data._beschreibung}
+                </p>
+                <p><b>Score</b>: {item.score}</p>
+                {#each fields as field}
+                  <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
+                {/each}
+              </div>
             </div>
           </div>
         </div>
-
         <div class="row distance">
           <div
             style="height: {(20 + item.distance * 2) / 2}px;width: {20 + item.distance * 2}px;" />

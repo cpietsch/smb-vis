@@ -5,6 +5,7 @@
     selectedItem,
     darkmode,
     history,
+    anchor,
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -64,7 +65,9 @@
       <label for="darkmode">darkmode</label>
     </div>
   </div>
-
+  {#if $anchor}
+    <div class="item">{JSON.stringify($anchor)}</div>
+  {/if}
   <div class="item">
     {#each $history as id}<a href="#/cloud/{id}">{id}</a>{/each}
   </div>

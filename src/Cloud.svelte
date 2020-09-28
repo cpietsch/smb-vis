@@ -15,6 +15,7 @@
     lastTransformed,
     getSelectedDistances,
     history,
+    anchor,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -60,7 +61,8 @@
   const selection = select(outerContainer)
     .call(zoom)
     .on("click", click)
-    .on("pointermove", mousemove);
+    .on("pointermove", mousemove)
+    .on("contextmenu", contextmenu);
 
   // console.log($dimensions);
   // test("HALLLOO");
@@ -140,6 +142,19 @@
       lastSelected = selected;
       selectedItem.set(lastSelected);
     }
+  }
+
+  function contextmenu(e) {
+    const m = pointer(e);
+    const p = zoomTransform(this).invert(m);
+    console.log(p);
+
+    const x = $scales.x.invert(p[0]);
+    const y = $scales.y.invert(p[1]);
+
+    console.log(x, y);
+
+    anchor.set({ x, y });
   }
 
   function renderProjection(projection) {
@@ -292,6 +307,7 @@
     container.scale.set(transform.k);
     container.position.x = transform.x;
     container.position.y = transform.y;
+    lastTransformed.set({ ...transform });
     renderer.render(container);
   }
 

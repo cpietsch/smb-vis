@@ -10,6 +10,7 @@
   import Cloud from "./Cloud.svelte";
   import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
+  import Annotations from "./Annotations.svelte";
 
   import { state } from "./stores";
 
@@ -64,6 +65,7 @@
     <Renderer>
       <TextureLoader />
       <Cloud {route} />
+      <Annotations />
     </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
