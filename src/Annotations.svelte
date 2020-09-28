@@ -17,7 +17,7 @@
   const baseUrl = "annotations/";
   const sprites = [];
   let subsription;
-  const size = scaleLog().range([0.12, 0.02]).domain([1, 20]);
+  const size = scaleLog().range([0.12, 0.02]).domain([1, 20]).clamp(true);
 
   onMount(async () => {
     const { annotations } = await json(baseUrl + "annotations.json");
@@ -25,10 +25,12 @@
       //   console.log(annotation);
 
       const sprite = Sprite.from(baseUrl + annotation.name + ".png");
-      sprite.scale.x = sprite.scale.y = 0.1;
+      sprite.scale.x = sprite.scale.y =
+        ((3 - annotation.size) / 2) * 0.04 + size(1);
       sprite.anchor.set(0.5);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
+      sprite.__asize = annotation.size;
       sprites.push(sprite);
       container.addChild(sprite);
     }
@@ -36,7 +38,8 @@
     subsription = lastTransformed.subscribe((t) => {
       //   console.log(t.k, size(t.k));
       for (const sprite of sprites) {
-        sprite.scale.x = sprite.scale.y = size(t.k);
+        sprite.scale.x = sprite.scale.y =
+          ((3 - sprite.__asize) / 2) * 0.04 + size(t.k);
       }
     });
     // console.log(annotations);
