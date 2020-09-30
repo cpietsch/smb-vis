@@ -101,8 +101,6 @@
     console.log(items);
   }
 
-  $: details = items.find((d) => d.id === current);
-
   onMount(() => {
     return () => {};
   });
@@ -128,7 +126,7 @@
     z-index: 10;
     margin-left: 5em;
     margin-right: 5em;
-    max-width: 1500px;
+    max-width: 1200px;
   }
 
   .item {
@@ -148,62 +146,202 @@
     transition: width 0.5s;
     /*max-width: 1024px;*/
     display: flex;
+    z-index: 10;
   }
   .picture img {
     width: 100%;
   }
-
-  .detail {
+  .resize {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    right: 5px;
+    top: 5px;
     position: absolute;
-    top: 2em;
-    /* height: 100%; */
-    /* overflow: scroll; */
-    width: 50%;
-    right: 0;
-    padding: 2em;
-    margin-right: 2em;
-    padding-left: 220px;
-    padding-bottom: 200px;
-    /* box-shadow: 0px 0px 140px 0px rgba(0, 0, 0, 0.3); */
-    /* pointer-events: none; */
+    display: none;
+  }
+  .selected .resize {
+    display: block;
   }
 
-  .detail::before {
+  .selected {
+    z-index: 10;
+  }
+  .selected .picture {
+    width: 30%;
+  }
+
+  .selected.large .picture {
+    width: 1024px;
+  }
+
+  /* .selected.large .detail {
+    flex-direction: column;
+  }
+  .selected.large .additional {
+    position: relative;
+  } */
+
+  /* .selected.large .additional {
+    transition: none;
+    display:none;
+  } */
+
+  .selected.large .meta {
+    /* padding-left: 1em; */
+    display: none;
+    transition: none;
+  }
+
+  /* .large .meta {
+    width: 80vw;
+  } */
+
+  .additional {
+    opacity: 0;
+
+    /* display: none; */
+    /* position: absolute; */
+    flex-direction: column;
+    visibility: hidden;
+    /* width: 45vw; */
+  }
+  .additional .beschreibung {
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .selected .additional {
+    display: flex;
+
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s, opacity 0.5s;
+    transition-delay: 0.5s;
+  }
+  .metacontainer {
+    /* margin: 20px; */
+  }
+  .meta {
+    flex-grow: 1;
+    max-width: 60%;
+    color: #515151;
+    position: absolute;
+    padding-left: 1em;
+    transition: visibility 0s;
+    transition-delay: 0.5s;
+    font-size: 0.9em;
+    background: #eee;
+  }
+  .selected .meta {
+    padding-left: 2em;
+    padding-bottom: 200px;
+    /* box-shadow: 10px 0 5px -2px #888; */
+    /* background: #f9f9f9; */
+  }
+
+  .selected .meta::before {
     content: "";
     position: absolute;
     width: 150px;
     height: 100%;
     top: 0;
-    left: 0;
+    left: -150px;
     z-index: 6;
     background: linear-gradient(to left, rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0));
     box-shadow: inset 55px -124px 114px -18px rgb(238, 238, 238);
     /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75); */
   }
+
+  .center {
+    position: absolute;
+    display: none;
+    left: -20px;
+    top: calc(30%);
+    width: 20px;
+    height: 40px;
+    background-color: #424242;
+  }
+
+  .selected .center {
+    display: inline;
+  }
+
+  .cloud {
+    position: absolute;
+    display: none;
+    left: -20px;
+    top: calc(60%);
+    width: 20px;
+    height: 40px;
+    background-color: aqua;
+  }
+
+  .selected .cloud {
+    display: inline;
+  }
+
+  h2 {
+    font-size: 1em;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .selected h2 {
+    white-space: inherit;
+    /* font-size: 1.5em; */
+    /* margin-top: 0.5em; */
+    /* margin-bottom: 2em; */
+  }
+  p {
+    line-height: 1.4em;
+    margin-top: 0;
+  }
+
+  b {
+    width: 137px;
+    display: inline-block;
+  }
+
+  .item:last-child .distance {
+    display: none;
+  }
+
+  .distance {
+    opacity: 1;
+    transition: visibility 0s, opacity 1s;
+  }
+
+  .distance div {
+    /* width: 10px; */
+    border: 2px solid rgb(89, 89, 89);
+    border-top-left-radius: 100% 200%;
+    border-top-right-radius: 100% 200%;
+    border-bottom: none;
+    transform: rotate(-90deg) translate(2px, -150%);
+    z-index: 2;
+    /* background-color: blueviolet; */
+  }
+
+  .animating .distance {
+    visibility: hidden;
+    opacity: 0;
+  }
 </style>
 
 <div class="container" bind:this={container}>
-  {#if details}
-    <div class="detail">
-      <h2>{details.data._titel}</h2>
-      <p class="beschreibung">
-        <b>Beschreibung</b>:
-        {details.data._beschreibung}
-      </p>
-      <p><b>Score</b>: {details.score}</p>
-      {#each fields as field}
-        <p><b>{field.replace('_', '')}</b>: {details.data[field]}</p>
-      {/each}
-    </div>
-  {/if}
-
+  Id:
+  {id}
   <div class="liste" class:animating>
     {#each items as item (item.id)}
       <div
         class="item"
         class:large={item.id === current && large}
         class:selected={item.id === current}>
-        <div class="row">
+        <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
+        <div class="row detail">
           <div class="picture">
             <picture
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
@@ -216,6 +354,23 @@
               class="cloud"
               on:click|preventDefault={() => link(item.id, false)} />
             <!-- <div class="resize" on:click={() => (large = !large)} /> -->
+          </div>
+          <div class="metacontainer">
+            <div class="meta">
+              <h2
+                on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
+                {item.data._titel}
+              </h2>
+              <div class="additional">
+                <p class="beschreibung">
+                  <b>Beschreibung</b>: {item.data._beschreibung}
+                </p>
+                <p><b>Score</b>: {item.score}</p>
+                {#each fields as field}
+                  <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
+                {/each}
+              </div>
+            </div>
           </div>
         </div>
         <div class="row distance">

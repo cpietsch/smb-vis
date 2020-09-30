@@ -8,7 +8,7 @@
   import Details from "./Details.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
-  import List from "./ListSimple.svelte";
+  import List from "./ListSimpleBackup.svelte";
   import Debug from "./Debug.svelte";
   import Annotations from "./Annotations.svelte";
 
@@ -45,10 +45,8 @@
     box-sizing: border-box;
   }
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
+  :global(*, *:before, *:after) {
+    box-sizing: border-box;
   }
 
   main {
@@ -63,15 +61,17 @@
   <Dataloader>
     <!-- {#if route.view === 'cloud' || route.view === undefined} -->
     <Renderer>
-      <TextureLoader />
-      <Cloud {route} />
-      <Annotations />
-    </Renderer>
+        <TextureLoader />
+        <Cloud {route} />
+        <Annotations />
+      </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
       <List id={route.payload} />
     {/if}
   </Dataloader>
-  <Debug />
+  {#if route.view != 'list'}
+    <Debug />
+  {/if}
   <!-- <Details /> -->
 </main>
