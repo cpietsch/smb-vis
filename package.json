@@ -1,5 +1,5 @@
 {
-  "name": "svelte-svite",
+  "name": "smb-visualisiert",
   "version": "0.0.0",
   "scripts": {
     "dev": "svite",
