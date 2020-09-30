@@ -55,8 +55,8 @@
       antialias: false,
       transparent: false,
       autoDensity: true,
-      resolution: 1,
-      //resolution: window.devicePixelRatio,
+      // resolution: 1,
+      resolution: window.devicePixelRatio,
       backgroundColor: backgroundColorLight,
     });
   }
