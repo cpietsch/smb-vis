@@ -1,10 +1,13 @@
 {
-  "name": "smb-visualisiert",
+  "name": "smb-vis",
+  "url": "https://cpietsch.github.io/smb-vis/",
+  "author": "Christopher Pietsch <cpietsch@gmail.com> (https://chrispie.com)",
+  "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "svite",
     "build": "svite build",
-    "deploy": "svite build --base /smb-svelte --assetsDir assets && gh-pages -d dist"
+    "deploy": "svite build --base /smb-vis --assetsDir assets && gh-pages -d dist"
   },
   "dependencies": {
     "d3-array": "^2.7.0",
