@@ -38,6 +38,7 @@
       //   console.log(annotation);
 
       const sprite = Sprite.from(baseUrl + annotation.name + ".png");
+      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * size(1);
       // sprite.on("added", (s) => {
       //   console.log(s.width);
       // });
@@ -51,6 +52,8 @@
       container.addChild(sprite);
     }
 
+    /*
+    // this is for dynamic scaling of the labels
     subsription = lastTransformed.subscribe((t) => {
       //   console.log(t.k, size(t.k));
       for (const sprite of sprites) {
@@ -59,7 +62,7 @@
         //   ((3 - sprite.__asize) / 2) * 0.04 + size(t.k);
       }
     });
-    // console.log(annotations);
+    */
   });
 
   onDestroy(() => {
