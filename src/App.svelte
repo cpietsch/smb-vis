@@ -6,6 +6,7 @@
   // import Stage from "./Stage.svelte";
   // import Layout from "./Layout.svelte";
   import Details from "./Details.svelte";
+  import Home from "./Home.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
   import List from "./ListSimple.svelte";
@@ -58,6 +59,7 @@
 <svelte:window on:hashchange={hashchange} />
 
 <main>
+  <Home />
   <Dataloader>
     <!-- {#if route.view === 'cloud' || route.view === undefined} -->
     <Renderer>
