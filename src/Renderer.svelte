@@ -77,6 +77,8 @@
 
     return () => {
       console.log("destroy");
+
+      // this needs to be done better
       s1();
       s2();
       s3();

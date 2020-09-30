@@ -1,7 +1,5 @@
 <script>
   import { selectedItem } from "./stores.js";
-
-  //   $: console.log($selectedItem);
 </script>
 
 <style>
