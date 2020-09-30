@@ -1,4 +1,6 @@
-﻿# smb-svelte
+﻿# [WIP] Visuelle Exploration zweier musealer Sammlungen
+
+latest prototype: https://cpietsch.github.io/smb-vis/
 
 ```
 npm i
