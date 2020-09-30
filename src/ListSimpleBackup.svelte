@@ -329,6 +329,14 @@
     visibility: hidden;
     opacity: 0;
   }
+
+  .link {
+    cursor: pointer;
+    display: flex;
+  }
+  .link img {
+    margin-right: 1em;
+  }
 </style>
 
 <div class="container" bind:this={container}>
@@ -349,10 +357,10 @@
             </picture>
             <div
               class="center"
-              on:click|preventDefault={() => link(item.id, true)} />
-            <div
-              class="cloud"
               on:click|preventDefault={() => link(item.id, false)} />
+            <!-- <div
+              class="cloud"
+              on:click|preventDefault={() => link(item.id, false)} /> -->
             <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
           <div class="metacontainer">
@@ -369,6 +377,8 @@
                 {#each fields as field}
                   <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
                 {/each}
+                <p><span class="link" on:click|preventDefault={() => link(item.id, true)}>
+                  <img alt="ähnliche Objeke" src="liste.png">ähnliche Objeke</span></p>
               </div>
             </div>
           </div>
