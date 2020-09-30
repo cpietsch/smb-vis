@@ -13,6 +13,9 @@
     umapProjection,
     spriteScale,
     lastTransformed,
+    getSelectedDistances,
+    history,
+    anchor,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -30,7 +33,21 @@
   let stale = false;
   let lastSelected;
 
-  $: zoom = d3zoom()
+  export let route;
+
+  // $: {
+  //   console.log("clid", query);
+  //   // const { x, y, scale } = query;
+  //   const x = parseFloat(query.x);
+  //   const y = parseFloat(query.y);
+  //   const scale = parseFloat(query.scale);
+
+  //   if (x && y && scale && selection) {
+  //     zoomToExtend([{ x, y }], scale);
+  //   }
+  // }
+
+  const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
       [0, 0],
@@ -41,10 +58,11 @@
     .on("zoom", zoomed)
     .on("end", end);
 
-  $: selection = select(outerContainer)
+  const selection = select(outerContainer)
     .call(zoom)
     .on("click", click)
-    .on("pointermove", mousemove);
+    .on("pointermove", mousemove)
+    .on("contextmenu", contextmenu);
 
   // console.log($dimensions);
   // test("HALLLOO");
@@ -58,18 +76,35 @@
 
   function animateToList() {}
 
-  let lastState;
-  state.subscribe((state) => {
-    console.log("STATE", state, lastState);
-    if (lastState === "list" && state === "cloud") {
-      fadeInAll().then(() => (stale = false)); //.then(resetZoom);
+  let lastRoute = { ...route };
+  $: {
+    console.log(route, lastRoute);
+    if (lastRoute.view === "list" && route.view === "cloud") {
+      fadeInAll().then(() => {
+        console.log(route.id);
+        if (route.payload) {
+          zoomToId(route.payload).then(() => (stale = false));
+        }
+      });
+    } else if (route.payload) {
+      // console.log(selection, "DOIT");
+      zoomToId(route.payload).then(() => (stale = false));
     }
-    lastState = state;
-  });
+    lastRoute = { ...route };
+  }
+
+  // let lastState;
+  // state.subscribe((state) => {
+  //   console.log("STATE", state, lastState);
+  //   if (lastState === "list" && state === "cloud") {
+  //     fadeInAll().then(() => (stale = false)); //.then(resetZoom);
+  //   }
+  //   lastState = state;
+  // });
 
   selectedItem.subscribe(async (selectedItem) => {
     // if( && lastTransform.k > 1)
-    if (selectedItem && lastTransform.k > 2) {
+    if (selectedItem && lastTransform.k > 3) {
       await tick();
       const distancesFiltered = $selectedDistances;
       const newProjection = $umapProjection.map((d) => {
@@ -107,6 +142,19 @@
       lastSelected = selected;
       selectedItem.set(lastSelected);
     }
+  }
+
+  function contextmenu(e) {
+    const m = pointer(e);
+    const p = zoomTransform(this).invert(m);
+    console.log(p);
+
+    const x = $scales.x.invert(p[0]);
+    const y = $scales.y.invert(p[1]);
+
+    console.log(x, y);
+
+    anchor.set({ x, y });
   }
 
   function renderProjection(projection) {
@@ -194,6 +242,12 @@
     return zoomToExtend(items);
   }
 
+  function zoomToId(id) {
+    const item = $umapProjection.find((d) => d.id == id);
+
+    return zoomToExtend([item]);
+  }
+
   function zoomToExtend(items, minZoom = maxZoomLevel) {
     stale = true;
     const { width, height } = $dimensions;
@@ -228,12 +282,15 @@
       return resetZoom();
     }
     if (lastTransform.k >= clusterZoomLevel) {
+      console.log(history);
+      history.update((h) => [...h, $selectedItem.id]);
       return zoomToSimilars()
         .then(fadeOutOthers)
         .then((d) => {
           // console.log(d);
           // stale = false;
-          state.set("list");
+          // state.set("list");
+          window.location.hash = "/list/" + $selectedItem.id;
         });
     }
 
@@ -250,10 +307,27 @@
     container.scale.set(transform.k);
     container.position.x = transform.x;
     container.position.y = transform.y;
+    lastTransformed.set({ ...transform });
     renderer.render(container);
   }
 
   function end({ transform }) {
+    // console.log(transform);
+
+    // const center = transform.invert([
+    //   $dimensions.width / 2,
+    //   $dimensions.height / 2,
+    // ]);
+    // var queryParams = new URLSearchParams(
+    //   window.location.hash.replace("#", "?")
+    // );
+    // // queryParams.set("center", center.map((d) => d.toFixed(0)).join("."));
+    // queryParams.set("x", center[0].toFixed(2));
+    // queryParams.set("y", center[1].toFixed(2));
+    // queryParams.set("scale", transform.k.toFixed(2));
+    // history.pushState(null, null, "#" + queryParams.toString());
+    // // window.location.hash = "#" + queryParams.toString();
+
     lastTransform = transform;
     lastTransformed.set({ ...transform });
   }

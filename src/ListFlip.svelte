@@ -19,6 +19,8 @@
   let mapped;
   let animate = true;
 
+  export let id;
+
   setTimeout(() => {
     animate = false;
   }, 500);
@@ -26,7 +28,7 @@
   function comeBack() {
     animate = true;
     setTimeout(() => {
-      state.set("cloud");
+      // state.set("cloud");
     }, 3000);
   }
 

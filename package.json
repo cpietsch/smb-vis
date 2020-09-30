@@ -1,5 +1,5 @@
 {
-  "name": "svelte-svite",
+  "name": "smb-visualisiert",
   "version": "0.0.0",
   "scripts": {
     "dev": "svite",
@@ -8,12 +8,15 @@
   },
   "dependencies": {
     "d3-array": "^2.7.0",
+    "d3-ease": "^2.0.0",
     "d3-fetch": "^2.0.0",
     "d3-interpolate": "^2.0.1",
     "d3-quadtree": "^2.0.0",
     "d3-scale": "^3.2.2",
     "d3-selection": "^2.0.0",
+    "d3-timer": "^2.0.0",
     "d3-zoom": "^2.0.0",
+    "page": "^1.11.6",
     "pixi.js": "^5.3.3",
     "svelte": "3.24.1",
     "svelte-hmr": "0.10.2"

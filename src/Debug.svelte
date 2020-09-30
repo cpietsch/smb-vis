@@ -1,6 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  import { distancesCutoffScore, selectedItem } from "./stores.js";
+  import {
+    distancesCutoffScore,
+    selectedItem,
+    darkmode,
+    history,
+    anchor,
+  } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
 
@@ -22,6 +28,7 @@
     border-radius: 6px;
     display: flex;
     flex-flow: column;
+    z-index: 100;
   }
 
   .item {
@@ -52,12 +59,24 @@
       name="distancesCutoffScore" />
   </div>
 
-  {#if $selectedItem}
+  <div class="item">
+    <div>
+      <input type="checkbox" id="darkmode" bind:checked={$darkmode} />
+      <label for="darkmode">darkmode</label>
+    </div>
+  </div>
+  {#if $anchor}
+    <div class="item">{JSON.stringify($anchor)}</div>
+  {/if}
+  <div class="item">
+    {#each $history as id}<a href="#/cloud/{id}">{id}</a>{/each}
+  </div>
+  <!-- {#if $selectedItem}
     <div class="item">
       <p>id: {$selectedItem.id}</p>
-      <!-- <img
+       <img
         src="https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/{$selectedItem.id}.jpg"
-        alt="detail Image" /> -->
+        alt="detail Image" /> 
     </div>
-  {/if}
+  {/if} -->
 </div>

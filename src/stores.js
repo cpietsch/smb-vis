@@ -1,4 +1,4 @@
-import { writable, derived, readable } from 'svelte/store';
+import { writable, derived, readable, get } from 'svelte/store';
 import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
@@ -15,6 +15,9 @@ export const umapData = readable([], set => {
         y: +y,
     })).then(set)
 });
+export const detailData = readable(new Map(), set => {
+    csv("data/export1305-bitlabels.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
+});
 
 export const sprites = derived(umapData, $data => {
     const sprites = new Map()
@@ -27,11 +30,17 @@ export const sprites = derived(umapData, $data => {
     return sprites
 })
 
+export const history = writable([])
+
+export const darkmode = writable(false)
+
 export const state = writable("cloud")
 
 export const lastTransformed = writable({ k: 1, x: 0, y: 0 })
 
 export const mouse = writable([0, 0])
+
+export const anchor = writable()
 
 export const selectedItem = writable(undefined)
 
@@ -39,16 +48,19 @@ export const dimensions = writable({ width: 70, height: 70 });
 
 export const scales = derived(
     [dimensions, umapData],
-    ([$dimensions, $umapData]) => ({
-        x: scaleLinear()
-            .nice()
-            .range([margin.left, $dimensions.width - margin.right])
-            .domain(extent($umapData, (d) => d.x)),
-        y: scaleLinear()
-            .nice()
-            .range([$dimensions.height - margin.bottom, margin.top])
-            .domain(extent($umapData, (d) => d.y))
-    })
+    ([$dimensions, $umapData]) => {
+
+        return {
+            x: scaleLinear()
+                .nice()
+                .range([margin.left, $dimensions.width - margin.right])
+                .domain(extent($umapData, (d) => d.x)),
+            y: scaleLinear()
+                .nice()
+                .range([$dimensions.height - margin.bottom, margin.top])
+                .domain(extent($umapData, (d) => d.y))
+        }
+    }
 );
 
 export const spriteScale = derived(
@@ -72,6 +84,7 @@ export const umapProjection = derived(
 );
 
 export const distancesCutoffScore = writable(30)
+
 export const distances = readable(new Map(), set => {
     json("data/pca-titel-bild-embeds.json")
         .then(data =>
@@ -81,9 +94,20 @@ export const distances = readable(new Map(), set => {
 export const selectedDistances = derived(
     [selectedItem, distances, distancesCutoffScore],
     ([$item, $distances, $score]) => {
-        console.log($item, $distances, $score)
+        // console.log($item, $distances, $score)
         if (!$item || !$distances.size) { return [] }
         else {
             return $distances.get($item.id).distances.filter((d) => d[1] > $score)
+        }
+    })
+
+export const getSelectedDistances = derived(
+    [distances, distancesCutoffScore],
+    ([$distances, $score]) => {
+        return (id) => {
+            if (!$distances.size) { return [] }
+            else {
+                return $distances.get(id).distances.filter((d) => d[1] > $score)
+            }
         }
     })
