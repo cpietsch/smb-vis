@@ -1,5 +1,7 @@
 ﻿# WIP smb-vis
 
+latest prototype: https://cpietsch.github.io/smb-vis/
+
 ```
 npm i
 npm run dev
