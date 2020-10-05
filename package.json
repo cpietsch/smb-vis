@@ -5,9 +5,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "svite",
-    "build": "svite build",
-    "deploy": "svite build --base /smb-vis --assetsDir assets && gh-pages -d dist"
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "vite build --base /smb-vis --assetsDir assets && gh-pages -d dist"
   },
   "dependencies": {
     "d3-array": "^2.7.0",
@@ -21,11 +21,11 @@
     "d3-zoom": "^2.0.0",
     "page": "^1.11.6",
     "pixi.js": "^5.3.3",
-    "svelte": "^3.29.0",
-    "svelte-hmr": "^0.11.1"
+    "svelte": "^3.29.0"
   },
   "devDependencies": {
     "gh-pages": "^3.1.0",
-    "svite": "^0.8.0-beta.0"
+    "vite": "^1.0.0-rc.4",
+    "vite-plugin-svelte": "^2.4.1"
   }
 }
