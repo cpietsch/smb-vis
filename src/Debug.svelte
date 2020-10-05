@@ -6,6 +6,8 @@
     darkmode,
     history,
     anchor,
+    searchstring,
+    searchItems
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -49,6 +51,13 @@
 </style>
 
 <div class="debug">
+  <div class="item">
+    <div>
+      <label for="search">Suche ({$searchItems.length})</label>
+      <input type="search" id="search" bind:value={$searchstring} />
+
+    </div>
+  </div>
   <div class="item">
     <label for="distancesCutoffScore">distancesCutoffScore {$distancesCutoffScore}</label>
     <input

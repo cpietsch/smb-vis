@@ -10,6 +10,8 @@ export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
 export const renderer = writable()
 
+export const searchstring = writable("")
+
 export const container = writable()
 
 export const divContainer = writable()
@@ -85,9 +87,22 @@ export const spriteScale = derived(
         400)
 );
 
+export const searchItems = derived(
+    [detailData, searchstring],
+    ([$detailData, $searchstring]) => {
+        let items = Array.from($detailData.values())
+        if($searchstring != ""){
+            items = items.filter(d => d._titel.indexOf($searchstring) > -1)
+        }
+        // console.log($searchstring, items)
+        return items.map(d => d.id)
+    }
+);
+
+
 export const umapProjection = derived(
-    [umapData, spriteScale, scales],
-    ([$umapData, $spriteScale, $scales]) => ($umapData
+    [umapData, spriteScale, scales, searchItems],
+    ([$umapData, $spriteScale, $scales, $searchItems]) => ($umapData
         .map(d => ({
             id: d.id,
             x: $scales.x(d.x),
@@ -95,7 +110,7 @@ export const umapProjection = derived(
             scale: $spriteScale,
             alpha: 1,
             zIndex: 0,
-            visible: true,
+            visible: $searchItems.includes(d.id),
         })))
 );
 
