@@ -3,7 +3,7 @@
   import { Renderer, Container } from "pixi.js";
   import { dimensions, sprites, state, darkmode } from "./stores.js";
 
-  console.log("renderer");
+  console.log("init renderer");
   let canvas;
   let outerContainer;
   let renderer;
@@ -19,33 +19,23 @@
     outerContainer,
   }));
 
-  const s1 = dimensions.subscribe(({ width, height }) => {
-    if (!renderer) return;
-    renderer.resize(width, height);
-    renderer.render(container);
-  });
 
-  const s2 = sprites.subscribe((sprites) => {
-    for (const sprite of sprites.values()) {
+  $: {
+    for (const sprite of $sprites.values()) {
       container.addChild(sprite);
     }
-  });
+  }
 
-  // $: {
-  //   if (renderer) {
-  //     console.log($darkmode);
-  //     const color = $darkmode ? backgroundColorDark : backgroundColorLight;
-  //     renderer.backgroundColor = color;
-  //     renderer.render(container);
-  //   }
-  // }
-
-  const s3 = darkmode.subscribe((darkmode) => {
-    if (!renderer) return;
-    const color = darkmode ? backgroundColorDark : backgroundColorLight;
-    renderer.backgroundColor = color;
-    renderer.render(container);
-  });
+  $: {
+    if (renderer) {
+      console.log("darkmode", $darkmode);
+      const color = $darkmode ? backgroundColorDark : backgroundColorLight;
+      const { width, height } = $dimensions
+      renderer.backgroundColor = color;
+      renderer.resize(width, height);
+      renderer.render(container);
+    }
+  }
 
   function createRenderer(width, height) {
     return new Renderer({
@@ -76,12 +66,8 @@
     resizeObserver.observe(outerContainer);
 
     return () => {
-      console.log("destroy");
+      console.log("destroy renderer");
 
-      // this needs to be done better
-      s1();
-      s2();
-      s3();
       for (const sprite of $sprites.values()) {
         container.removeChild(sprite);
       }

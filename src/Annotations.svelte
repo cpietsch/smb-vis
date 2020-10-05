@@ -71,7 +71,7 @@
       container.removeChild(sprite);
       sprite.destroy();
     }
-    subsription();
+    // subsription();
   });
 </script>
 
