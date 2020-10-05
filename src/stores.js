@@ -8,6 +8,20 @@ console.log("STORE INIT")
 
 export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
+export const renderer = writable()
+
+export const container = writable()
+
+export const divContainer = writable()
+
+// export const container = readable(null, set => {
+//     const c = new Container()
+//     c.sortableChildren = true
+//     set(c)
+
+//     return () => c.destroy()
+// })
+
 export const umapData = readable([], set => {
     csv("data/umap.csv", ({ id, x, y }) => ({
         id,
@@ -15,11 +29,13 @@ export const umapData = readable([], set => {
         y: +y,
     })).then(set)
 });
+
 export const detailData = readable(new Map(), set => {
     csv("data/export1305-bitlabels.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
 export const sprites = derived(umapData, $data => {
+    console.log("sprites creation")
     const sprites = new Map()
     for (const d of $data) {
         const sprite = new Sprite(Texture.WHITE)
@@ -44,7 +60,7 @@ export const anchor = writable()
 
 export const selectedItem = writable(undefined)
 
-export const dimensions = writable({ width: 70, height: 70 });
+export const dimensions = writable({ width: 500, height: 500 });
 
 export const scales = derived(
     [dimensions, umapData],

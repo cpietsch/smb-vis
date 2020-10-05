@@ -16,6 +16,9 @@
     getSelectedDistances,
     history,
     anchor,
+    renderer as pixiRenderer,
+    container as pixiContainer,
+    divContainer
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -24,7 +27,7 @@
   import { extent } from "d3-array";
   import { xml } from "d3-fetch";
 
-  const { renderer, container, outerContainer } = getContext("renderer")();
+  // const { renderer, container, outerContainer } = getContext("renderer")();
   const maxZoomLevel = 20;
   const distanceCutoff = 5;
 
@@ -47,6 +50,12 @@
   //   }
   // }
 
+  const renderer = get(pixiRenderer)
+  // const renderer = $pixiRenderer
+  const container = get(pixiContainer)
+  const outer = get(divContainer)
+
+
   const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
@@ -58,18 +67,31 @@
     .on("zoom", zoomed)
     .on("end", end);
 
-  const selection = select(outerContainer)
+  
+  // resize handler
+  $: {
+    const { width, height } = $dimensions
+    console.log("resize cloude")
+    selection.call(zoom.translateExtent([
+      [0, 0],
+      [$dimensions.width, $dimensions.height],
+    ]))
+    renderProjection($umapProjection);
+  }
+  
+  const selection = select(outer)
     .call(zoom)
     .on("click", click)
     .on("pointermove", mousemove)
     .on("contextmenu", contextmenu);
 
+  
   // console.log($dimensions);
   // test("HALLLOO");
 
   let lastProjection = $umapProjection;
 
-  let quadtree = d3quadtree()
+  $: quadtree = d3quadtree()
     .x((d) => d.x)
     .y((d) => d.y)
     .addAll($umapProjection);
@@ -172,7 +194,7 @@
       s.zIndex = d.zIndex;
       s.visible = d.visible;
     }
-    renderer.render(container);
+    $pixiRenderer.render($pixiContainer);
   }
 
   // ZOOM
@@ -308,10 +330,11 @@
     container.position.x = transform.x;
     container.position.y = transform.y;
     lastTransformed.set({ ...transform });
-    renderer.render(container);
+    $pixiRenderer.render($pixiContainer);
   }
 
   function end({ transform }) {
+    // asd
     // console.log(transform);
 
     // const center = transform.invert([
