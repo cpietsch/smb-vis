@@ -51,7 +51,6 @@
   // }
 
   const renderer = get(pixiRenderer)
-  // const renderer = $pixiRenderer
   const container = get(pixiContainer)
   const outer = get(divContainer)
 
@@ -181,7 +180,7 @@
       s.zIndex = d.zIndex;
       s.visible = d.visible;
     }
-    $pixiRenderer.render($pixiContainer);
+    renderer.render(container);
   }
 
   // ZOOM
@@ -321,7 +320,7 @@
     if(e.sourceEvent) {
       mousemove(e)
     } else {
-      $pixiRenderer.render($pixiContainer);
+      renderer.render(container);
     }
   }
 
