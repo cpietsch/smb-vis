@@ -124,14 +124,13 @@
   //   lastState = state;
   // });
 
-  selectedItem.subscribe(async (selectedItem) => {
-    // if( && lastTransform.k > 1)
-    if (selectedItem && lastTransform.k > 3) {
-      await tick();
+  $: {
+    if ($selectedItem && lastTransform.k > 3) {
+      //await tick();
       const distancesFiltered = $selectedDistances;
       const newProjection = $umapProjection.map((d) => {
         const alpha = distancesFiltered.find((e) => e[0] == d.id) ? 1 : 0.2;
-        const active = selectedItem ? selectedItem.id === d.id : false;
+        const active = $selectedItem ? $selectedItem.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,
@@ -145,7 +144,7 @@
     }
 
     renderProjection(lastProjection);
-  });
+  }
 
   function mousemove(e) {
     if (stale) return;
