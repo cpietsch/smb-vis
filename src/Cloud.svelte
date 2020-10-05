@@ -101,7 +101,7 @@
   let lastRoute = { ...route };
   $: {
     console.log(route, lastRoute);
-    if (lastRoute.view === "list" && route.view === "cloud") {
+    if ((lastRoute.view === "" || lastRoute.view === "list") && route.view === "cloud") {
       fadeInAll().then(() => {
         console.log(route.id);
         if (route.payload) {
