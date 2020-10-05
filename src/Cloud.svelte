@@ -140,7 +140,7 @@
   function mousemove(e) {
     if (stale) return;
     const m = pointer(e);
-    const p = zoomTransform(this).invert(m);
+    const p = lastTransform.invert(m);
     let selected = quadtree.find(p[0], p[1]);
     if (!selected) return;
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
@@ -151,9 +151,9 @@
     selection.style("cursor", selected ? "pointer" : "auto");
 
     if (lastSelected !== selected) {
-      lastSelected = selected;
-      highlight(selected)
+      lastSelected = selected; 
     }
+    highlight(lastSelected)
   }
 
   function contextmenu(e) {
@@ -305,20 +305,24 @@
     }
 
     if (lastTransform.k !== clusterZoomLevel) {
-      return zoomToExtend([$selectedItem], clusterZoomLevel).then(() => {
+      return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
         stale = false;
         console.log(lastTransform);
       });
       //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
     }
   }
-  function zoomed({ transform }) {
-    lastTransform = transform;
-    container.scale.set(transform.k);
-    container.position.x = transform.x;
-    container.position.y = transform.y;
-    lastTransformed.set({ ...transform });
-    $pixiRenderer.render($pixiContainer);
+  function zoomed(e) {
+    lastTransform = e.transform;
+    container.scale.set(lastTransform.k);
+    container.position.x = lastTransform.x;
+    container.position.y = lastTransform.y;
+    lastTransformed.set({ ...lastTransform });
+    if(e.sourceEvent) {
+      mousemove(e)
+    } else {
+      $pixiRenderer.render($pixiContainer);
+    }
   }
 
   function end({ transform }) {
