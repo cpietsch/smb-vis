@@ -173,12 +173,13 @@
     z-index: 10;
   }
   .selected .picture {
-    width: 40%;
+    width: 50%;
   }
 
   .selected.large .picture {
     width: 1024px;
     max-width: 100%;
+    max-height: 100%;
   }
 
   /* .selected.large .detail {
