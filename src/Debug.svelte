@@ -7,10 +7,13 @@
     history,
     anchor,
     searchstring,
-    searchItems
+    // searchItems,
+    fuseSearch
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
+
+  // $: console.log($fuseSearch)
 
   onMount(() => {
     return () => {};
@@ -53,7 +56,7 @@
 <div class="debug">
   <div class="item">
     <div>
-      <label for="search">Suche ({$searchItems.length})</label>
+      <label for="search">Suche ({$fuseSearch.length})</label>
       <input type="search" id="search" bind:value={$searchstring} />
 
     </div>
