@@ -65,7 +65,7 @@
     <Renderer>
         <TextureLoader />
         <Cloud {route} />
-        <!-- <Annotations /> -->
+        <Annotations />
       </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
