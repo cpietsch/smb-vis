@@ -2,7 +2,7 @@ import { writable, derived, readable, get } from 'svelte/store';
 import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
-import { Sprite, Texture } from "pixi.js";
+import { Sprite, Texture, Container, Renderer } from "pixi.js";
 
 console.log("STORE INIT")
 
