@@ -9,7 +9,7 @@
     searchstring,
     // searchItems,
     lastTransformed,
-    fuseSearch
+    searchResults
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -64,7 +64,7 @@
   <div class="item">
     <div>
       <form on:submit|preventDefault={handleSubmit}>
-        <label for="search">Suche ({$fuseSearch.length})</label>
+        <label for="search">Suche ({$searchResults.length})</label>
         <input type="search" id="search" bind:value={$searchstring} />
       </form>
     </div>

@@ -3,7 +3,6 @@ import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
 import { Sprite, Texture, Container, Renderer } from "pixi.js";
-import Fuse from 'fuse.js'
 
 console.log("STORE INIT")
 
@@ -88,48 +87,63 @@ export const spriteScale = derived(
         400)
 );
 
-export const fuseIndex = derived(
-    [detailData],
-    ([$detailData]) => {
-        const list = Array.from($detailData.values())
-        const keys = ["id","_idlong","_sammlung","_idnr","_titel","keywords","_actors","_ort","_datum","_material","_abmessung","_beschreibung","year","_stichwort"]
-        console.time("create fuse index")
-        const index = Fuse.createIndex(keys, list)
-        console.timeEnd("create fuse index")
-        return new Fuse(list, { keys, threshold: 0.4 }, index)
-    }
-);
-
-export const fuseSearch = derived(
-    [fuseIndex, searchstring, detailData],
-    ([$fuseIndex, $searchstring, $detailData]) => {
-        if($searchstring === ""){
-            return Array.from($detailData.values()).map(d => d.id)
-        } else {
-            console.time("search")
-            const items = $fuseIndex.search($searchstring)
-            console.timeEnd("search")
-            return items.map(d => d.item.id)
-        }
-    }
-);
-
-// export const searchItems = derived(
-//     [detailData, searchstring],
-//     ([$detailData, $searchstring]) => {
-//         let items = Array.from($detailData.values())
-//         if($searchstring != ""){
-//             items = items.filter(d => d._titel.indexOf($searchstring) > -1)
-//         }
-//         // console.log($searchstring, items)
-//         return items.map(d => d.id)
+// export const fuseIndex = derived(
+//     [detailData],
+//     ([$detailData]) => {
+//         const list = Array.from($detailData.values())
+//         const keys = ["id","_idlong","_sammlung","_idnr","_titel","keywords","_actors","_ort","_datum","_material","_abmessung","_beschreibung","year","_stichwort"]
+//         console.time("create fuse index")
+//         const index = Fuse.createIndex(keys, list)
+//         console.timeEnd("create fuse index")
+//         return new Fuse(list, { keys, threshold: 0.4 }, index)
 //     }
 // );
 
 
+
+// export const searchResults = derived(
+//     [fuseIndex, searchstring, detailData],
+//     ([$fuseIndex, $searchstring, $detailData]) => {
+//         if($searchstring === ""){
+//             return Array.from($detailData.values()).map(d => d.id)
+//         } else {
+//             console.time("search")
+//             const items = $fuseIndex.search($searchstring)
+//             console.timeEnd("search")
+//             return items.map(d => d.item.id)
+//         }
+//     }
+// );
+
+
+
+export const searchIndex  = derived(
+    [detailData],
+    ([$detailData]) => {
+        return Array.from($detailData.values())
+            .map(d => ([d.id, Object.values(d).join(" ").toLowerCase()]))
+    }
+);
+
+export const searchResults = derived(
+    [searchIndex, searchstring],
+    ([$searchIndex, $searchstring]) => {
+        let items = $searchIndex
+        const search = $searchstring.toLowerCase()
+        if(search !== ""){
+            console.time("search")
+            items = items.filter(d => d[1].indexOf($searchstring) > -1)
+            console.timeEnd("search")
+        }
+        console.log(search, items)
+        return items.map(d => d[0])
+    }
+);
+
+
 export const umapProjection = derived(
-    [umapData, spriteScale, scales, fuseSearch],
-    ([$umapData, $spriteScale, $scales, $searchItems]) => ($umapData
+    [umapData, spriteScale, scales, searchResults],
+    ([$umapData, $spriteScale, $scales, $searchResults]) => ($umapData
         .map(d => ({
             id: d.id,
             x: $scales.x(d.x),
@@ -137,7 +151,7 @@ export const umapProjection = derived(
             scale: $spriteScale,
             alpha: 1,
             zIndex: 0,
-            visible: $searchItems.includes(d.id),
+            visible: $searchResults.includes(d.id),
         })))
 );
 

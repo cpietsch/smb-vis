@@ -9,7 +9,7 @@
     lastTransformed,
     spriteScale,
     detailData,
-    fuseSearch,
+    searchResults,
     searchstring,
     state,
   } from "./stores.js";
@@ -96,14 +96,14 @@
 
   $: {
     if(id === "suche"){
-      console.log($fuseSearch)
-      items = $fuseSearch.map(id => {
+      console.log($searchResults)
+      items = $searchResults.map(id => {
           const data = $detailData.get(id);
           return { id, score: 1, data, distance: 10 };
         })
         .filter((a,i) => i < 30);
       console.log(items)
-      current = $fuseSearch[0]
+      current = $searchResults[0]
     } else {
       const distances = $getSelectedDistances(id);
 
