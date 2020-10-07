@@ -1,47 +1,70 @@
 <script>
   import { onMount, setContext } from "svelte";
   import { Renderer, Container } from "pixi.js";
-  import { dimensions, sprites, state, darkmode } from "./stores.js";
+  import { dimensions, sprites, state, darkmode, renderer, container, divContainer } from "./stores.js";
+  import { writable, derived, readable, get } from 'svelte/store';
 
   console.log("init renderer");
   let canvas;
   let outerContainer;
-  let renderer;
-  let container = new Container();
-  container.sortableChildren = true;
+
+  let c = new Container()
+  c.sortableChildren = true;
+  container.set(c)
+  // container.sortableChildren = true;
+
+
+  const renderPromise = writable(Promise);
 
   let backgroundColorLight = 0xeeeeee;
   let backgroundColorDark = 0x000000;
 
-  setContext("renderer", () => ({
-    renderer,
-    container,
-    outerContainer,
-  }));
+  // setContext("renderer", () => ({
+  //   renderer,
+  //   container,
+  //   outerContainer,
+  // }));
 
+  $: divContainer.set(outerContainer)
 
   $: {
+    console.log("add sprites", $container.children.length)
     for (const sprite of $sprites.values()) {
-      container.addChild(sprite);
+      $container.addChild(sprite);
     }
   }
 
   $: {
-    if (renderer) {
-      console.log("darkmode", $darkmode);
+    if ($renderer) {
+      console.log("set renderer", $renderer)
       const color = $darkmode ? backgroundColorDark : backgroundColorLight;
       const { width, height } = $dimensions
-      renderer.backgroundColor = color;
-      renderer.resize(width, height);
-      renderer.render(container);
+      console.log(width, height, color)
+     
+      $renderer.backgroundColor = color;
+      $renderer.resize(width, height);
+      $renderer.render($container);
     }
   }
 
-  function createRenderer(width, height) {
+  const resizeObserver = new ResizeObserver(([entry]) => {
+      const width = parseInt(entry.contentRect.width);
+      const height = parseInt(entry.contentRect.height);
+
+      console.log("resizeObserver", width, height)
+      // if (!renderer) renderer = createRenderer(width, height);
+
+      dimensions.set({
+        width,
+        height,
+      });
+    });
+
+  function createRenderer(view) {
     return new Renderer({
-      view: canvas,
-      width,
-      height,
+      view,
+      width: 500,
+      height: 500,
       antialias: false,
       transparent: false,
       autoDensity: true,
@@ -52,27 +75,20 @@
   }
 
   onMount(() => {
-    const resizeObserver = new ResizeObserver(([entry]) => {
-      const width = parseInt(entry.contentRect.width);
-      const height = parseInt(entry.contentRect.height);
+    console.log("mount")
 
-      if (!renderer) renderer = createRenderer(width, height);
-
-      dimensions.set({
-        width,
-        height,
-      });
-    });
     resizeObserver.observe(outerContainer);
+    renderer.set(createRenderer(canvas))
 
     return () => {
       console.log("destroy renderer");
 
       for (const sprite of $sprites.values()) {
-        container.removeChild(sprite);
+        $container.removeChild(sprite);
       }
-      container.destroy();
-      renderer.destroy();
+      $container.destroy();
+      $renderer.destroy();
+      //$pixiRenderer.destroy()
       resizeObserver.disconnect();
     };
   });
@@ -94,10 +110,10 @@
   }
 </style>
 
-<!-- svelte-ignore non-top-level-reactive-declaration -->
+<!-- svelte-ignores non-top-level-reactive-declaration -->
 <div class="renderer" bind:this={outerContainer}>
   <canvas bind:this={canvas} />
-  {#if renderer}
+  {#if $renderer}
     <slot />
   {/if}
 </div>

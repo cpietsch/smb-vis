@@ -1,7 +1,8 @@
 <script>
   import { onDestroy, getContext, setContext } from "svelte";
   import { getTextureStream } from "./utils/textureloader.js";
-  import { dimensions, sprites } from "./stores.js";
+  import { renderer as pixiRenderer, container as pixiContainer, sprites } from "./stores.js";
+  import { get } from "svelte/store";
 
   let loading = true;
   let loaded = 0;
@@ -9,12 +10,14 @@
   const url =
     "https://vikusviewer.fh-potsdam.de/smb/beide/data/sprites-jpg/web_web_full.json";
 
-  const { renderer, container } = getContext("renderer")();
-  const { width, height } = $dimensions;
+  // const { renderer, container } = getContext("renderer")();
 
+  const renderer = get(pixiRenderer)
+  const container = get(pixiContainer)
   const textures = new Map();
 
   (async () => {
+    console.log("textzreloader§", renderer)
     const textureStream = getTextureStream(url);
 
     for await (const [id, texture] of textureStream) {
