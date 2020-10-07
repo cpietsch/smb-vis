@@ -23,7 +23,8 @@
 
   async function hashchange() {
     const r = window.location.hash.substring(2).split("/");
-    route.view = r[0] ? r[0] : route.view;
+    console.log(r)
+    route.view = r[0];
     route.payload = r[1] ? r[1] : route.payload;
     route.extra = r[2] ? r[2] : route.extra;
     console.log(route);
