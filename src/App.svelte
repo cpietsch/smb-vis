@@ -38,7 +38,6 @@
       max-width: none;
     }
   }
-
   :global(html, body) {
     height: 100%;
     padding: 0;
@@ -52,7 +51,7 @@
 
   main {
     height: 100%;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
 </style>
 
