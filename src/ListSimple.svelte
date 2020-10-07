@@ -9,6 +9,8 @@
     lastTransformed,
     spriteScale,
     detailData,
+    fuseSearch,
+    searchstring,
     state,
   } from "./stores.js";
   import { get } from "svelte/store";
@@ -27,6 +29,7 @@
   import { tweened } from "svelte/motion";
 
   export let id;
+  export let search;
 
   let current = id;
   let large = false;
@@ -85,19 +88,35 @@
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
   }
+  $: {
+    if(id === "suche" && $searchstring !== search){
+      $searchstring = search
+    }
+  }
 
   $: {
-    const distances = $getSelectedDistances(id);
+    if(id === "suche"){
+      console.log($fuseSearch)
+      items = $fuseSearch.map(id => {
+          const data = $detailData.get(id);
+          return { id, score: 1, data, distance: 10 };
+        })
+        .filter((a,i) => i < 30);
+      console.log(items)
+      current = $fuseSearch[0]
+    } else {
+      const distances = $getSelectedDistances(id);
 
-    items = distances.map(([id, score], i) => {
-      let distance = 0;
-      if (i < distances.length - 1) {
-        distance = score - distances[i + 1][1];
-      }
-      const data = $detailData.get(id);
-      return { id, score, data, distance };
-    });
-
+      items = distances.map(([id, score], i) => {
+        let distance = 0;
+        if (i < distances.length - 1) {
+          distance = score - distances[i + 1][1];
+        }
+        const data = $detailData.get(id);
+        return { id, score, data, distance };
+      });
+    }
+   
     console.log(items);
   }
 

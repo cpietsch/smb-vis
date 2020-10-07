@@ -69,7 +69,7 @@
       </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
-      <List id={route.payload} />
+      <List id={route.payload} search={route.extra} />
     {/if}
   </Dataloader>
   {#if route.view != 'list'}

@@ -15,6 +15,12 @@
 
   // $: console.log($fuseSearch)
 
+  function handleSubmit(){
+    console.log($searchstring)
+    window.scrollTo({ top: 0 });
+    window.location.hash = "#/list/suche/" + $searchstring;
+  }
+
   onMount(() => {
     return () => {};
   });
@@ -56,9 +62,10 @@
 <div class="debug">
   <div class="item">
     <div>
-      <label for="search">Suche ({$fuseSearch.length})</label>
-      <input type="search" id="search" bind:value={$searchstring} />
-
+      <form on:submit|preventDefault={handleSubmit}>
+        <label for="search">Suche ({$fuseSearch.length})</label>
+        <input type="search" id="search" bind:value={$searchstring} />
+      </form>
     </div>
   </div>
   <div class="item">

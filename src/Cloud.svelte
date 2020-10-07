@@ -107,7 +107,8 @@
           zoomToId(route.payload).then(() => (stale = false));
         }
       });
-    } else if (route.payload) {
+    }
+    if (route.view === "cloud" && route.payload) {
       // console.log(selection, "DOIT");
       zoomToId(route.payload).then(() => (stale = false));
     }
