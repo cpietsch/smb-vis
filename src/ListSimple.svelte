@@ -234,9 +234,9 @@
   }
   .additional .beschreibung {
     display: -webkit-box;
-    /* -webkit-line-clamp: 9;
+    -webkit-line-clamp: 9;
     -webkit-box-orient: vertical;
-    overflow: hidden; */
+    overflow: hidden;
   }
   .selected .additional {
     display: flex;
