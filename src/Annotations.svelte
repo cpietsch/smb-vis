@@ -12,7 +12,7 @@
   import { csv, json } from "d3-fetch";
   import { Sprite, Texture } from "pixi.js";
 
-  const container = get(pixiContainer)
+  
   
   const baseUrl = "annotations/";
   const sprites = [];
@@ -33,6 +33,7 @@
   }
 
   onMount(async () => {
+    const container = get(pixiContainer)
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
@@ -66,6 +67,7 @@
   });
 
   onDestroy(() => {
+    const container = get(pixiContainer)
     console.log("detstasdroyasd annos");
     for (const sprite of sprites) {
       container.removeChild(sprite);
