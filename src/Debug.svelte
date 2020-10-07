@@ -8,6 +8,7 @@
     anchor,
     searchstring,
     // searchItems,
+    lastTransformed,
     fuseSearch
   } from "./stores.js";
   import { get } from "svelte/store";
@@ -67,6 +68,9 @@
         <input type="search" id="search" bind:value={$searchstring} />
       </form>
     </div>
+  </div>
+  <div class="item">
+    <label for="zoom">zoom {$lastTransformed.k.toPrecision(4)}</label>
   </div>
   <div class="item">
     <label for="distancesCutoffScore">distancesCutoffScore {$distancesCutoffScore}</label>
