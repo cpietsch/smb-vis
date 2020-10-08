@@ -6,9 +6,21 @@
     darkmode,
     history,
     anchor,
+    searchstring,
+    // searchItems,
+    lastTransformed,
+    searchResults
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
+
+  // $: console.log($fuseSearch)
+
+  function handleSubmit(){
+    console.log($searchstring)
+    window.scrollTo({ top: 0 });
+    window.location.hash = "#/list/suche/" + $searchstring;
+  }
 
   onMount(() => {
     return () => {};
@@ -49,6 +61,17 @@
 </style>
 
 <div class="debug">
+  <div class="item">
+    <div>
+      <form on:submit|preventDefault={handleSubmit}>
+        <label for="search">Suche ({$searchResults.length})</label>
+        <input type="search" id="search" bind:value={$searchstring} />
+      </form>
+    </div>
+  </div>
+  <div class="item">
+    <label for="zoom">zoom {$lastTransformed.k.toPrecision(4)}</label>
+  </div>
   <div class="item">
     <label for="distancesCutoffScore">distancesCutoffScore {$distancesCutoffScore}</label>
     <input

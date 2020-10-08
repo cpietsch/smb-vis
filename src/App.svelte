@@ -23,7 +23,8 @@
 
   async function hashchange() {
     const r = window.location.hash.substring(2).split("/");
-    route.view = r[0] ? r[0] : route.view;
+    console.log(r)
+    route.view = r[0];
     route.payload = r[1] ? r[1] : route.payload;
     route.extra = r[2] ? r[2] : route.extra;
     console.log(route);
@@ -33,12 +34,12 @@
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
   @media (min-width: 640px) {
     main {
       max-width: none;
     }
   }
-
   :global(html, body) {
     height: 100%;
     padding: 0;
@@ -52,7 +53,7 @@
 
   main {
     height: 100%;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
 </style>
 
@@ -69,7 +70,7 @@
       </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
-      <List id={route.payload} />
+      <List id={route.payload} search={route.extra} />
     {/if}
   </Dataloader>
   {#if route.view != 'list'}

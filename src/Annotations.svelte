@@ -2,7 +2,7 @@
   import { onMount, getContext, onDestroy, tick } from "svelte";
   import { scaleLinear, scaleLog } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
-  import { scales, lastTransformed, dimensions } from "./stores.js";
+  import { scales, container as pixiContainer, dimensions } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
   import { get } from "svelte/store";
@@ -12,8 +12,8 @@
   import { csv, json } from "d3-fetch";
   import { Sprite, Texture } from "pixi.js";
 
-  const { renderer, container, outerContainer } = getContext("renderer")();
-
+  
+  
   const baseUrl = "annotations/";
   const sprites = [];
   const imageWidth = 1300;
@@ -33,6 +33,7 @@
   }
 
   onMount(async () => {
+    const container = get(pixiContainer)
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
@@ -66,6 +67,7 @@
   });
 
   onDestroy(() => {
+    const container = get(pixiContainer)
     console.log("detstasdroyasd annos");
     for (const sprite of sprites) {
       container.removeChild(sprite);

@@ -9,6 +9,8 @@
     lastTransformed,
     spriteScale,
     detailData,
+    searchResults,
+    searchstring,
     state,
   } from "./stores.js";
   import { get } from "svelte/store";
@@ -27,6 +29,7 @@
   import { tweened } from "svelte/motion";
 
   export let id;
+  export let search;
 
   let current = id;
   let large = false;
@@ -85,19 +88,35 @@
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
   }
+  $: {
+    if(id === "suche" && $searchstring !== search){
+      $searchstring = search
+    }
+  }
 
   $: {
-    const distances = $getSelectedDistances(id);
+    if(id === "suche"){
+      console.log($searchResults)
+      items = $searchResults.map(id => {
+          const data = $detailData.get(id);
+          return { id, score: 1, data, distance: 10 };
+        })
+        .filter((a,i) => i < 30);
+      console.log(items)
+      current = $searchResults[0]
+    } else {
+      const distances = $getSelectedDistances(id);
 
-    items = distances.map(([id, score], i) => {
-      let distance = 0;
-      if (i < distances.length - 1) {
-        distance = score - distances[i + 1][1];
-      }
-      const data = $detailData.get(id);
-      return { id, score, data, distance };
-    });
-
+      items = distances.map(([id, score], i) => {
+        let distance = 0;
+        if (i < distances.length - 1) {
+          distance = score - distances[i + 1][1];
+        }
+        const data = $detailData.get(id);
+        return { id, score, data, distance };
+      });
+    }
+   
     console.log(items);
   }
 
@@ -173,12 +192,13 @@
     z-index: 10;
   }
   .selected .picture {
-    width: 40%;
+    width: 50%;
   }
 
   .selected.large .picture {
     width: 1024px;
     max-width: 100%;
+    max-height: 100%;
   }
 
   /* .selected.large .detail {
@@ -214,9 +234,9 @@
   }
   .additional .beschreibung {
     display: -webkit-box;
-    -webkit-line-clamp: 9;
+    /* -webkit-line-clamp: 9;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow: hidden; */
   }
   .selected .additional {
     display: flex;
@@ -246,6 +266,7 @@
   .selected .meta {
     padding-left: 2em;
     padding-bottom: 200px;
+    background: #eee;
     /* box-shadow: 10px 0 5px -2px #888; */
     /* background: #f9f9f9; */
   }
@@ -411,7 +432,7 @@
                 {/each}
                 <p class="sobjects">
                   <span class="link" on:click|preventDefault={() => link(item.id, true)}>
-                  <img alt="ähnliche Objeke" src="liste.png">Ähnliche Objeke</span>
+                  <img alt="ähnliche Objekte" src="liste.png">Ähnliche Objekte</span>
                 </p>
               </div>
             </div>

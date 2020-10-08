@@ -3,10 +3,27 @@ import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
 import { Sprite, Texture, Container, Renderer } from "pixi.js";
+// import flexsearch from "flexsearch";
 
 console.log("STORE INIT")
 
 export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+
+export const renderer = writable()
+
+export const searchstring = writable("")
+
+export const container = writable()
+
+export const divContainer = writable()
+
+// export const container = readable(null, set => {
+//     const c = new Container()
+//     c.sortableChildren = true
+//     set(c)
+
+//     return () => c.destroy()
+// })
 
 export const umapData = readable([], set => {
     csv("data/umap.csv", ({ id, x, y }) => ({
@@ -15,11 +32,13 @@ export const umapData = readable([], set => {
         y: +y,
     })).then(set)
 });
+
 export const detailData = readable(new Map(), set => {
     csv("data/export1305-bitlabels.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
 export const sprites = derived(umapData, $data => {
+    console.log("sprites creation")
     const sprites = new Map()
     for (const d of $data) {
         const sprite = new Sprite(Texture.WHITE)
@@ -44,7 +63,7 @@ export const anchor = writable()
 
 export const selectedItem = writable(undefined)
 
-export const dimensions = writable({ width: 70, height: 70 });
+export const dimensions = writable({ width: 500, height: 500 });
 
 export const scales = derived(
     [dimensions, umapData],
@@ -69,9 +88,67 @@ export const spriteScale = derived(
         400)
 );
 
+// export const searchIndex = derived(
+//     [detailData],
+//     ([$detailData]) => {
+//         console.time("create index")
+//         const index = new flexsearch("memory");
+//         for (let [key, value] of  $detailData) {
+//             index.add(key, Object.values(value).join(" "))
+//         }
+//         console.log(index)
+//         console.timeEnd("create index")
+//         return index
+//     }
+// );
+
+// export const searchResults = derived(
+//     [searchIndex, searchstring, detailData],
+//     ([$searchIndex, $searchstring, $detailData]) => {
+//         if($searchstring === ""){
+//             return Array.from($detailData.values()).map(d => d.id)
+//         } else {
+//             console.log($searchstring, $searchIndex)
+//             console.time("search")
+//             const items = $searchIndex.search($searchstring)
+//             console.log(items)
+//             console.timeEnd("search")
+//             return items
+//         }
+//     }
+// );
+
+export const searchIndex  = derived(
+    [detailData],
+    ([$detailData]) => {
+        console.time("create index")
+        const index = Array.from($detailData.values())
+            .map(d => ([d.id, Object.values(d).join(" ").toLowerCase()]))
+        console.timeEnd("create index")
+        return index
+    }
+);
+
+export const searchResults = derived(
+    [searchIndex, searchstring],
+    ([$searchIndex, $searchstring]) => {
+        let items = $searchIndex
+        const search = $searchstring.toLowerCase().split(" ")
+        if(search !== ""){
+            console.time("search")
+            search.forEach(s => {
+                items = items.filter(d => d[1].indexOf(s) > -1)
+            })
+            console.timeEnd("search")
+        }
+        return items.map(d => d[0])
+    }
+);
+
+
 export const umapProjection = derived(
-    [umapData, spriteScale, scales],
-    ([$umapData, $spriteScale, $scales]) => ($umapData
+    [umapData, spriteScale, scales, searchResults],
+    ([$umapData, $spriteScale, $scales, $searchResults]) => ($umapData
         .map(d => ({
             id: d.id,
             x: $scales.x(d.x),
@@ -79,7 +156,7 @@ export const umapProjection = derived(
             scale: $spriteScale,
             alpha: 1,
             zIndex: 0,
-            visible: true,
+            visible: $searchResults.includes(d.id),
         })))
 );
 

@@ -16,6 +16,9 @@
     getSelectedDistances,
     history,
     anchor,
+    renderer as pixiRenderer,
+    container as pixiContainer,
+    divContainer
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -24,7 +27,7 @@
   import { extent } from "d3-array";
   import { xml } from "d3-fetch";
 
-  const { renderer, container, outerContainer } = getContext("renderer")();
+  // const { renderer, container, outerContainer } = getContext("renderer")();
   const maxZoomLevel = 20;
   const distanceCutoff = 5;
 
@@ -47,6 +50,11 @@
   //   }
   // }
 
+  const renderer = get(pixiRenderer)
+  const container = get(pixiContainer)
+  const outer = get(divContainer)
+
+
   const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
@@ -58,18 +66,31 @@
     .on("zoom", zoomed)
     .on("end", end);
 
-  const selection = select(outerContainer)
+  
+  // resize handler
+  $: {
+    const { width, height } = $dimensions
+    console.log("resize cloude")
+    selection.call(zoom.translateExtent([
+      [0, 0],
+      [$dimensions.width, $dimensions.height],
+    ]))
+    renderProjection($umapProjection);
+  }
+  
+  const selection = select(outer)
     .call(zoom)
     .on("click", click)
     .on("pointermove", mousemove)
     .on("contextmenu", contextmenu);
 
+  
   // console.log($dimensions);
   // test("HALLLOO");
 
   let lastProjection = $umapProjection;
 
-  let quadtree = d3quadtree()
+  $: quadtree = d3quadtree()
     .x((d) => d.x)
     .y((d) => d.y)
     .addAll($umapProjection);
@@ -79,37 +100,29 @@
   let lastRoute = { ...route };
   $: {
     console.log(route, lastRoute);
-    if (lastRoute.view === "list" && route.view === "cloud") {
+    if ((lastRoute.view === "" || lastRoute.view === "list") && route.view === "cloud") {
       fadeInAll().then(() => {
         console.log(route.id);
         if (route.payload) {
           zoomToId(route.payload).then(() => (stale = false));
         }
       });
-    } else if (route.payload) {
+    }
+    if (route.view === "cloud" && route.payload) {
       // console.log(selection, "DOIT");
       zoomToId(route.payload).then(() => (stale = false));
     }
     lastRoute = { ...route };
   }
 
-  // let lastState;
-  // state.subscribe((state) => {
-  //   console.log("STATE", state, lastState);
-  //   if (lastState === "list" && state === "cloud") {
-  //     fadeInAll().then(() => (stale = false)); //.then(resetZoom);
-  //   }
-  //   lastState = state;
-  // });
 
-  selectedItem.subscribe(async (selectedItem) => {
-    // if( && lastTransform.k > 1)
-    if (selectedItem && lastTransform.k > 3) {
-      await tick();
-      const distancesFiltered = $selectedDistances;
+  function highlight(item){
+    if (item && lastTransform.k > 3) {
+      //await tick();
+      const distancesFiltered = $getSelectedDistances(item.id);
       const newProjection = $umapProjection.map((d) => {
         const alpha = distancesFiltered.find((e) => e[0] == d.id) ? 1 : 0.2;
-        const active = selectedItem ? selectedItem.id === d.id : false;
+        const active = item ? item.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,
@@ -121,14 +134,13 @@
     } else {
       lastProjection = $umapProjection;
     }
-
     renderProjection(lastProjection);
-  });
+  }
 
   function mousemove(e) {
     if (stale) return;
     const m = pointer(e);
-    const p = zoomTransform(this).invert(m);
+    const p = lastTransform.invert(m);
     let selected = quadtree.find(p[0], p[1]);
     if (!selected) return;
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
@@ -139,21 +151,18 @@
     selection.style("cursor", selected ? "pointer" : "auto");
 
     if (lastSelected !== selected) {
-      lastSelected = selected;
-      selectedItem.set(lastSelected);
+      lastSelected = selected; 
     }
+    highlight(lastSelected)
   }
 
   function contextmenu(e) {
     const m = pointer(e);
     const p = zoomTransform(this).invert(m);
     console.log(p);
-
     const x = $scales.x.invert(p[0]);
     const y = $scales.y.invert(p[1]);
-
     console.log(x, y);
-
     anchor.set({ x, y });
   }
 
@@ -198,7 +207,7 @@
   }
 
   function fadeOutOthers() {
-    const distances = $selectedDistances;
+    const distances = $getSelectedDistances(lastSelected.id);
     return selection
       .transition()
       .duration(1000)
@@ -232,8 +241,8 @@
   }
 
   function zoomToSimilars() {
-    const { x, y, id } = $selectedItem;
-    const distances = $selectedDistances;
+    const { x, y, id } = lastSelected;
+    const distances = $getSelectedDistances(id);
 
     const items = $umapProjection.filter(
       (d) => distances && distances.find((e) => e[0] == d.id)
@@ -241,6 +250,7 @@
 
     return zoomToExtend(items);
   }
+
 
   function zoomToId(id) {
     const item = $umapProjection.find((d) => d.id == id);
@@ -283,35 +293,40 @@
     }
     if (lastTransform.k >= clusterZoomLevel) {
       console.log(history);
-      history.update((h) => [...h, $selectedItem.id]);
+      history.update((h) => [...h, lastSelected.id]);
       return zoomToSimilars()
         .then(fadeOutOthers)
         .then((d) => {
           // console.log(d);
           // stale = false;
           // state.set("list");
-          window.location.hash = "/list/" + $selectedItem.id;
+          window.location.hash = "/list/" + lastSelected.id;
         });
     }
 
     if (lastTransform.k !== clusterZoomLevel) {
-      return zoomToExtend([$selectedItem], clusterZoomLevel).then(() => {
+      return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
         stale = false;
         console.log(lastTransform);
       });
       //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
     }
   }
-  function zoomed({ transform }) {
-    lastTransform = transform;
-    container.scale.set(transform.k);
-    container.position.x = transform.x;
-    container.position.y = transform.y;
-    lastTransformed.set({ ...transform });
-    renderer.render(container);
+  function zoomed(e) {
+    lastTransform = e.transform;
+    container.scale.set(lastTransform.k);
+    container.position.x = lastTransform.x;
+    container.position.y = lastTransform.y;
+    lastTransformed.set({ ...lastTransform });
+    if(e.sourceEvent) {
+      mousemove(e)
+    } else {
+      renderer.render(container);
+    }
   }
 
   function end({ transform }) {
+    // asd
     // console.log(transform);
 
     // const center = transform.invert([
