@@ -19,7 +19,7 @@
   const imageWidth = 1300;
   let subsription;
   let factor = 0.1;
-  const sizeTable = { 1: 1.7, 2: 1.3, 3: 1 };
+  const sizeTable = { 1: 1.5, 2: 1.1, 3: 0.8 };
   const size = scaleLog()
     .range([factor, factor / 5])
     .domain([1, 20])
