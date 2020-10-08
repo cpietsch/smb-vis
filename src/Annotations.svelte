@@ -2,7 +2,7 @@
   import { onMount, getContext, onDestroy, tick } from "svelte";
   import { scaleLinear, scaleLog } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
-  import { scales, container as pixiContainer, dimensions } from "./stores.js";
+  import { scales, container as pixiContainer, dimensions, margin } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
   import { get } from "svelte/store";
@@ -16,6 +16,7 @@
   
   const baseUrl = "annotations/";
   const sprites = [];
+  const annotationsMap = new Map();
   const imageWidth = 1300;
   let subsription;
   let factor = 0.1;
@@ -27,8 +28,14 @@
 
   $: {
     factor =
-      (Math.log($dimensions.width * $dimensions.height) / imageWidth) * 10;
-    size.range([factor, factor / 5]);
+      (Math.min($dimensions.width,$dimensions.height) / 10000) ;
+    // size.range([factor, factor / 5]);
+    for (const sprite of sprites) {
+      const annotation = annotationsMap.get(sprite)
+      sprite.x = $scales.x(annotation.x);
+      sprite.y = $scales.y(annotation.y);
+      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
+    }
     console.log(factor);
   }
 
@@ -37,9 +44,8 @@
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
-
       const sprite = Sprite.from(baseUrl + annotation.name + ".png");
-      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * size(1);
+      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
       // sprite.on("added", (s) => {
       //   console.log(s.width);
       // });
@@ -48,7 +54,8 @@
       sprite.anchor.set(0.5);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
-      sprite.__asize = annotation.size;
+      annotationsMap.set(sprite, annotation)
+      // sprite.__asize = annotation.size;
       sprites.push(sprite);
       container.addChild(sprite);
     }

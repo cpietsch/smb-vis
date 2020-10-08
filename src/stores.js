@@ -7,7 +7,7 @@ import { Sprite, Texture, Container, Renderer } from "pixi.js";
 
 console.log("STORE INIT")
 
-export const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+export const margin = { top: 20, right: 100, bottom: 20, left: 300 };
 
 export const renderer = writable()
 
@@ -69,14 +69,20 @@ export const scales = derived(
     [dimensions, umapData],
     ([$dimensions, $umapData]) => {
 
+        const width = $dimensions.width - margin.right - margin.left
+        const height = $dimensions.height -margin.bottom -margin.top
+        const min = Math.min(width,height)
+        const xDiff = (width-min)/2
+        const yDiff = (height-min)/2
+
         return {
             x: scaleLinear()
                 .nice()
-                .range([margin.left, $dimensions.width - margin.right])
+                .range([margin.left + xDiff,min+margin.left+xDiff])
                 .domain(extent($umapData, (d) => d.x)),
             y: scaleLinear()
                 .nice()
-                .range([$dimensions.height - margin.bottom, margin.top])
+                .range([min - margin.top + yDiff, margin.top + yDiff])
                 .domain(extent($umapData, (d) => d.y))
         }
     }

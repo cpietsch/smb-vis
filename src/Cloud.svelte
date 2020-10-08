@@ -181,7 +181,7 @@
       s.zIndex = d.zIndex;
       s.visible = d.visible;
     }
-    renderer.render(container);
+    $pixiRenderer.render(container);
   }
 
   // ZOOM
@@ -288,7 +288,7 @@
   function click() {
     console.log("lastTransform", lastTransform.k);
     if (stale) return;
-    if ($selectedItem === null) {
+    if (lastSelected === null) {
       return resetZoom();
     }
     if (lastTransform.k >= clusterZoomLevel) {
