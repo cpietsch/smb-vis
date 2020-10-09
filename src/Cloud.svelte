@@ -25,6 +25,7 @@
   import { get } from "svelte/store";
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { extent } from "d3-array";
+  import { filters } from "pixi.js"
   import { xml } from "d3-fetch";
 
   // const { renderer, container, outerContainer } = getContext("renderer")();
@@ -49,6 +50,8 @@
   //     zoomToExtend([{ x, y }], scale);
   //   }
   // }
+
+  const blur = new filters.BlurFilter();
 
   const renderer = get(pixiRenderer)
   const container = get(pixiContainer)
@@ -121,13 +124,16 @@
       //await tick();
       const distancesFiltered = $getSelectedDistances(item.id);
       const newProjection = $umapProjection.map((d) => {
-        const alpha = distancesFiltered.find((e) => e[0] == d.id) ? 1 : 0.2;
+        const inDistance = distancesFiltered.find((e) => e[0] == d.id)
+        const alpha = inDistance ? 1 : 0.2;
+        // const filters = distancesFiltered.find((e) => e[0] == d.id) ? [] : [blur];
         const active = item ? item.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,
-          zIndex: active ? 1 : 0,
+          zIndex: inDistance ? (active ? 2: 1) : 0,
           alpha,
+          filters
         };
       });
       lastProjection = newProjection;
@@ -151,9 +157,10 @@
     selection.style("cursor", selected ? "pointer" : "auto");
 
     if (lastSelected !== selected) {
-      lastSelected = selected; 
+      lastSelected = selected;
+      highlight(lastSelected)
     }
-    highlight(lastSelected)
+    
   }
 
   function contextmenu(e) {
@@ -180,8 +187,9 @@
       s.scale.set(d.scale);
       s.zIndex = d.zIndex;
       s.visible = d.visible;
+      // s.filters = d.filters
     }
-    $pixiRenderer.render(container);
+    renderer.render(container);
   }
 
   // ZOOM
@@ -318,11 +326,12 @@
     container.position.x = lastTransform.x;
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
-    if(e.sourceEvent) {
-      mousemove(e)
-    } else {
-      renderer.render(container);
-    }
+    // if(e.sourceEvent) {
+    //   mousemove(e)
+    // } else {
+    //   renderer.render(container);
+    // }
+    renderer.render(container);
   }
 
   function end({ transform }) {

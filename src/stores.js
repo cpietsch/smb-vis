@@ -162,6 +162,7 @@ export const umapProjection = derived(
             scale: $spriteScale,
             alpha: 1,
             zIndex: 0,
+            // filters: [],
             visible: $searchResults.includes(d.id),
         })))
 );

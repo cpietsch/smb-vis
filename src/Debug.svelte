@@ -91,15 +91,15 @@
   {#if $anchor}
     <div class="item">{JSON.stringify($anchor)}</div>
   {/if}
-  <div class="item">
+  <!-- <div class="item">
     {#each $history as id}<a href="#/cloud/{id}">{id}</a>{/each}
-  </div>
-  <!-- {#if $selectedItem}
+  </div> -->
+  {#if $selectedItem}
     <div class="item">
       <p>id: {$selectedItem.id}</p>
        <img
         src="https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/{$selectedItem.id}.jpg"
         alt="detail Image" /> 
     </div>
-  {/if} -->
+  {/if}
 </div>
