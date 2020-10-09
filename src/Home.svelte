@@ -1,4 +1,10 @@
 <script>
+  import { lastTransformed } from "./stores.js";
+
+  const visibleScaleCutoff = 1.01
+
+  $: visible = $lastTransformed.k < visibleScaleCutoff;
+
 </script>
 
 <style>
@@ -39,7 +45,13 @@
     max-width: 100%;
     /* background: #FFF; */
     line-height: 1.4em;
+    opacity: 0;
+    transition: opacity 0.5s;
     /* display: inline; */
+  }
+
+  .visible {
+    opacity: 1;
   }
 </style>
 
@@ -51,7 +63,7 @@
   <div class="box">
     <h1>Visuelle Exploration</h1>
     <h2>zweier musealer Sammlungen</h2>
-    <p class="intro">
+    <p class="intro" class:visible>
       … ist eine explorative Sammlungsvisualisierung mit Daten der Staatliche Museen zu Berlin. Aktuell enthält die Visualisierung 5140 Objekte aus den Sammlungen der <b>Alten Nationalgalerie</b> und dem <b>Museum Europäischer Kulturen</b> und dem Entstehungszeitraum des 19. Jahrhunderts. Die Visualisierung zeigt die Sammlungsobjekte angeordnet nach Bild- und Titel-Ähnlichkeit (d.h. Objekte mit ähnlichen Abbildungen und Titeln liegen visuell nahe zusammen) und ermöglicht bei Auswahl von Objekten oder bei Schlagwortsuche die Erkundung individueller Ähnlichkeits-Pfade.
     </p>
   </div>
