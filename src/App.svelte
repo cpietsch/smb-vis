@@ -14,6 +14,7 @@
   import Annotations from "./Annotations.svelte";
 
   import { state } from "./stores";
+import SelectedItem from "./SelectedItem.svelte";
 
   let route = {
     view: "cloud",
@@ -73,8 +74,10 @@
       <List id={route.payload} search={route.extra} />
     {/if}
   </Dataloader>
+  <SelectedItem />
   {#if route.view != 'list'}
     <Debug />
   {/if}
+  
   <!-- <Details /> -->
 </main>
