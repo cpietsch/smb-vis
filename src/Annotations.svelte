@@ -54,7 +54,7 @@
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
-      const sprite = Sprite.from(baseUrl + "small/" + annotation.name + ".png");
+      const sprite = Sprite.from(baseUrl + "big/" + annotation.name + ".png");
       sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
       // sprite.on("added", (s) => {
       //   console.log(s.width);
