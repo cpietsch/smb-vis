@@ -14,8 +14,6 @@
         state,
     } from "./stores.js";
     import { get } from "svelte/store";
-    import { flip } from "svelte/animate";
-    import { slide, fade, fly } from "svelte/transition";
     import { select, pointer, selection } from "d3-selection";
     import {
         interpolate as d3interpolate,
@@ -78,7 +76,7 @@
             const distances = $getSelectedDistances(id);
 
             items = distances.map(([id, score], i) => {
-                let distance = 0;
+                let distance = 10;
                 if (i < distances.length - 1) {
                     distance = score - distances[i + 1][1];
                 }
@@ -107,7 +105,7 @@
                 scale = 4;
                 style += `transform: translate(${parseInt(x)}px, ${parseInt(
                     y
-                )}px) scale(${scale});`;
+                )}px) scale(${scale.toPrecision(3)});`;
             } else {
                 const score = 1 - (maxScore - d.score) / (maxScore - minScore);
                 const alpha = score * Math.PI * 1.8;
@@ -117,7 +115,7 @@
                 scale = 0.5 + score * 2;
                 style += `transform: translate(${parseInt(x)}px, ${parseInt(
                     y
-                )}px) scale(${scale});`;
+                )}px) scale(${scale.toPrecision(3)});`;
             }
             return { ...d, style, x, y, scale };
         });
@@ -125,7 +123,8 @@
         console.log(items);
     }
 
-    function move(node, { duration = 1000, x = 0, y = 0, scale = 1 }) {
+    function move(node, { duration = 6000, x = 0, y = 0, scale = 1 }) {
+        console.log(node);
         return {
             duration,
             css: (t) => {
@@ -159,7 +158,8 @@
         height: 50px;
         cursor: pointer;
         transform-origin: center;
-        /* transition: transform 1s; */
+        transition: transform 1s;
+        will-change: transform;
     }
 
     img {
@@ -183,8 +183,10 @@
                 class="item"
                 on:click|preventDefault={() => link(item.id, true)}
                 style={item.style}
-                animate:flip={{ duration: 5000, ease: 'linear' }}>
-                <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
+                transitions:move={{ duration: 5000, x: item.x, y: item.y, scale: item.scale }}>
+                {item.id}<img
+                    src="{baseUrl}{item.id}.jpg"
+                    alt={item.data._titel} />
             </div>
         {/each}
     </div>
