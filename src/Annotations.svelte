@@ -2,7 +2,12 @@
   import { onMount, getContext, onDestroy, tick } from "svelte";
   import { scaleLinear, scaleLog } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
-  import { scales, container as pixiContainer, dimensions } from "./stores.js";
+  import {
+    scales,
+    container as pixiContainer,
+    dimensions,
+    lastTransformed,
+  } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
   import { get } from "svelte/store";
@@ -12,14 +17,18 @@
   import { csv, json } from "d3-fetch";
   import { Sprite, Texture } from "pixi.js";
 
-  const container = get(pixiContainer)
-  
+  const container = get(pixiContainer);
+
+  // make em small mogrify -geometry 1000x *.png
+
   const baseUrl = "annotations/";
   const sprites = [];
   const imageWidth = 1300;
   let subsription;
   let factor = 0.1;
   const sizeTable = { 1: 1.7, 2: 1.3, 3: 1 };
+  const visibleScaleCutoff = 6;
+
   const size = scaleLog()
     .range([factor, factor / 5])
     .domain([1, 20])
@@ -32,13 +41,21 @@
     console.log(factor);
   }
 
+  $: visible = $lastTransformed.k < visibleScaleCutoff;
+
+  $: {
+    console.log("change visibility of annos", visible);
+    for (const sprite of sprites) {
+      sprite.visible = visible;
+    }
+  }
+
   onMount(async () => {
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
-
-      const sprite = Sprite.from(baseUrl + annotation.name + ".png");
-      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * size(1);
+      const sprite = Sprite.from(baseUrl + "big/" + annotation.name + ".png");
+      sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
       // sprite.on("added", (s) => {
       //   console.log(s.width);
       // });
