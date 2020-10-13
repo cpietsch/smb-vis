@@ -22,6 +22,7 @@
 
     import { zoomIdentity } from "d3-zoom";
     import { style } from "d3-selection";
+    import { flip } from "svelte/animate";
 
     import { cubicInOut } from "svelte/easing";
     import { tweened } from "svelte/motion";
@@ -105,7 +106,7 @@
                 scale = 4;
                 style += `transform: translate(${parseInt(x)}px, ${parseInt(
                     y
-                )}px) scale(${scale.toPrecision(3)})`;
+                )}px) scale(${scale.toPrecision(3)},${scale.toPrecision(3)})`;
             } else {
                 const score = 1 - (maxScore - d.score) / (maxScore - minScore);
                 const alpha = score * Math.PI * 1.8;
@@ -115,7 +116,7 @@
                 scale = 0.5 + score * 2;
                 style += `transform: translate(${parseInt(x)}px, ${parseInt(
                     y
-                )}px) scale(${scale.toPrecision(3)})`;
+                )}px) scale(${scale.toPrecision(3)},${scale.toPrecision(3)})`;
             }
             return { ...d, style, x, y, scale };
         });
@@ -130,9 +131,7 @@
             css: (t) => {
                 // const eased = elasticOut(t);
 
-                return `
-					transform: translate(${x}px,${y}px) scale(${scale})
-				`;
+                return `transform: translate(${x}px, ${y}px) scale(${scale},${scale})`;
             },
         };
     }
@@ -158,7 +157,8 @@
         height: 50px;
         cursor: pointer;
         transform-origin: center;
-        transition: transform 1s;
+        transition: transform 2s;
+        transition-delay: 2s;
         will-change: transform;
     }
 
@@ -178,15 +178,15 @@
 
 <div class="container" bind:this={container}>
     <div class="liste">
-        {#each items as item (item.id)}
+        {#each items as item, index (item.id)}
             <div
                 class="item"
+                id={item.id}
                 on:click|preventDefault={() => link(item.id, true)}
                 style={item.style}
-                transitions:move={{ duration: 5000, x: item.x, y: item.y, scale: item.scale }}>
-                {item.id}<img
-                    src="{baseUrl}{item.id}.jpg"
-                    alt={item.data._titel} />
+                animates:flip
+                transitions:move={{ duration: 1000, x: item.x, y: item.y, scale: item.scale }}>
+                <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </div>
         {/each}
     </div>
