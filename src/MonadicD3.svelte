@@ -14,13 +14,12 @@
         state,
     } from "./stores.js";
     import { get } from "svelte/store";
-    import { select, pointer, selection } from "d3-selection";
     import {
         interpolate as d3interpolate,
         interpolateNumber,
     } from "d3-interpolate";
 
-    import { zoomIdentity } from "d3-zoom";
+    import { select, selectAll } from "d3-selection";
     import { style } from "d3-selection";
 
     import { cubicInOut } from "svelte/easing";
@@ -33,6 +32,7 @@
     let large = false;
     let animating = false;
     let container;
+    let selection;
 
     const fields = [
         "_sammlung",
@@ -51,7 +51,7 @@
 
     let items = [];
 
-    async function link(id, internal) {
+    async function link(id) {
         window.location.hash = "#/monadic/" + id;
         // setTimeout(() => (animating = false), 1000);
     }
@@ -120,24 +120,43 @@
             return { ...d, style, x, y, scale };
         });
 
-        console.log(items);
-    }
+        console.log(selection, items);
 
-    function move(node, { duration = 6000, x = 0, y = 0, scale = 1 }) {
-        console.log(node);
-        return {
-            duration,
-            css: (t) => {
-                // const eased = elasticOut(t);
+        if (container) {
+            let s = select(container)
+                .selectAll("div")
+                .data(items, (d) => d.id);
 
-                return `
-					transform: translate(${x}px,${y}px) scale(${scale})
-				`;
-            },
-        };
+            s.exit().remove();
+
+            s.enter()
+                .append("div")
+                .classed("item", true)
+                .on("click", (e, d) => {
+                    link(d.id);
+                })
+                .style(
+                    "transform",
+                    (d) =>
+                        `translate(${parseInt(d.x)}px, ${parseInt(
+                            d.y
+                        )}px) scale(${d.scale},${d.scale})`
+                )
+                .append("img")
+                .attr("src", (d) => `${baseUrl}${d.id}.jpg`);
+
+            s.style(
+                "transform",
+                (d) =>
+                    `translate(${parseInt(d.x)}px, ${parseInt(d.y)}px) scale(${
+                        d.scale
+                    },${d.scale})`
+            );
+        }
     }
 
     onMount(() => {
+        selection = select(container); //.selectAll("div").data(items).
         return () => {};
     });
 </script>
@@ -152,7 +171,7 @@
         overflow: hidden;
     }
 
-    .item {
+    .container :global(.item) {
         position: absolute;
         width: 50px;
         height: 50px;
@@ -162,7 +181,7 @@
         will-change: transform;
     }
 
-    img {
+    .container :global(img) {
         width: 50px;
         /* height: 100%; */
         position: absolute;
@@ -176,18 +195,4 @@
     } */
 </style>
 
-<div class="container" bind:this={container}>
-    <div class="liste">
-        {#each items as item (item.id)}
-            <div
-                class="item"
-                on:click|preventDefault={() => link(item.id, true)}
-                style={item.style}
-                transitions:move={{ duration: 5000, x: item.x, y: item.y, scale: item.scale }}>
-                {item.id}<img
-                    src="{baseUrl}{item.id}.jpg"
-                    alt={item.data._titel} />
-            </div>
-        {/each}
-    </div>
-</div>
+<div class="container" bind:this={container} />

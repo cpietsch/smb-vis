@@ -12,7 +12,7 @@
   import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
   import Annotations from "./Annotations.svelte";
-  import Monadic from "./Monadic.svelte";
+  import Monadic from "./MonadicD3.svelte";
 
   import { state } from "./stores";
 
@@ -71,7 +71,7 @@
       </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
-      <List id={route.payload} search={route.extra} />
+      <!-- <List id={route.payload} search={route.extra} /> -->
     {/if}
     {#if route.view === 'monadic'}
       <Monadic id={route.payload} />
