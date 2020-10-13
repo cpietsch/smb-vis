@@ -9,15 +9,15 @@
     searchstring,
     // searchItems,
     lastTransformed,
-    searchResults
+    searchResults,
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
 
   // $: console.log($fuseSearch)
 
-  function handleSubmit(){
-    console.log($searchstring)
+  function handleSubmit() {
+    console.log($searchstring);
     window.scrollTo({ top: 0 });
     window.location.hash = "#/list/suche/" + $searchstring;
   }
@@ -73,7 +73,8 @@
     <label for="zoom">zoom {$lastTransformed.k.toPrecision(4)}</label>
   </div>
   <div class="item">
-    <label for="distancesCutoffScore">distancesCutoffScore {$distancesCutoffScore}</label>
+    <label for="distancesCutoffScore">distancesCutoffScore
+      {$distancesCutoffScore}</label>
     <input
       type="range"
       bind:value={$distancesCutoffScore}
@@ -94,12 +95,12 @@
   <!-- <div class="item">
     {#each $history as id}<a href="#/cloud/{id}">{id}</a>{/each}
   </div> -->
-  {#if $selectedItem}
+  <!-- {#if $selectedItem}
     <div class="item">
       <p>id: {$selectedItem.id}</p>
        <img
         src="https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/{$selectedItem.id}.jpg"
         alt="detail Image" /> 
     </div>
-  {/if}
+  {/if} -->
 </div>
