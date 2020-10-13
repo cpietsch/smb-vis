@@ -65,13 +65,13 @@
   <Dataloader>
     <!-- {#if route.view === 'cloud' || route.view === undefined} -->
     <Renderer>
-        <!-- <TextureLoader /> -->
-        <!-- <Cloud {route} /> -->
-        <!-- <Annotations /> -->
+        <TextureLoader />
+        <Cloud {route} />
+        <Annotations />
       </Renderer>
     <!-- {/if} -->
     {#if route.view === 'list'}
-      <!-- <List id={route.payload} search={route.extra} /> -->
+      <List id={route.payload} search={route.extra} />
     {/if}
     {#if route.view === 'monadic'}
       <Monadic id={route.payload} />
