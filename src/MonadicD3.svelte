@@ -102,7 +102,7 @@
             if (i == 0) {
                 x = width / 2;
                 y = height / 2;
-                scale = 4;
+                scale = 6;
                 style += `transform: translate(${parseInt(x)}px, ${parseInt(
                     y
                 )}px) scale(${scale.toPrecision(3)})`;
