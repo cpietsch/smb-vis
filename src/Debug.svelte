@@ -41,6 +41,7 @@
     display: flex;
     flex-flow: column;
     z-index: 100;
+    overflow: hidden;
   }
 
   .item {

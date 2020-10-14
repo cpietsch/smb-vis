@@ -15,7 +15,7 @@
   import Monadic from "./MonadicD3.svelte";
 
   import { state } from "./stores";
-import SelectedItem from "./SelectedItem.svelte";
+  import TitleOverlay from "./TitleOverlay.svelte";
 
   let route = {
     view: "cloud",
@@ -64,13 +64,12 @@ import SelectedItem from "./SelectedItem.svelte";
 <main>
   <Home />
   <Dataloader>
-    <!-- {#if route.view === 'cloud' || route.view === undefined} -->
     <Renderer>
-        <TextureLoader />
-        <Cloud {route} />
-        <Annotations />
-      </Renderer>
-    <!-- {/if} -->
+      <TextureLoader />
+      <Cloud {route} />
+      <Annotations />
+    </Renderer>
+
     {#if route.view === 'list'}
       <List id={route.payload} search={route.extra} />
     {/if}
@@ -78,10 +77,12 @@ import SelectedItem from "./SelectedItem.svelte";
       <Monadic id={route.payload} />
     {/if}
   </Dataloader>
-  <SelectedItem />
+  {#if route.view === 'cloud' || route.view === ''}
+    <TitleOverlay />
+  {/if}
   {#if route.view != 'list'}
     <Debug />
   {/if}
-  
+
   <!-- <Details /> -->
 </main>
