@@ -70,15 +70,15 @@ export const scales = derived(
     ([$dimensions, $umapData]) => {
 
         const width = $dimensions.width - margin.right - margin.left
-        const height = $dimensions.height -margin.bottom -margin.top
-        const min = Math.min(width,height)
-        const xDiff = (width-min)/2
-        const yDiff = (height-min)/2
+        const height = $dimensions.height - margin.bottom - margin.top
+        const min = Math.min(width, height)
+        const xDiff = (width - min) / 2
+        const yDiff = (height - min) / 2
 
         return {
             x: scaleLinear()
                 .nice()
-                .range([margin.left + xDiff,min+margin.left+xDiff])
+                .range([margin.left + xDiff, min + margin.left + xDiff])
                 .domain(extent($umapData, (d) => d.x)),
             y: scaleLinear()
                 .nice()
@@ -124,7 +124,7 @@ export const spriteScale = derived(
 //     }
 // );
 
-export const searchIndex  = derived(
+export const searchIndex = derived(
     [detailData],
     ([$detailData]) => {
         console.time("create index")
@@ -140,7 +140,7 @@ export const searchResults = derived(
     ([$searchIndex, $searchstring]) => {
         let items = $searchIndex
         const search = $searchstring.toLowerCase().split(" ")
-        if(search !== ""){
+        if (search !== "") {
             console.time("search")
             search.forEach(s => {
                 items = items.filter(d => d[1].indexOf(s) > -1)
@@ -167,7 +167,7 @@ export const umapProjection = derived(
         })))
 );
 
-export const distancesCutoffScore = writable(30)
+export const distancesCutoffScore = writable(20)
 
 export const distances = readable(new Map(), set => {
     json("data/pca-titel-bild-embeds.json")
