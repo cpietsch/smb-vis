@@ -13,7 +13,7 @@
   import { Sprite, Texture } from "pixi.js";
 
   // make em small mogrify -geometry 1000x *.png
-  
+
   const baseUrl = "annotations/";
   const sprites = [];
   const annotationsMap = new Map();
@@ -21,7 +21,7 @@
   let subsription;
   let factor = 0.1;
   const visibleScaleCutoff = 6;
-  const sizeTable = { 1: 1.5, 2: 1.1, 3: 0.8 };
+  const sizeTable = { 1: 1.7, 2: 1.5, 3: 1.2 };
   const size = scaleLog()
     .range([factor, factor / 5])
     .domain([1, 20])
@@ -39,7 +39,7 @@
     }
     console.log(factor);
   }
-  
+
   $: visible = $lastTransformed.k < visibleScaleCutoff;
 
   $: {
