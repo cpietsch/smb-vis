@@ -30,7 +30,7 @@
 
   // const { renderer, container, outerContainer } = getContext("renderer")();
   const maxZoomLevel = 20;
-  const distanceCutoff = 5;
+  const distanceCutoff = 4;
 
   let clusterZoomLevel = 8;
   let lastTransform = zoomIdentity;
