@@ -89,9 +89,15 @@ export const scales = derived(
 );
 
 export const spriteScale = derived(
-    [dimensions, umapData],
-    ([$dimensions, $umapData]) => (Math.sqrt(($dimensions.width * $dimensions.height) / $umapData.length) /
-        400)
+    [scales, umapData],
+    ([$scales, $umapData]) => {
+        const spriteRes = 128
+        const range = $scales.x.range()
+        const span = range[1] - range[0]
+        const scale = span / 30000
+        console.log("spriteScale", range, span, scale)
+        return scale
+    }
 );
 
 // export const searchIndex = derived(
