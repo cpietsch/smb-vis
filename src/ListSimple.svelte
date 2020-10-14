@@ -89,21 +89,22 @@
     setTimeout(() => (animating = false), 1000);
   }
   $: {
-    if(id === "suche" && $searchstring !== search){
-      $searchstring = search
+    if (id === "suche" && $searchstring !== search) {
+      $searchstring = search;
     }
   }
 
   $: {
-    if(id === "suche"){
-      console.log($searchResults)
-      items = $searchResults.map(id => {
+    if (id === "suche") {
+      console.log($searchResults);
+      items = $searchResults
+        .map((id) => {
           const data = $detailData.get(id);
           return { id, score: 1, data, distance: 10 };
         })
-        .filter((a,i) => i < 30);
-      console.log(items)
-      current = $searchResults[0]
+        .filter((a, i) => i < 30);
+      console.log(items);
+      current = $searchResults[0];
     } else {
       const distances = $getSelectedDistances(id);
 
@@ -116,7 +117,7 @@
         return { id, score, data, distance };
       });
     }
-   
+
     console.log(items);
   }
 
@@ -150,7 +151,7 @@
     margin-right: 5em;
     max-width: 1200px;
     width: 80%;
-    margin-top: 3em;
+    margin-top: 150px;
   }
 
   .item {
@@ -315,12 +316,14 @@
   h2 {
     font-size: 1em;
     cursor: pointer;
-    text-overflow: ellipsis;
+    width: 30%;
+    /* text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: hidden; */
   }
   .selected h2 {
     white-space: inherit;
+    width: inherit;
     /* font-size: 1.5em; */
     /* margin-top: 0.5em; */
     /* margin-bottom: 2em; */
@@ -391,6 +394,10 @@
   .link img {
     margin-right: 1em;
   }
+
+  b {
+    text-transform: capitalize;
+  }
 </style>
 
 <div class="container" bind:this={container}>
@@ -424,11 +431,11 @@
               </h2>
               <div class="additional">
                 <p class="beschreibung">
-                  <b>Beschreibung</b>: {item.data._beschreibung}
+                  {item.data._beschreibung}
                 </p>
-                <p><b>Score</b>: {item.score}</p>
+                <p><b>Score</b>{item.score}</p>
                 {#each fields as field}
-                  <p><b>{field.replace('_', '')}</b>: {item.data[field]}</p>
+                  <p><b>{field.replace('_', '')}</b>{item.data[field]}</p>
                 {/each}
                 <p class="sobjects">
                   <span class="link" on:click|preventDefault={() => link(item.id, true)}>
