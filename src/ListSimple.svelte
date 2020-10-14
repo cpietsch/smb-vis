@@ -439,7 +439,7 @@
                 {/each}
                 <p class="sobjects">
                   <span class="link" on:click|preventDefault={() => link(item.id, true)}>
-                  <img alt="ähnliche Objekte" src="liste.png">Ähnliche Objekte</span>
+                  <img alt="ähnliche Objekte" src="liste.png">Zeige ähnliche Objekte im Pfad</span>
                 </p>
               </div>
             </div>
