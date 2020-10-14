@@ -120,20 +120,21 @@
 
 
   function highlight(item){
-    if (item && lastTransform.k > 3) {
+    if (item && lastTransform.k >= distanceCutoff) {
+    // if (item) {
       //await tick();
       const distancesFiltered = $getSelectedDistances(item.id);
       const newProjection = $umapProjection.map((d) => {
         const inDistance = distancesFiltered.find((e) => e[0] == d.id)
-        const alpha = inDistance ? 1 : 0.2;
-        // const filters = distancesFiltered.find((e) => e[0] == d.id) ? [] : [blur];
+        const alpha = inDistance ? 1 : 0.1;
+        const filters = distancesFiltered.find((e) => e[0] == d.id) ? [] : [blur];
         const active = item ? item.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,
           zIndex: inDistance ? (active ? 2: 1) : 0,
           alpha,
-          filters
+          // filters
         };
       });
       lastProjection = newProjection;
@@ -156,11 +157,66 @@
     }
     selection.style("cursor", selected ? "pointer" : "auto");
 
-    if (lastSelected !== selected) {
-      lastSelected = selected;
-      highlight(lastSelected)
-    }
+    // if (lastSelected !== selected) {
+    //   lastSelected = selected;
+    //   highlight(lastSelected)
+    // }
     
+  }
+
+  function click(e) {
+    console.log("click", lastTransform.k);
+    if (stale) return;
+    const m = pointer(e);
+    const p = lastTransform.invert(m);
+    let selected = quadtree.find(p[0], p[1]);
+    if (!selected) return;
+    const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
+
+    if (distance > distanceCutoff) {
+      selected = null;
+    }
+
+    if (selected) {
+      zoomToExtend([selected], Math.max(lastTransform.k, clusterZoomLevel), 500).then(() => {
+        stale = false;
+      });
+    }
+
+    if (lastSelected !== selected) {
+      lastSelected = selected; 
+    }
+    selectedItem.set(lastSelected)
+
+    highlight(lastSelected)
+  }
+
+  function click2() {
+    console.log("lastTransform", lastTransform.k);
+    if (stale) return;
+    if (lastSelected === null) {
+      return resetZoom();
+    }
+    if (lastTransform.k >= clusterZoomLevel) {
+      console.log(history);
+      history.update((h) => [...h, lastSelected.id]);
+      return zoomToSimilars()
+        .then(fadeOutOthers)
+        .then((d) => {
+          // console.log(d);
+          // stale = false;
+          // state.set("list");
+          window.location.hash = "/list/" + lastSelected.id;
+        });
+    }
+
+    if (lastTransform.k !== clusterZoomLevel) {
+      return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
+        stale = false;
+        console.log(lastTransform);
+      });
+      //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
+    }
   }
 
   function contextmenu(e) {
@@ -266,7 +322,7 @@
     return zoomToExtend([item]);
   }
 
-  function zoomToExtend(items, minZoom = maxZoomLevel) {
+  function zoomToExtend(items, minZoom = maxZoomLevel, duration = 1500) {
     stale = true;
     const { width, height } = $dimensions;
     const [x0, x1] = extent(items, (d) => d.x);
@@ -276,7 +332,7 @@
 
     return selection
       .transition()
-      .duration(1500)
+      .duration(duration)
       .call(
         zoom.transform,
         zoomIdentity
@@ -293,39 +349,19 @@
       .end();
   }
 
-  function click() {
-    console.log("lastTransform", lastTransform.k);
-    if (stale) return;
-    if (lastSelected === null) {
-      return resetZoom();
-    }
-    if (lastTransform.k >= clusterZoomLevel) {
-      console.log(history);
-      history.update((h) => [...h, lastSelected.id]);
-      return zoomToSimilars()
-        .then(fadeOutOthers)
-        .then((d) => {
-          // console.log(d);
-          // stale = false;
-          // state.set("list");
-          window.location.hash = "/list/" + lastSelected.id;
-        });
-    }
-
-    if (lastTransform.k !== clusterZoomLevel) {
-      return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
-        stale = false;
-        console.log(lastTransform);
-      });
-      //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
-    }
-  }
+  
   function zoomed(e) {
     lastTransform = e.transform;
     container.scale.set(lastTransform.k);
     container.position.x = lastTransform.x;
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
+
+    if(lastSelected && lastTransform.k < distanceCutoff){
+      selectedItem.set(null)
+      lastSelected = null
+      highlight(lastSelected)
+    }
     // if(e.sourceEvent) {
     //   mousemove(e)
     // } else {
