@@ -1,7 +1,11 @@
 <script>
   import { onDestroy, getContext, setContext } from "svelte";
   import { getTextureStream } from "./utils/textureloader.js";
-  import { renderer as pixiRenderer, container as pixiContainer, sprites } from "./stores.js";
+  import {
+    renderer as pixiRenderer,
+    container as pixiContainer,
+    sprites,
+  } from "./stores.js";
   import { get } from "svelte/store";
 
   let loading = true;
@@ -12,20 +16,19 @@
 
   // const { renderer, container } = getContext("renderer")();
 
-  const renderer = get(pixiRenderer)
-  const container = get(pixiContainer)
+  const renderer = get(pixiRenderer);
+  const container = get(pixiContainer);
   const textures = new Map();
 
   (async () => {
-    console.log("textzreloader§", renderer)
+    console.log("textzreloader§", renderer);
     const textureStream = getTextureStream(url);
 
     for await (const [id, texture] of textureStream) {
       textures.set(id, texture);
       const sprite = $sprites.get(id);
-      sprite.texture = texture;
-      loaded++;
-      if (loaded % 300 === 0) renderer.render(container);
+      if (sprite) sprite.texture = texture;
+      if (++loaded % 300 === 0) renderer.render(container);
     }
     renderer.render(container);
     loading = false;
