@@ -1,10 +1,11 @@
 <script>
   import { lastTransformed } from "./stores.js";
 
-  const visibleScaleCutoff = 1.01
+  const visibleScaleCutoff = 1.01;
 
-  $: visible = $lastTransformed.k < visibleScaleCutoff;
+  export let route;
 
+  $: visible = $lastTransformed.k < visibleScaleCutoff && route.view != "list";
 </script>
 
 <style>
@@ -15,7 +16,7 @@
     left: 0;
     z-index: 100;
     margin: 1em;
-    
+
     pointer-events: none;
     /* background: #fff; */
     /* backdrop-filter: blur(2px); */

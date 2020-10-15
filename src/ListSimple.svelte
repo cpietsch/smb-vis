@@ -173,6 +173,9 @@
     display: flex;
     z-index: 10;
   }
+  .picture picture {
+    z-index: 100;
+  }
   .picture img {
     width: 100%;
   }
@@ -288,11 +291,36 @@
   .center {
     position: absolute;
     display: none;
-    left: -20px;
-    top: calc(30%);
-    width: 20px;
+    left: -85px;
+    top: calc(50% - 20px);
+    /* width: 90px; */
     height: 40px;
-    background-color: #424242;
+    background-color: #fff;
+
+    border-radius: 6px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 45px;
+    opacity: 0.7;
+    transition: left 0.2s, opacity 0.2s;
+  }
+
+  .center:hover {
+    left: -92px;
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+  }
+
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
   }
 
   .selected .center {
@@ -364,7 +392,7 @@
   }
 
   .current:not(.selected) .metacontainer {
-    background: #ffffff8c;
+    /* background: #ffffff8c; */
   }
 
   /* .current .meta {
@@ -417,7 +445,10 @@
             </picture>
             <div
               class="center"
-              on:click|preventDefault={() => link(item.id, false)} />
+              on:click|preventDefault={() => link(item.id, false)}>
+              <div class="arrow left"></div>
+              <span>Wolke</span>
+            </div>
             <!-- <div
               class="cloud"
               on:click|preventDefault={() => link(item.id, false)} /> -->

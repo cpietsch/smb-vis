@@ -5,13 +5,11 @@
   import TextureLoader from "./TextureLoader.svelte";
   // import Stage from "./Stage.svelte";
   // import Layout from "./Layout.svelte";
-  import Details from "./Details.svelte";
-  import Home from "./Home.svelte";
+  import Header from "./Header.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
   import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
-  import Search from "./Search.svelte";
   import Annotations from "./Annotations.svelte";
   import Monadic from "./MonadicD3.svelte";
 
@@ -63,7 +61,6 @@
 <svelte:window on:hashchange={hashchange} />
 
 <main>
-  <Home />
   <Dataloader>
     <Renderer>
       <TextureLoader />
@@ -82,6 +79,6 @@
     <TitleOverlay />
   {/if}
   {#if route.view != 'list'}{/if}
-  <Search />
+  <Header {route} />
   <!-- <Details /> -->
 </main>
