@@ -30,7 +30,7 @@
 
   // const { renderer, container, outerContainer } = getContext("renderer")();
   const maxZoomLevel = 20;
-  const distanceCutoff = 4;
+  const distanceCutoff = 5;
 
   let clusterZoomLevel = 8;
   let lastTransform = zoomIdentity;
@@ -38,6 +38,8 @@
   let lastSelected;
 
   export let route;
+
+  console.log("init cloud");
 
   // $: {
   //   console.log("clid", query);
@@ -56,6 +58,8 @@
   const renderer = get(pixiRenderer);
   const container = get(pixiContainer);
   const outer = get(divContainer);
+
+  let lastProjection = $umapProjection;
 
   const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
@@ -78,8 +82,10 @@
         [$dimensions.width, $dimensions.height],
       ])
     );
-    renderProjection($umapProjection);
+    // renderProjection(lastProjection);
   }
+
+  $: renderProjection($umapProjection);
 
   const selection = select(outer)
     .call(zoom)
@@ -89,8 +95,6 @@
 
   // console.log($dimensions);
   // test("HALLLOO");
-
-  let lastProjection = $umapProjection;
 
   $: quadtree = d3quadtree()
     .x((d) => d.x)

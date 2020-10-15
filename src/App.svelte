@@ -11,6 +11,7 @@
   import Cloud from "./Cloud.svelte";
   import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
+  import Search from "./Search.svelte";
   import Annotations from "./Annotations.svelte";
   import Monadic from "./MonadicD3.svelte";
 
@@ -80,9 +81,7 @@
   {#if route.view === 'cloud' || route.view === ''}
     <TitleOverlay />
   {/if}
-  {#if route.view != 'list'}
-    <Debug />
-  {/if}
-
+  {#if route.view != 'list'}{/if}
+  <Search />
   <!-- <Details /> -->
 </main>
