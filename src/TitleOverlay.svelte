@@ -27,7 +27,9 @@
       const { id } = $selectedItem;
       const distances = $getSelectedDistances(id);
       // console.log(distances);
-      items = distances.map((e) => $umapProjection.find((d) => e[0] == d.id));
+      items = distances
+        .map((e) => $umapProjection.find((d) => e[0] == d.id))
+        .filter((d) => d);
     } else {
       items = [];
     }
@@ -42,6 +44,7 @@
       const transform = zoomIdentity.translate(x, y).scale(k);
 
       mapped = items.map((d, i) => {
+        if (!d) console.log(items);
         const id = d.id;
         const x = transform.applyX(d.x);
         const y = transform.applyY(d.y);
@@ -49,6 +52,8 @@
 
         return { x, y, id, i, data };
       });
+
+      mapped = [mapped[0]];
 
       // console.log(mapped, items);
     } else mapped = [];
