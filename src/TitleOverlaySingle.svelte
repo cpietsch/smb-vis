@@ -12,6 +12,7 @@
     searchstring,
     // searchItems,
     lastTransformed,
+    divContainer,
     searchResults,
   } from "./stores.js";
   import { get } from "svelte/store";
@@ -21,6 +22,9 @@
 
   let mapped = [];
   let items = [];
+
+  const outer = get(divContainer);
+  let container;
 
   $: {
     if ($selectedItem) {
@@ -73,6 +77,10 @@
     window.location.hash = "#/list/" + id;
   }
 
+  function wheelProxy(event) {
+    outer.dispatchEvent(new event.constructor(event.type, event));
+  }
+
   onMount(() => {
     return () => {};
   });
@@ -98,6 +106,7 @@
           align-items: center;
           justify-content: center; */
     position: absolute;
+    user-select: none;
   }
 
   .icon {
@@ -173,7 +182,10 @@
   <div class="container">
     {#each mapped as item}
       <div class="item" style={style(item)}>
-        <div class="inner" on:click|preventDefault={() => link(item.id)}>
+        <div
+          class="inner"
+          on:click|preventDefault={() => link(item.id)}
+          on:wheel={wheelProxy}>
           {#if item.i == 0}
             <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
               <!-- <span class="size">{items.length}</span> -->
