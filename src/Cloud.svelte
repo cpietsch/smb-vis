@@ -119,7 +119,11 @@
         }
       });
     }
-    if (route.view === "cloud" && id) {
+    if (route.view === "cloud" && id === "reset") {
+      console.log("reset");
+
+      resetZoom();
+    } else if (route.view === "cloud" && id) {
       // console.log(selection, "DOIT");
 
       zoomToId(id)
@@ -130,6 +134,7 @@
           selectedItem.set({ id });
         });
     }
+
     lastRoute = { ...route };
   }
 

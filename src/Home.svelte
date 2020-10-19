@@ -6,6 +6,10 @@
   export let route;
 
   $: visible = $lastTransformed.k < visibleScaleCutoff && route.view != "list";
+
+  function reset() {
+    window.location.hash = "#/cloud/reset";
+  }
 </script>
 
 <style>
@@ -33,6 +37,8 @@
     font-size: 1.5em;
     margin: 0;
     text-transform: uppercase;
+    pointer-events: all;
+    cursor: pointer;
   }
   h2 {
     font-size: 1em;
@@ -62,10 +68,20 @@
   <h2>zweier musealer Sammlungen</h2>
   </div> -->
   <div class="box">
-    <h1>Visuelle Exploration</h1>
+    <h1 on:click={reset}>Visuelle Exploration</h1>
     <h2>zweier musealer Sammlungen</h2>
     <p class="intro" class:visible>
-      … ist eine explorative Sammlungsvisualisierung mit Daten der Staatliche Museen zu Berlin. Aktuell enthält die Visualisierung 5140 Objekte aus den Sammlungen der <b>Alten Nationalgalerie</b> und dem <b>Museum Europäischer Kulturen</b> und dem Entstehungszeitraum des 19. Jahrhunderts. Die Visualisierung zeigt die Sammlungsobjekte angeordnet nach Bild- und Titel-Ähnlichkeit (d.h. Objekte mit ähnlichen Abbildungen und Titeln liegen visuell nahe zusammen) und ermöglicht bei Auswahl von Objekten oder bei Schlagwortsuche die Erkundung individueller Ähnlichkeits-Pfade.
+      … ist eine explorative Sammlungsvisualisierung mit Daten der Staatliche
+      Museen zu Berlin. Aktuell enthält die Visualisierung 5140 Objekte aus den
+      Sammlungen der
+      <b>Alten Nationalgalerie</b>
+      und dem
+      <b>Museum Europäischer Kulturen</b>
+      und dem Entstehungszeitraum des 19. Jahrhunderts. Die Visualisierung zeigt
+      die Sammlungsobjekte angeordnet nach Bild- und Titel-Ähnlichkeit (d.h.
+      Objekte mit ähnlichen Abbildungen und Titeln liegen visuell nahe zusammen)
+      und ermöglicht bei Auswahl von Objekten oder bei Schlagwortsuche die
+      Erkundung individueller Ähnlichkeits-Pfade.
     </p>
   </div>
 </div>
