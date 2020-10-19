@@ -14,7 +14,7 @@
   import Monadic from "./MonadicD3.svelte";
 
   import { state } from "./stores";
-  import TitleOverlay from "./TitleOverlay.svelte";
+  import TitleOverlaySingle from "./TitleOverlaySingle.svelte";
 
   let route = {
     view: "cloud",
@@ -76,9 +76,9 @@
     {/if}
   </Dataloader>
   {#if route.view === 'cloud' || route.view === ''}
-    <TitleOverlay />
+    <TitleOverlaySingle />
   {/if}
-  {#if route.view != 'list'}{/if}
+  <!-- {#if route.view != 'list'}{/if} -->
   <Header {route} />
   <!-- <Details /> -->
 </main>

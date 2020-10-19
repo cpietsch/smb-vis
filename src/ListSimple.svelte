@@ -479,7 +479,7 @@
                     class="link"
                     on:click|preventDefault={() => link(item.id, true)}>
                     <img alt="ähnliche Objekte" src="liste.png" />Zeige ähnliche
-                    Objekte im Pfad</span>
+                    Objekte als Pfad</span>
                 </p>
               </div>
             </div>
