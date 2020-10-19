@@ -1,164 +1,164 @@
 <script>
-    import { onMount } from "svelte";
-    import {
-        distancesCutoffScore,
-        selectedItem,
-        detailData,
-        darkmode,
-        history,
-        anchor,
-        getSelectedDistances,
-        umapProjection,
-        searchstring,
-        // searchItems,
-        lastTransformed,
-        searchResults,
-    } from "./stores.js";
-    import { get } from "svelte/store";
-    import { flip } from "svelte/animate";
-    import { zoomIdentity } from "d3-zoom";
-    // import { style } from "d3-selection";
+  import { onMount } from "svelte";
+  import {
+    distancesCutoffScore,
+    selectedItem,
+    detailData,
+    darkmode,
+    history,
+    anchor,
+    getSelectedDistances,
+    umapProjection,
+    searchstring,
+    // searchItems,
+    lastTransformed,
+    searchResults,
+  } from "./stores.js";
+  import { get } from "svelte/store";
+  import { flip } from "svelte/animate";
+  import { zoomIdentity } from "d3-zoom";
+  // import { style } from "d3-selection";
 
-    let mapped = [];
-    let items = [];
+  let mapped = [];
+  let items = [];
 
-    $: {
-        if ($selectedItem) {
-            const { id } = $selectedItem;
-            const distances = $getSelectedDistances(id);
-            // console.log(distances);
-            items = distances
-                .map((e) => $umapProjection.find((d) => e[0] == d.id))
-                .filter((d) => d);
-        } else {
-            items = [];
-        }
+  $: {
+    if ($selectedItem) {
+      const { id } = $selectedItem;
+      const distances = $getSelectedDistances(id);
+      // console.log(distances);
+      items = distances
+        .map((e) => $umapProjection.find((d) => e[0] == d.id))
+        .filter((d) => d);
+    } else {
+      items = [];
     }
+  }
 
-    $: data = $selectedItem ? $detailData.get($selectedItem.id) : null;
+  $: data = $selectedItem ? $detailData.get($selectedItem.id) : null;
 
-    $: {
-        if ($selectedItem) {
-            const { x, y, k } = $lastTransformed;
-            // console.log(x, y, k);
-            const transform = zoomIdentity.translate(x, y).scale(k);
-            const padding = k * 2;
+  $: {
+    if ($selectedItem) {
+      const { x, y, k } = $lastTransformed;
+      // console.log(x, y, k);
+      const transform = zoomIdentity.translate(x, y).scale(k);
+      const padding = k * 1.3;
 
-            mapped = items.map((d, i) => {
-                if (!d) console.log(items);
-                const id = d.id;
-                const x = transform.applyX(d.x);
-                const y = transform.applyY(d.y) + padding;
-                const data = $detailData.get(id);
+      mapped = items.map((d, i) => {
+        if (!d) console.log(items);
+        const id = d.id;
+        const x = transform.applyX(d.x);
+        const y = transform.applyY(d.y) + padding;
+        const data = $detailData.get(id);
 
-                return { x, y, id, i, data };
-            });
+        return { x, y, id, i, data };
+      });
 
-            mapped = [mapped[0]];
+      mapped = [mapped[0]];
 
-            // console.log(mapped, items);
-        } else mapped = [];
-    }
+      // console.log(mapped, items);
+    } else mapped = [];
+  }
 
-    function style(item) {
-        return `
+  function style(item) {
+    return `
             transform: translate(${item.x}px,${item.y}px);
             z-index: ${100 - item.i};
             opacity: ${1 - item.i / (items.length * 1.5)};
             pointer-events: ${item.i == 0 ? "all" : "none"};
           `;
-    }
+  }
 
-    function link(id) {
-        window.location.hash = "#/list/" + id;
-    }
+  function link(id) {
+    window.location.hash = "#/list/" + id;
+  }
 
-    onMount(() => {
-        return () => {};
-    });
+  onMount(() => {
+    return () => {};
+  });
 </script>
 
 <style>
-    .item {
-        position: absolute;
-        /* left: 50%;
+  .item {
+    position: absolute;
+    /* left: 50%;
         top: 50%; */
-        /* width: 300px; */
+    /* width: 300px; */
 
-        /* margin-bottom: 10em; */
-    }
-    .container {
-        pointer-events: none;
-        height: 100%;
-        width: 100%;
-        left: 0;
-        overflow: hidden;
-        top: 0;
-        /* display: flex;
+    /* margin-bottom: 10em; */
+  }
+  .container {
+    pointer-events: none;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    overflow: hidden;
+    top: 0;
+    /* display: flex;
           align-items: center;
           justify-content: center; */
-        position: absolute;
-    }
+    position: absolute;
+  }
 
-    .icon {
-        cursor: pointer;
-        margin-right: 1em;
-        display: flex;
-        align-items: center;
-        /* padding: 4px;
+  .icon {
+    cursor: pointer;
+    margin-right: 1em;
+    display: flex;
+    align-items: center;
+    /* padding: 4px;
       background-color: #eee; */
-    }
-    .size {
-        margin-left: 5px;
-        color: #666;
-        font-size: 0.8em;
-    }
+  }
+  .size {
+    margin-left: 5px;
+    color: #666;
+    font-size: 0.8em;
+  }
 
-    .close {
-        position: absolute;
-        right: -40px;
-        width: 32px;
-        height: 32px;
-        opacity: 0.6;
-        cursor: pointer;
-    }
-    .close:hover {
-        opacity: 1;
-    }
-    .close:before,
-    .close:after {
-        position: absolute;
-        left: 15px;
-        content: " ";
-        height: 33px;
-        width: 4px;
-        background-color: #333;
-    }
-    .close:before {
-        transform: rotate(45deg);
-    }
-    .close:after {
-        transform: rotate(-45deg);
-    }
+  .close {
+    position: absolute;
+    right: -40px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+  .close:before,
+  .close:after {
+    position: absolute;
+    left: 15px;
+    content: " ";
+    height: 33px;
+    width: 4px;
+    background-color: #333;
+  }
+  .close:before {
+    transform: rotate(45deg);
+  }
+  .close:after {
+    transform: rotate(-45deg);
+  }
 
-    .inner {
-        position: relative;
-        left: -50%;
-        max-width: 300px;
-        /* overflow: hidden; */
-        margin: 1em;
-        background: white;
-        padding: 1em;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        border-radius: 6px;
-        /* display: flex; */
-        /* flex-flow: column; */
-        z-index: 100;
-        /* pointer-events: visible; */
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
+  .inner {
+    position: relative;
+    left: -50%;
+    max-width: 300px;
+    /* overflow: hidden; */
+    margin: 1em;
+    background: white;
+    padding: 1em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    /* display: flex; */
+    /* flex-flow: column; */
+    z-index: 100;
+    /* pointer-events: visible; */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
 </style>
 
 <!-- {#if data}
@@ -170,25 +170,21 @@
   {/if} -->
 
 {#if data}
-    <div class="container">
-        {#each mapped as item}
-            <div class="item" style={style(item)}>
-                <div
-                    class="inner"
-                    on:click|preventDefault={() => link(item.id)}>
-                    {#if item.i == 0}
-                        <span class="icon"><img
-                                alt="Ähnliche Objekte"
-                                src="liste.png" />
-                            <!-- <span class="size">{items.length}</span> -->
-                        </span>
-                        <div
-                            class="close"
-                            on:click|preventDefault={() => selectedItem.set(undefined)} />
-                        <span>{item.data._titel}</span>
-                    {/if}
-                </div>
-            </div>
-        {/each}
-    </div>
+  <div class="container">
+    {#each mapped as item}
+      <div class="item" style={style(item)}>
+        <div class="inner" on:click|preventDefault={() => link(item.id)}>
+          {#if item.i == 0}
+            <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
+              <!-- <span class="size">{items.length}</span> -->
+            </span>
+            <div
+              class="close"
+              on:click|preventDefault={() => selectedItem.set(null)} />
+            <span>{item.data._titel}</span>
+          {/if}
+        </div>
+      </div>
+    {/each}
+  </div>
 {/if}
