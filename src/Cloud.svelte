@@ -33,6 +33,7 @@
   const distanceCutoff = 5;
 
   let clusterZoomLevel = 8;
+  let clearZoomLevel = 3;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
@@ -133,7 +134,8 @@
   }
 
   function highlight(item) {
-    if (item && lastTransform.k >= distanceCutoff) {
+    if (item) {
+      // && lastTransform.k >= clearZoomLevel
       // if (item) {
       //await tick();
       const distancesFiltered = $getSelectedDistances(item.id);
@@ -373,7 +375,7 @@
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
 
-    if (lastSelected && lastTransform.k < distanceCutoff) {
+    if (lastSelected && lastTransform.k < clearZoomLevel) {
       selectedItem.set(null);
       lastSelected = null;
       highlight(lastSelected);
