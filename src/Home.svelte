@@ -19,12 +19,12 @@
     top: 0;
     left: 0;
     z-index: 100;
-    margin: 1em;
-
+    padding: 1em;
+    /* margin: 1em;
+    margin-top: 0; */
     pointer-events: none;
     /* background: #fff; */
     /* backdrop-filter: blur(2px); */
-    padding: 1em;
     flex-direction: column;
   }
 
@@ -56,10 +56,14 @@
     transition: opacity 0.5s;
     /* display: inline; */
   }
-
   .visible {
     opacity: 1;
   }
+  /* 
+  .head {
+    padding: 1em;
+    background: linear-gradient(#eee, rgba(238, 238, 238, 0));
+  } */
 </style>
 
 <div class="home">
@@ -68,8 +72,10 @@
   <h2>zweier musealer Sammlungen</h2>
   </div> -->
   <div class="box">
-    <h1 on:click={reset}>Visuelle Exploration</h1>
-    <h2>zweier musealer Sammlungen</h2>
+    <div class="head">
+      <h1 on:click={reset}>Visuelle Exploration</h1>
+      <h2>zweier musealer Sammlungen</h2>
+    </div>
     <p class="intro" class:visible>
       … ist eine explorative Sammlungsvisualisierung mit Daten der Staatliche
       Museen zu Berlin. Aktuell enthält die Visualisierung 5140 Objekte aus den
