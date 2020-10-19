@@ -485,7 +485,7 @@
           </div>
         </div>
         <div class="row distance" style="height: 45px">
-        <svg style="height: 60px;width: {5+item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px"> <!--item.distance -->
+        <svg style="height: 60px;width: {5+item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
          <path style="fill:none; stroke-width:2px; stroke:#515151;" d="
          M{2+item.distance * 3} 0
          C {2+item.distance * 3} 15
@@ -496,6 +496,7 @@
          {2+item.distance * 3} 60
         " />
         </svg >
+          <!--  //das div soll weg, aber löschen macht die app kaputt :7 -->
           <div
             style="height: {(20 + item.distance * 2) / 2}px;width: {20 + item.distance * 2}px; display:none" />
         </div>
