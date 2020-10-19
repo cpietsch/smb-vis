@@ -181,6 +181,7 @@ export const distances = readable(new Map(), set => {
             set(new Map(data.map(d => [d.id, d])))
         )
 });
+
 export const selectedDistances = derived(
     [selectedItem, distances, distancesCutoffScore],
     ([$item, $distances, $score]) => {

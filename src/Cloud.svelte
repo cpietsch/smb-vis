@@ -130,13 +130,15 @@
         .then(() => (stale = false))
         .then(() => {
           highlight({ id });
-          lastSelected = { id };
+          // lastSelected = { id };
           selectedItem.set({ id });
         });
     }
 
     lastRoute = { ...route };
   }
+
+  $: highlight($selectedItem);
 
   function highlight(item) {
     if (item) {
@@ -208,41 +210,41 @@
       });
     }
 
-    if (lastSelected !== selected) {
-      lastSelected = selected;
+    if ($selectedItem !== selected) {
+      // lastSelected = selected;
+      selectedItem.set(selected);
     }
-    selectedItem.set(lastSelected);
 
-    highlight(lastSelected);
+    // highlight(lastSelected);
   }
 
-  function click2() {
-    console.log("lastTransform", lastTransform.k);
-    if (stale) return;
-    if (lastSelected === null) {
-      return resetZoom();
-    }
-    if (lastTransform.k >= clusterZoomLevel) {
-      console.log(history);
-      history.update((h) => [...h, lastSelected.id]);
-      return zoomToSimilars()
-        .then(fadeOutOthers)
-        .then((d) => {
-          // console.log(d);
-          // stale = false;
-          // state.set("list");
-          window.location.hash = "/list/" + lastSelected.id;
-        });
-    }
+  // function clickOld() {
+  //   console.log("lastTransform", lastTransform.k);
+  //   if (stale) return;
+  //   if (lastSelected === null) {
+  //     return resetZoom();
+  //   }
+  //   if (lastTransform.k >= clusterZoomLevel) {
+  //     console.log(history);
+  //     history.update((h) => [...h, lastSelected.id]);
+  //     return zoomToSimilars()
+  //       .then(fadeOutOthers)
+  //       .then((d) => {
+  //         // console.log(d);
+  //         // stale = false;
+  //         // state.set("list");
+  //         window.location.hash = "/list/" + lastSelected.id;
+  //       });
+  //   }
 
-    if (lastTransform.k !== clusterZoomLevel) {
-      return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
-        stale = false;
-        console.log(lastTransform);
-      });
-      //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
-    }
-  }
+  //   if (lastTransform.k !== clusterZoomLevel) {
+  //     return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
+  //       stale = false;
+  //       console.log(lastTransform);
+  //     });
+  //     //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
+  //   }
+  // }
 
   function contextmenu(e) {
     const m = pointer(e);
@@ -329,16 +331,16 @@
       .end();
   }
 
-  function zoomToSimilars() {
-    const { x, y, id } = lastSelected;
-    const distances = $getSelectedDistances(id);
+  // function zoomToSimilars() {
+  //   const { x, y, id } = lastSelected;
+  //   const distances = $getSelectedDistances(id);
 
-    const items = $umapProjection.filter(
-      (d) => distances && distances.find((e) => e[0] == d.id)
-    );
+  //   const items = $umapProjection.filter(
+  //     (d) => distances && distances.find((e) => e[0] == d.id)
+  //   );
 
-    return zoomToExtend(items);
-  }
+  //   return zoomToExtend(items);
+  // }
 
   function zoomToId(id) {
     const item = $umapProjection.find((d) => d.id == id);
@@ -380,10 +382,10 @@
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
 
-    if (lastSelected && lastTransform.k < clearZoomLevel) {
+    if ($selectedItem && lastTransform.k < clearZoomLevel) {
       selectedItem.set(null);
-      lastSelected = null;
-      highlight(lastSelected);
+      // lastSelected = null;
+      // highlight(lastSelected);
     }
     // if(e.sourceEvent) {
     //   mousemove(e)

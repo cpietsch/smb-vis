@@ -184,7 +184,7 @@
       <div class="item" style={style(item)}>
         <div
           class="inner"
-          on:click|preventDefault={() => link(item.id)}
+          on:click|stopPropagation={() => link(item.id)}
           on:wheel={wheelProxy}>
           {#if item.i == 0}
             <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
@@ -192,7 +192,7 @@
             </span>
             <div
               class="close"
-              on:click|preventDefault={() => selectedItem.set(null)} />
+              on:click|stopPropagation={() => selectedItem.set(null)} />
             <span>{item.data._titel}</span>
           {/if}
         </div>
