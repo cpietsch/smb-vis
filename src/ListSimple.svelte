@@ -399,9 +399,9 @@
     opacity: 0;
   }
 
-  .current:not(.selected) .metacontainer {
-    /* background: #ffffff8c; */
-  }
+  /* .current:not(.selected) .metacontainer {
+     background: #ffffff8c; 
+  } */
 
   /* .current .meta {
     background: none;
@@ -417,15 +417,16 @@
 
   .link {
     cursor: pointer;
-    cursor: pointer;
     display: inline-flex;
     background: white;
-    border-radius: 21em;
+    border-radius: 6px;
     padding: 1em;
     padding-top: 1em;
     padding-bottom: 1em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    align-items: center;
   }
   .link img {
     margin-right: 1em;
@@ -478,8 +479,9 @@
                   <span
                     class="link"
                     on:click|preventDefault={() => link(item.id, true)}>
-                    <img alt="ähnliche Objekte" src="liste.png" />Zeige ähnliche
-                    Objekte als Pfad</span>
+                    <img alt="ähnliche Objekte" src="liste.png" />
+                    <span>Zeige ähnliche Objekte als Pfad</span>
+                  </span>
                 </p>
               </div>
             </div>

@@ -23,7 +23,7 @@
   let mapped = [];
   let items = [];
 
-  const outer = get(divContainer);
+  // const outer = get(divContainer);
   let container;
 
   $: {
@@ -78,7 +78,7 @@
   }
 
   function wheelProxy(event) {
-    outer.dispatchEvent(new event.constructor(event.type, event));
+    $divContainer.dispatchEvent(new event.constructor(event.type, event));
   }
 
   onMount(() => {
