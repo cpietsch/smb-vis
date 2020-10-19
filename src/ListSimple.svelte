@@ -151,7 +151,7 @@
     margin-right: 5em;
     max-width: 1200px;
     width: 80%;
-    margin-top: 150px;
+    margin-top: 120px;
   }
 
   .item {
@@ -386,6 +386,14 @@
     /* background-color: blueviolet; */
   }
 
+  .distance svg {
+    /* width: 10px; */
+    position: relative;
+    background-color: none;
+    z-index: 2;
+    /* background-color: blueviolet; */
+  }
+
   .animating .distance {
     visibility: hidden;
     opacity: 0;
@@ -399,9 +407,9 @@
     background: none;
   } */
 
-  .current .distance div {
+  /* .current .distance div {
     border-width: 7px;
-  }
+  } */
 
   .current .sobjects {
     display: none;
@@ -476,9 +484,20 @@
             </div>
           </div>
         </div>
-        <div class="row distance">
+        <div class="row distance" style="height: 45px">
+        <svg style="height: 60px;width: {5+item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px"> <!--item.distance -->
+         <path style="fill:none; stroke-width:2px; stroke:#515151;" d="
+         M{2+item.distance * 3} 0
+         C {2+item.distance * 3} 15
+         2 15
+         2 30
+         C 2 45
+         {2+item.distance * 3} 50
+         {2+item.distance * 3} 60
+        " />
+        </svg >
           <div
-            style="height: {(20 + item.distance * 2) / 2}px;width: {20 + item.distance * 2}px;" />
+            style="height: {(20 + item.distance * 2) / 2}px;width: {20 + item.distance * 2}px; display:none" />
         </div>
       </div>
     {/each}
