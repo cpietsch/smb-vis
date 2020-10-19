@@ -486,11 +486,12 @@
           </div>
         </div>
         <div class="row distance" style="height: 45px">
-          <svg
-            style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
-            <path
-              style="fill:none; stroke-width:2px; stroke:#515151;"
-              d="
+          {#if id != 'suche'}
+            <svg
+              style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
+              <path
+                style="fill:none; stroke-width:2px; stroke:#515151;"
+                d="
             M{2 + item.distance * 3} 0
             C {2 + item.distance * 3} 15
             2 15
@@ -499,7 +500,8 @@
             {2 + item.distance * 3} 50
             {2 + item.distance * 3} 60
           " />
-          </svg>
+            </svg>
+          {/if}
         </div>
       </div>
     {/each}
