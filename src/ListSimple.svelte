@@ -362,11 +362,12 @@
   p {
     line-height: 1.4em;
     margin-top: 0;
+    display: flex;
+    align-items: center;
   }
 
   b {
-    width: 137px;
-    display: inline-block;
+    width: 150px;
   }
 
   .item:last-child .distance {
@@ -436,7 +437,7 @@
   }
 
   b {
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   }
 </style>
 
@@ -475,9 +476,13 @@
               <div class="additional">
                 <p class="beschreibung">{item.data._beschreibung}</p>
                 <!-- <p><b>Score</b>{item.score}</p> -->
-                <p><b>Sammlung</b>{sammlung[item.data._sammlung]}</p>
+                <p>
+                  <b>Sammlung</b><span>{sammlung[item.data._sammlung]}</span>
+                </p>
                 {#each fields as field}
-                  <p><b>{field[1]}</b>{item.data[field[0]]}</p>
+                  {#if item.data[field[0]] !== ''}
+                    <p><b>{field[1]}</b><span>{item.data[field[0]]}</span></p>
+                  {/if}
                 {/each}
                 <p class="sobjects">
                   <span
