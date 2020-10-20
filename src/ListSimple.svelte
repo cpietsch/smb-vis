@@ -36,18 +36,13 @@
   let animating = false;
   let container;
 
-  const sammlung = {
-    ang: "Alte Nationalgalerie",
-    mek: "Nationalgalerie",
-  };
-
   const fields = [
-    ["_idnr", "Ident.Nr."],
-    ["_actors", "Beteiligte"],
-    ["_ort", "Geographische Bezüge"],
-    ["_datum", "Datierung"],
-    ["_material", "Material und Technik"],
-    ["_abmessung", "Abmessungen und Gewicht"],
+    ["idnr", "Ident.Nr."],
+    ["actors", "Beteiligte"],
+    ["ort", "Geographische Bezüge"],
+    ["datum", "Datierung"],
+    ["material", "Material und Technik"],
+    ["abmessung", "Abmessungen und Gewicht"],
   ];
 
   console.log("hello from list", id);
@@ -403,6 +398,10 @@
     opacity: 0;
   }
 
+  .metacontainer a {
+    color: #515151;
+  }
+
   /* .current:not(.selected) .metacontainer {
      background: #ffffff8c; 
   } */
@@ -471,19 +470,24 @@
             <div class="meta">
               <h2
                 on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
-                {item.data._titel}
+                {item.data.titel}
               </h2>
               <div class="additional">
-                <p class="beschreibung">{item.data._beschreibung}</p>
+                <p class="beschreibung">{item.data.beschreibung}</p>
                 <!-- <p><b>Score</b>{item.score}</p> -->
-                <p>
-                  <b>Sammlung</b><span>{sammlung[item.data._sammlung]}</span>
-                </p>
+                <p><b>Sammlung</b><span>{item.data.sammlunglong}</span></p>
                 {#each fields as field}
                   {#if item.data[field[0]] !== ''}
                     <p><b>{field[1]}</b><span>{item.data[field[0]]}</span></p>
                   {/if}
                 {/each}
+                <p>
+                  <b>Lizenz</b><span>{item.data.museum},
+                    {item.data.fotograf},
+                    <a
+                      href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                      target="_blank">CC BY-NC-SA 4.0</a></span>
+                </p>
                 <p class="sobjects">
                   <span
                     class="link"

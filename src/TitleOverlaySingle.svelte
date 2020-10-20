@@ -194,7 +194,7 @@
             <div
               class="close"
               on:click|stopPropagation={() => selectedItem.set(null)} />
-            <span>{item.data._titel}</span>
+            <span>{item.data.titel}</span>
           {/if}
         </div>
       </div>

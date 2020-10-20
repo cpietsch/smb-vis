@@ -34,7 +34,7 @@ export const umapData = readable([], set => {
 });
 
 export const detailData = readable(new Map(), set => {
-    csv("data/export1305-bitlabels.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
+    csv("data/export2010.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
 export const sprites = derived(umapData, $data => {
