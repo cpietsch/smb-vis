@@ -59,6 +59,10 @@
   .visible {
     opacity: 1;
   }
+
+  .home {
+    pointer-events: visible;
+  }
   /* 
   .head {
     padding: 1em;
