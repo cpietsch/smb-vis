@@ -36,15 +36,18 @@
   let animating = false;
   let container;
 
+  const sammlung = {
+    ang: "Alte Nationalgalerie",
+    mek: "Nationalgalerie",
+  };
+
   const fields = [
-    "_sammlung",
-    "_idnr",
-    "_actors",
-    "_ort",
-    "_datum",
-    "_material",
-    "_abmessung",
-    // "_stichwort",
+    ["_idnr", "Ident.Nr."],
+    ["_actors", "Beteiligte"],
+    ["_ort", "Geographische Bezüge"],
+    ["_datum", "Datierung"],
+    ["_material", "Material und Technik"],
+    ["_abmessung", "Abmessungen und Gewicht"],
   ];
 
   console.log("hello from list", id);
@@ -472,8 +475,9 @@
               <div class="additional">
                 <p class="beschreibung">{item.data._beschreibung}</p>
                 <!-- <p><b>Score</b>{item.score}</p> -->
+                <p><b>Sammlung</b>{sammlung[item.data._sammlung]}</p>
                 {#each fields as field}
-                  <p><b>{field.replace('_', '')}</b>{item.data[field]}</p>
+                  <p><b>{field[1]}</b>{item.data[field[0]]}</p>
                 {/each}
                 <p class="sobjects">
                   <span
