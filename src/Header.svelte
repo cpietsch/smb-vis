@@ -8,7 +8,7 @@
 <style>
   .header {
     background: linear-gradient(#eee, rgba(238, 238, 238, 0));
-    height: 150px;
+    height: 120px;
     width: 100%;
     position: absolute;
     top: 0;

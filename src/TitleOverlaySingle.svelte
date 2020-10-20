@@ -69,7 +69,7 @@
             transform: translate(${item.x}px,${item.y}px);
             z-index: ${100 - item.i};
             opacity: ${1 - item.i / (items.length * 1.5)};
-            pointer-events: ${item.i == 0 ? "all" : "none"};
+            //pointer-events: ${item.i == 0 ? "all" : "none"};
           `;
   }
 
@@ -167,6 +167,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    pointer-events: visible;
   }
 </style>
 
@@ -181,8 +182,11 @@
 {#if data}
   <div class="container">
     {#each mapped as item}
-      <div class="item" style={style(item)} on:wheel={wheelProxy}>
-        <div class="inner" on:click|stopPropagation={() => link(item.id)}>
+      <div class="item" style={style(item)}>
+        <div
+          class="inner"
+          on:click|stopPropagation={() => link(item.id)}
+          on:wheel={wheelProxy}>
           {#if item.i == 0}
             <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
               <!-- <span class="size">{items.length}</span> -->
