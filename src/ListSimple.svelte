@@ -44,7 +44,7 @@
     "_datum",
     "_material",
     "_abmessung",
-    "_stichwort",
+    // "_stichwort",
   ];
 
   console.log("hello from list", id);
@@ -471,7 +471,7 @@
               </h2>
               <div class="additional">
                 <p class="beschreibung">{item.data._beschreibung}</p>
-                <p><b>Score</b>{item.score}</p>
+                <!-- <p><b>Score</b>{item.score}</p> -->
                 {#each fields as field}
                   <p><b>{field.replace('_', '')}</b>{item.data[field]}</p>
                 {/each}
