@@ -181,11 +181,8 @@
 {#if data}
   <div class="container">
     {#each mapped as item}
-      <div class="item" style={style(item)}>
-        <div
-          class="inner"
-          on:click|stopPropagation={() => link(item.id)}
-          on:wheel={wheelProxy}>
+      <div class="item" style={style(item)} on:wheel={wheelProxy}>
+        <div class="inner" on:click|stopPropagation={() => link(item.id)}>
           {#if item.i == 0}
             <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
               <!-- <span class="size">{items.length}</span> -->
