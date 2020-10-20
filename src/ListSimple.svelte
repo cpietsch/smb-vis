@@ -363,6 +363,7 @@
 
   b {
     width: 150px;
+    min-width: 150px;
   }
 
   .item:last-child .distance {
@@ -372,17 +373,6 @@
   .distance {
     opacity: 1;
     transition: visibility 0s, opacity 1s;
-  }
-
-  .distance div {
-    /* width: 10px; */
-    border: 2px solid rgb(89, 89, 89);
-    border-top-left-radius: 100% 200%;
-    border-top-right-radius: 100% 200%;
-    border-bottom: none;
-    transform: rotate(-90deg) translate(2px, -150%);
-    z-index: 2;
-    /* background-color: blueviolet; */
   }
 
   .distance svg {
