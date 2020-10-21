@@ -350,8 +350,8 @@
   .selected h2 {
     white-space: inherit;
     width: inherit;
-    /* font-size: 1.5em; */
-    /* margin-top: 0.5em; */
+    font-size: 1.3em;
+    margin-top: 0.5em;
     /* margin-bottom: 2em; */
   }
   p {
@@ -418,8 +418,10 @@
     padding-bottom: 1em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     align-items: center;
+  }
+  .link:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
   .link img {
     margin-right: 1em;

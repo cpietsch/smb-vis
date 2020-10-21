@@ -134,11 +134,12 @@
     top: -18px;
     width: 32px;
     height: 32px;
-    opacity: 0.6;
+
     cursor: pointer;
   }
-  .close:hover {
-    opacity: 1;
+  .close:hover:before,
+  .close:hover:after {
+    background-color: #000;
   }
   .close:before,
   .close:after {
@@ -166,17 +167,21 @@
 {/if} -->
 
 {#if data}
-<div class="container">
-  {#each mapped as item}
-  <div class="item" style={style(item)} on:click|preventDefault={() => link(item.id)}>
-    
-    {#if item.i == 0}
-    <span class="icon" ><img alt="Ähnliche Objekte" src="liste.png" ><span class="size">{items.length}</span></span>
-    <div class="close" on:click|preventDefault={() => selectedItem.set(undefined)}></div>
-    {/if}
-    {item.data._titel}
-   </div>
-  {/each}
-    
-</div>
+  <div class="container">
+    {#each mapped as item}
+      <div
+        class="item"
+        style={style(item)}
+        on:click|preventDefault={() => link(item.id)}>
+        {#if item.i == 0}
+          <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" /><span
+              class="size">{items.length}</span></span>
+          <div
+            class="close"
+            on:click|preventDefault={() => selectedItem.set(undefined)} />
+        {/if}
+        {item.data._titel}
+      </div>
+    {/each}
+  </div>
 {/if}
