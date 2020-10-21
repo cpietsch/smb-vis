@@ -102,7 +102,7 @@
         })
         .filter((a, i) => i < 30);
       console.log(items);
-      current = $searchResults[0];
+      current = undefined;
     } else {
       const distances = $getSelectedDistances(id);
 
