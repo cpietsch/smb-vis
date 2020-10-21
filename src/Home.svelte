@@ -3,9 +3,9 @@
 
   const visibleScaleCutoff = 1.01;
 
-  export let route;
+  import { route } from "./stores";
 
-  $: visible = $lastTransformed.k < visibleScaleCutoff && route.view != "list";
+  $: visible = $lastTransformed.k < visibleScaleCutoff && $route.view != "list";
 
   function reset() {
     window.location.hash = "#/cloud/reset";
