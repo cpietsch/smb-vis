@@ -87,9 +87,9 @@
     setTimeout(() => (animating = false), 1000);
   }
   $: {
-    if (id === "suche" && $searchstring !== search) {
-      $searchstring = search;
-    }
+    // if (id === "suche" && $searchstring !== search) {
+    //   $searchstring = search;
+    // }
   }
 
   $: {

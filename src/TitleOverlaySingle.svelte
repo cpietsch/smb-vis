@@ -75,6 +75,9 @@
 
   function link(id) {
     window.location.hash = "#/list/" + id;
+    if ($searchstring !== "") {
+      setTimeout(() => searchstring.set(""), 200);
+    }
   }
 
   function wheelProxy(event) {
