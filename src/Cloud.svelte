@@ -15,6 +15,7 @@
     lastTransformed,
     getSelectedDistances,
     history,
+    route,
     anchor,
     renderer as pixiRenderer,
     container as pixiContainer,
@@ -37,8 +38,6 @@
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
-
-  export let route;
 
   console.log("init cloud");
 
@@ -104,14 +103,14 @@
 
   function animateToList() {}
 
-  let lastRoute = { ...route };
+  let lastRoute = { ...$route };
   $: {
-    console.log(route, lastRoute);
-    const id = route.payload;
+    console.log($route, lastRoute);
+    const id = $route.payload;
 
     if (
       (lastRoute.view === "" || lastRoute.view === "list") &&
-      route.view === "cloud"
+      $route.view === "cloud"
     ) {
       fadeInAll().then(() => {
         if (id) {
@@ -119,11 +118,11 @@
         }
       });
     }
-    if (route.view === "cloud" && id === "reset") {
+    if ($route.view === "cloud" && id === "reset") {
       console.log("reset");
 
       resetZoom();
-    } else if (route.view === "cloud" && id) {
+    } else if ($route.view === "cloud" && id) {
       // console.log(selection, "DOIT");
 
       zoomToId(id)
@@ -135,7 +134,7 @@
         });
     }
 
-    lastRoute = { ...route };
+    lastRoute = { ...$route };
   }
 
   $: highlight($selectedItem);

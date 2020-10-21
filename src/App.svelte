@@ -13,22 +13,17 @@
   import Annotations from "./Annotations.svelte";
   import Monadic from "./MonadicD3.svelte";
 
-  import { state } from "./stores";
+  import { route } from "./stores";
   import TitleOverlaySingle from "./TitleOverlaySingle.svelte";
 
-  let route = {
-    view: "cloud",
-    payload: undefined,
-    extra: undefined,
-  };
-
-  async function hashchange() {
+  function hashchange() {
     const r = window.location.hash.substring(2).split("/");
-    console.log(r);
-    route.view = r[0];
-    route.payload = r[1] ? r[1] : route.payload;
-    route.extra = r[2] ? r[2] : route.extra;
-    console.log(route);
+    console.log("set route", r);
+    route.set({
+      view: r[0],
+      payload: r[1],
+      extra: r[2],
+    });
   }
 
   onMount(hashchange);
@@ -64,21 +59,21 @@
   <Dataloader>
     <Renderer>
       <TextureLoader />
-      <Cloud {route} />
+      <Cloud />
       <Annotations />
     </Renderer>
-
-    {#if route.view === 'list'}
-      <List id={route.payload} search={route.extra} />
+    {#if $route.view === 'list'}
+      <List id={$route.payload} search={$route.extra} />
     {/if}
-    {#if route.view === 'monadic'}
-      <Monadic id={route.payload} />
+    {#if $route.view === 'monadic'}
+      <Monadic id={$route.payload} />
     {/if}
   </Dataloader>
-  {#if route.view === 'cloud' || route.view === ''}
+
+  {#if $route.view === 'cloud' || $route.view === ''}
     <TitleOverlaySingle />
   {/if}
   <!-- {#if route.view != 'list'}{/if} -->
-  <Header {route} />
+  <Header />
   <!-- <Details /> -->
 </main>

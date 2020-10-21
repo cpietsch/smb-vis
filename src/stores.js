@@ -17,6 +17,12 @@ export const container = writable()
 
 export const divContainer = writable()
 
+export const route = writable({
+    view: "cloud",
+    payload: undefined,
+    extra: undefined,
+})
+
 // export const container = readable(null, set => {
 //     const c = new Container()
 //     c.sortableChildren = true
