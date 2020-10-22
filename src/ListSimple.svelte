@@ -195,12 +195,14 @@
   }
   .selected .picture {
     width: 50%;
+    cursor: zoom-in;
   }
 
   .selected.large .picture {
     width: 1024px;
     max-width: 100%;
     max-height: 100%;
+    cursor: zoom-out;
   }
 
   /* .selected.large .detail {
