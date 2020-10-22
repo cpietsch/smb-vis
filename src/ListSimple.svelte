@@ -456,8 +456,9 @@
         <div class="row detail">
           <div class="picture">
             <picture
+              loading="lazy"
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
-              <img src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
+              <img loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
             <div
               class="center"
