@@ -17,6 +17,7 @@
     history,
     route,
     anchor,
+    searchstring,
     renderer as pixiRenderer,
     container as pixiContainer,
     divContainer,
@@ -84,6 +85,13 @@
     );
     // renderProjection(lastProjection);
   }
+
+  searchstring.subscribe(s => {
+    if(s !== "" && lastTransform.k !== 1){
+      console.log("reset search")
+      resetZoom().catch(e => {}); //nasty catch
+    }
+  })
 
   $: renderProjection($umapProjection);
 
@@ -279,6 +287,7 @@
   function resetZoom() {
     stale = true;
     return selection
+      //.interrupt()
       .transition()
       .duration(1000)
       .call(zoom.transform, zoomIdentity)
