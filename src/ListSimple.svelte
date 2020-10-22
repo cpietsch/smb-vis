@@ -219,7 +219,14 @@
 
   .selected.large .meta {
     /* padding-left: 1em; */
-    display: none;
+    /*display: none;*/
+    visibility: hidden;
+    transition: none;
+  }
+  .selected.large .additional {
+    /* padding-left: 1em; */
+    /*display: none;*/
+    visibility: hidden;
     transition: none;
   }
 
@@ -271,6 +278,8 @@
     padding-left: 2em;
     padding-bottom: 200px;
     background: #eee;
+    transition: visibility;
+    transition-delay: 0.5s;
     /* box-shadow: 10px 0 5px -2px #888; */
     /* background: #f9f9f9; */
   }
