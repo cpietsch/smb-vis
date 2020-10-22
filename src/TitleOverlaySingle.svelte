@@ -128,7 +128,8 @@
 
   .close {
     position: absolute;
-    right: -40px;
+    right: -33px;
+    top: 16px;
     width: 32px;
     height: 32px;
     opacity: 0.6;
@@ -142,8 +143,8 @@
     position: absolute;
     left: 15px;
     content: " ";
-    height: 33px;
-    width: 4px;
+    height: 20px;
+    width: 3px;
     background-color: #333;
   }
   .close:before {
@@ -161,7 +162,6 @@
     margin: 1em;
     background: white;
     padding: 1em;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     /* display: flex; */
     /* flex-flow: column; */
@@ -172,6 +172,26 @@
     cursor: pointer;
     pointer-events: visible;
   }
+  .inner:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  .inner:hover .arrow {
+    right: -3px;
+  }
+
+
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+    position: relative;
+    transform: rotate(-45deg);
+    margin-right: 15px;
+    right:0;
+    transition: right 0.3s;
+  }
+
 </style>
 
 <!-- {#if data}
@@ -191,9 +211,9 @@
           on:click|stopPropagation={() => link(item.id)}
           on:wheel={wheelProxy}>
           {#if item.i == 0}
-            <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" />
+            <!-- <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" /> -->
               <!-- <span class="size">{items.length}</span> -->
-            </span>
+            <span class="arrow"></span>
             <div
               class="close"
               on:click|stopPropagation={() => selectedItem.set(null)} />

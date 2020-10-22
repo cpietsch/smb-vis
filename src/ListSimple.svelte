@@ -314,11 +314,18 @@
     border-width: 0 3px 3px 0;
     display: inline-block;
     padding: 5px;
+    position: relative;
   }
 
   .left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
+  }
+
+  .right {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    top: 3px;
   }
 
   .selected .center {
@@ -410,7 +417,7 @@
 
   .link {
     cursor: pointer;
-    display: inline-flex;
+    display: flex;
     background: white;
     border-radius: 6px;
     padding: 1em;
@@ -425,6 +432,9 @@
   }
   .link img {
     margin-right: 1em;
+  }
+  .link span {
+    margin-left: 10px;
   }
 
   b {
@@ -484,7 +494,7 @@
                   <span
                     class="link"
                     on:click|preventDefault={() => link(item.id, true)}>
-                    <img alt="ähnliche Objekte" src="liste.png" />
+                    <div class="arrow right" />
                     <span>Zeige ähnliche Objekte als Pfad</span>
                   </span>
                 </p>
