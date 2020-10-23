@@ -72,25 +72,55 @@
     }
 
     animating = true;
-    selection()
-      .transition("scroll")
-      .duration(1000)
-      .ease(cubicInOut)
-      .tween("scroll", function () {
-        const scroll = interpolateNumber(container.scrollTop, 0);
-        return function (t) {
-          container.scrollTop = scroll(t);
-        };
-      });
-
+    scrollTo(0)
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
   }
-  $: {
-    // if (id === "suche" && $searchstring !== search) {
-    //   $searchstring = search;
-    // }
+
+  function scrollTo(to, duration = 1000){
+    console.log("scrollTo", to)
+    return selection()
+      .transition("scroll")
+      .duration(duration)
+      .ease(cubicInOut)
+      .tween("scroll", function () {
+        const scroll = interpolateNumber(container.scrollTop, to);
+        return function (t) {
+          container.scrollTop = scroll(t);
+        };
+      });
+  }
+
+  // $: {
+  //   console.log(current)
+  //   if(container){
+  //     const div = container.querySelector('#l'+current)
+  //     // console.log(div.getBoundingClientRect().top)
+  //     setTimeout(() => {
+  //       const rect = div.getBoundingClientRect()
+  //       console.log(rect)
+  //       if(rect.top < 0) {
+  //         scrollTo(container.scrollTop + rect.top -20, 200)
+  //       }
+  //       //.scrollIntoView()
+  //     }, 502)
+  //   }
+  // }
+
+  function scroll(id){
+    // console.log(e,id)
+    // console.log(container)
+    const div = container.querySelector('#l'+id)
+      // console.log(div.getBoundingClientRect().top)
+    setTimeout(() => {
+      const rect = div.getBoundingClientRect()
+      // console.log(rect)
+      if(rect.top < 0) {
+        scrollTo(container.scrollTop + rect.top -20, 400)
+      }
+      //.scrollIntoView()
+    }, 502)
   }
 
   $: {
@@ -460,6 +490,7 @@
     {#each items as item (item.id)}
       <div
         class="item"
+        id="l{item.id}"
         class:large={item.id === current && large}
         class:current={item.id === id}
         class:selected={item.id === current}>
@@ -468,7 +499,7 @@
           <div class="picture">
             <picture
               loading="lazy"
-              on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
+              on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
               <img loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
             <div
@@ -485,7 +516,7 @@
           <div class="metacontainer">
             <div class="meta">
               <h2
-                on:click={() => ((large = false), (current = current === item.id ? undefined : item.id))}>
+                on:click={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
                 {item.data.titel}
               </h2>
               <div class="additional">
