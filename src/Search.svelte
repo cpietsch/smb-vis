@@ -39,21 +39,22 @@
         padding: 1em;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         border-radius: 6px; */
-    display: flex;
+    /*display: flex;
     flex-flow: column;
     z-index: 100;
-    overflow: hidden;
+    overflow: hidden;*/
     pointer-events: visible;
   }
 
   .item {
-    display: flex;
+    /*display: flex;
     justify-content: space-between;
-    flex-flow: column;
+    flex-flow: column;*/
     width: 100%;
   }
 
   #search {
+    font-size: 13px;
     width: 100%;
     border: none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -61,6 +62,22 @@
     background: #fff;
     padding: 1em;
   }
+
+  #search + svg {
+    margin-left: -30px;
+    margin-top: 13px;
+    position: absolute;
+  }
+
+  #search + svg {
+    visibility: hidden;
+  }
+  #search:placeholder-shown + svg {
+    visibility: visible;
+    opacity: 0.6;
+  }
+
+  #search:focus {outline:0;}
 </style>
 
 <div class="search">
@@ -73,6 +90,10 @@
           id="search"
           placeholder="Suche"
           bind:value={$searchstring} />
+          <svg role="presentation" class="i-search" viewBox="0 0 32 32" width="14" height="14" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+            <circle cx="14" cy="14" r="12" />
+            <path d="M23 23 L30 30" />
+          </svg>
       </form>
     </div>
   </div>
