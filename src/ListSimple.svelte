@@ -1,5 +1,7 @@
 <script>
   import { onMount, setContext, tick } from "svelte";
+  import Header from "./Header.svelte";
+
   import {
     dimensions,
     sprites,
@@ -29,7 +31,6 @@
   import { tweened } from "svelte/motion";
 
   export let id;
-  export let search;
 
   let current = id;
   let large = false;
@@ -454,6 +455,7 @@
 </style>
 
 <div class="container" bind:this={container}>
+  <Header />
   <div class="liste" class:animating>
     {#each items as item (item.id)}
       <div

@@ -73,7 +73,8 @@
   {#if $route.view === 'cloud' || $route.view === ''}
     <TitleOverlaySingle />
   {/if}
-  <!-- {#if route.view != 'list'}{/if} -->
-  <Header />
+  {#if $route.view !== 'list'}
+    <Header />
+  {/if}
   <!-- <Details /> -->
 </main>
