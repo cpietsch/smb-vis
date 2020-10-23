@@ -8,6 +8,7 @@
     selectedItem,
     getSelectedDistances,
     umapProjection,
+    darkmode,
     lastTransformed,
     spriteScale,
     detailData,
@@ -115,7 +116,7 @@
       // console.log(div.getBoundingClientRect().top)
     setTimeout(() => {
       const rect = div.getBoundingClientRect()
-      // console.log(rect)
+      // console.log(rect.bottom)
       if(rect.top < 0) {
         scrollTo(container.scrollTop + rect.top -20, 400)
       }
@@ -168,6 +169,12 @@
 
     justify-content: center;
     display: flex;
+    color: #515151;
+  }
+
+  .dark {
+    background-color: #000;
+    color: #cecece;
   }
 
   .liste {
@@ -288,6 +295,9 @@
     transition: visibility 0s, opacity 0.5s;
     transition-delay: 0.5s;
   }
+  .dark .metacontainer,.dark .selected .meta {
+    background: #000;
+  }
   .metacontainer {
     /* margin: 20px; */
     display: flex;
@@ -298,7 +308,6 @@
   .meta {
     flex-grow: 1;
     /* max-width: 60%; */
-    color: #515151;
     position: absolute;
     padding-left: 1em;
     /* transition: visibility 0s;
@@ -328,6 +337,11 @@
     /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.75); */
   }
 
+  .dark .selected .meta::before {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.11), rgba(0, 0, 0, 0));
+    box-shadow: none;
+  }
+
   .center {
     position: absolute;
     display: none;
@@ -345,10 +359,15 @@
     transition: left 0.2s, opacity 0.2s;
   }
 
+
   .center:hover {
     left: -92px;
     opacity: 1;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .center {
+    background-color: #525252
   }
 
   .arrow {
@@ -479,12 +498,16 @@
     margin-left: 10px;
   }
 
+  .dark .link {
+    background-color: #525252
+  }
+
   b {
     /* text-transform: capitalize; */
   }
 </style>
 
-<div class="container" bind:this={container}>
+<div class="container" bind:this={container} class:dark={$darkmode}>
   <Header />
   <div class="liste" class:animating>
     {#each items as item (item.id)}

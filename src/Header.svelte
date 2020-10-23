@@ -1,7 +1,7 @@
 <script>
   import Search from "./Search.svelte";
   import Home from "./Home.svelte";
-  import { route } from "./stores";
+  import { route, darkmode } from "./stores";
 </script>
 
 <style>
@@ -20,7 +20,7 @@
   }
 </style>
 
-<div class="header" class:shadow={$route.view === 'list'}>
+<div class="header" class:shadow={$route.view === 'list' && !$darkmode}>
   <Home />
   <Search />
 </div>

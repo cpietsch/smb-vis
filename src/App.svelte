@@ -5,6 +5,7 @@
   import TextureLoader from "./TextureLoader.svelte";
   // import Stage from "./Stage.svelte";
   // import Layout from "./Layout.svelte";
+  import Mode from "./Mode.svelte";
   import Header from "./Header.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
@@ -76,5 +77,6 @@
   {#if $route.view !== 'list'}
     <Header />
   {/if}
+  <Mode />
   <!-- <Details /> -->
 </main>

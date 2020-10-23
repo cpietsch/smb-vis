@@ -1,5 +1,5 @@
 <script>
-  import { lastTransformed } from "./stores.js";
+  import { lastTransformed, darkmode } from "./stores.js";
 
   const visibleScaleCutoff = 1.01;
 
@@ -26,6 +26,10 @@
     /* background: #fff; */
     /* backdrop-filter: blur(2px); */
     flex-direction: column;
+  }
+
+  .dark {
+    color: #cecece;
   }
 
   .blur {
@@ -70,7 +74,7 @@
   } */
 </style>
 
-<div class="home">
+<div class="home" class:dark={$darkmode}>
   <!-- <div class="box blur">
   <h1>Visuelle Exploration</h1>
   <h2>zweier musealer Sammlungen</h2>
