@@ -53,19 +53,7 @@
 
   let items = [];
 
-  // const size = tweened(1, {
-  //   duration: 300,
-  //   easing: cubicInOut,
-  // });
-
-  // $: {
-  //   console.log($size);
-  // }
-
   async function link(id, internal) {
-    // window.scrollTo({ top: 0 });
-    // container.scrollTop = 0;
-    // console.log(container.scrollTop);
     if (!internal) {
       window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
@@ -93,30 +81,22 @@
       });
   }
 
-  // $: {
-  //   console.log(current)
-  //   if(container){
-  //     const div = container.querySelector('#l'+current)
-  //     // console.log(div.getBoundingClientRect().top)
-  //     setTimeout(() => {
-  //       const rect = div.getBoundingClientRect()
-  //       console.log(rect)
-  //       if(rect.top < 0) {
-  //         scrollTo(container.scrollTop + rect.top -20, 200)
-  //       }
-  //       //.scrollIntoView()
-  //     }, 502)
-  //   }
-  // }
+  function svgPath(distance){
+    return `
+            M${2 + distance * 3} 0
+            C ${2 + distance * 3} 15
+            2 15
+            2 30
+            C 2 45
+            ${2 + distance * 3} 50
+            ${2 + distance * 3} 60
+          `
+  }
 
   function scroll(id){
-    // console.log(e,id)
-    // console.log(container)
     const div = container.querySelector('#l'+id)
-      // console.log(div.getBoundingClientRect().top)
     setTimeout(() => {
       const rect = div.getBoundingClientRect()
-      // console.log(rect.bottom)
       if(rect.top < 0) {
         scrollTo(container.scrollTop + rect.top -20, 400)
       }
@@ -451,10 +431,6 @@
               <div class="arrow left" />
               <span>Wolke</span>
             </div>
-            <!-- <div
-              class="cloud"
-              on:click|preventDefault={() => link(item.id, false)} /> -->
-            <!-- <div class="resize" on:click={() => (large = !large)} /> -->
           </div>
           <div class="metacontainer">
             <div class="meta">
@@ -464,7 +440,6 @@
               </h2>
               <div class="additional">
                 <p class="beschreibung">{item.data.beschreibung}</p>
-                <!-- <p><b>Score</b>{item.score}</p> -->
                 <p><b>Sammlung</b><span>{item.data.sammlunglong}</span></p>
                 {#each fields as field}
                   {#if item.data[field[0]] !== ''}
@@ -496,15 +471,7 @@
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
                 style="fill:none; stroke-width:2px; stroke:#515151;"
-                d="
-            M{2 + item.distance * 3} 0
-            C {2 + item.distance * 3} 15
-            2 15
-            2 30
-            C 2 45
-            {2 + item.distance * 3} 50
-            {2 + item.distance * 3} 60
-          " />
+                d={svgPath(item.distance)} />
             </svg>
           {/if}
         </div>
