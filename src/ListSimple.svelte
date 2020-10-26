@@ -344,6 +344,7 @@
 
   .center {
     position: absolute;
+    cursor:pointer;
     display: none;
     left: -85px;
     top: calc(50% - 20px);
