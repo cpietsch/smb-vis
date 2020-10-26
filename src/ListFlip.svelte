@@ -5,6 +5,7 @@
     sprites,
     selectedItem,
     selectedDistances,
+    getSelectedDistances,
     umapProjection,
     lastTransformed,
     spriteScale,
@@ -26,9 +27,10 @@
   }, 500);
 
   function comeBack() {
-    animate = true;
+    animate = !animate;
     setTimeout(() => {
       // state.set("cloud");
+      window.location.hash = "#/list/" + id;
     }, 3000);
   }
 
@@ -36,17 +38,17 @@
     const { x, y, k } = $lastTransformed;
     console.log(x, y, k);
     const transform = zoomIdentity.translate(x, y).scale(k);
-    const { id } = $selectedItem;
-    const distances = $selectedDistances;
-    console.log(distances);
+    const distances = $getSelectedDistances(id);
+    // console.log(distances);
     const items = distances.map((e) =>
       $umapProjection.find((d) => e[0] == d.id)
-    );
+    )//.filter((d,i) => i < 5);
     mapped = items.map((d, i) => {
       const id = d.id;
       const x = transform.applyX(d.x);
       const y = transform.applyY(d.y);
       const sprite = $sprites.get(d.id);
+      // console.log(id, sprite)
       const texture = sprite.texture;
       const frame = texture.frame;
       const src = texture.baseTexture.resource.source.src;
@@ -67,7 +69,7 @@
           background: url(${item.src});
           background-position: -${item.frame.x}px -${item.frame.y}px;
           position: absolute;
-          transition-delay: ${item.i / 100}s;
+          transition-delay: ${(mapped.length - item.i) * 0.3}s;
           z-index: ${100 - item.i};
         `;
   }
@@ -83,7 +85,7 @@
           background: url(${item.src});
           background-position: -${item.frame.x}px -${item.frame.y}px;
           position: absolute;
-          transition-delay: ${item.i / 100}s;
+          transition-delay: ${item.i * 0.3}s;
           z-index: ${100 - item.i};
         `;
   }
@@ -99,7 +101,11 @@
     height: 100%;
     overflow: auto;
     position: absolute;
+    left: 0;
+    top: 0;
     background-color: #eeeeee;
+    overflow: hidden;
+    pointer-events: all;
   }
 
   .liste {

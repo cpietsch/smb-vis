@@ -5,7 +5,7 @@
 
   import { route } from "./stores";
 
-  $: visible = $lastTransformed.k < visibleScaleCutoff && $route.view != "list";
+  $: visible = $lastTransformed.k < visibleScaleCutoff && ($route.view != "list" && $route.view != "monadic");
 
   function reset() {
     window.location.hash = "#/cloud/reset";

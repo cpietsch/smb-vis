@@ -9,6 +9,7 @@
   import Header from "./Header.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
+  import Liste from "./ListFlip.svelte";
   import List from "./ListSimple.svelte";
   import Debug from "./Debug.svelte";
   import Annotations from "./Annotations.svelte";
@@ -59,15 +60,21 @@
 <main>
   <Dataloader>
     <Renderer>
-      <TextureLoader />
+      <TextureLoader>
+
+        {#if $route.view === 'liste'}
+         <Liste id={$route.payload} />
+        {/if}
+      </TextureLoader>
       <Cloud />
       <Annotations />
     </Renderer>
-    {#if $route.view === 'list'}
-      <List id={$route.payload} />
-    {/if}
+  
     {#if $route.view === 'monadic'}
       <Monadic id={$route.payload} />
+    {/if}
+    {#if $route.view === 'list'}
+      <List id={$route.payload} />
     {/if}
   </Dataloader>
 
