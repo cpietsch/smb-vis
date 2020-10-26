@@ -16,6 +16,15 @@
 
   // $: console.log($fuseSearch)
 
+  let timer;
+
+  const debounce = v => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			searchstring.set(v)
+		}, 350);
+	}
+
   function handleSubmit() {
     console.log($searchstring);
     window.scrollTo({ top: 0 });
@@ -89,7 +98,8 @@
           type="search"
           id="search"
           placeholder="Suche"
-          bind:value={$searchstring} />
+          on:input={({ target: { value } }) => debounce(value)}
+          value={$searchstring} />
           <svg role="presentation" class="i-search" viewBox="0 0 32 32" width="14" height="14" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
             <circle cx="14" cy="14" r="12" />
             <path d="M23 23 L30 30" />
