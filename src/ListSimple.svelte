@@ -148,7 +148,7 @@
       });
     }
 
-    console.log(items);
+    // console.log(items);
   }
 
   onMount(() => {
@@ -519,7 +519,9 @@
         class:current={item.id === id}
         class:selected={item.id === current}>
         <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
-        <div class="row detail">
+        <div class="row detail"
+          on:click={(e) => ((current =  item.id), scroll(current))}>
+          
           <div class="picture">
             <picture
               loading="lazy"
@@ -540,7 +542,7 @@
           <div class="metacontainer">
             <div class="meta">
               <h2
-                on:click={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
+                on:clicks={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
                 {item.data.titel}
               </h2>
               <div class="additional">

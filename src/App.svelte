@@ -64,7 +64,7 @@
       <Annotations />
     </Renderer>
     {#if $route.view === 'list'}
-      <List id={$route.payload} search={$route.extra} />
+      <List id={$route.payload} />
     {/if}
     {#if $route.view === 'monadic'}
       <Monadic id={$route.payload} />
