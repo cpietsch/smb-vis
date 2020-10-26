@@ -70,6 +70,9 @@
   .head {
     text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead, 0 -2px 3px #eeeeeead;
   }
+  .dark .head {
+    text-shadow: -2px 0 3px #000, 0 2px 3px #000, 2px 0 3px #000, 0 -2px 3px #000;
+  }
   /* 
   .head {
     padding: 1em;
