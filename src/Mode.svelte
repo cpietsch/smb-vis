@@ -23,10 +23,10 @@
   .icon {
     width: 18px;
     height: 18px;
-    background: url("moon.svg")
+    background: url("../moon.svg")
   }
   .dark {
-    background: url("sun.svg")
+    background: url("../sun.svg")
   }
 </style>
 
