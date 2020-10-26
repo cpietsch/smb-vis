@@ -159,11 +159,11 @@
 <style>
   .container {
     width: 100%;
-    /* height: 100%; */
+    height: 100%;
     position: absolute;
     background-color: #eeeeee;
     top: 0;
-    height: 100%;
+    
     overflow-y: scroll;
     overflow-x: hidden;
 
@@ -196,16 +196,12 @@
   }
   .row {
     display: flex;
-    /* margin: 0.5em; */
   }
   .picture {
-    /* margin-right: 1em; */
-    /* z-index: 10; */
     cursor: pointer;
     position: relative;
     width: 100px;
     transition: width 0.5s;
-    /*max-width: 1024px;*/
     display: flex;
     z-index: 10;
   }
@@ -214,18 +210,6 @@
   }
   .picture img {
     width: 100%;
-  }
-  .resize {
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    right: 5px;
-    top: 5px;
-    position: absolute;
-    display: none;
-  }
-  .selected .resize {
-    display: block;
   }
 
   .selected {
@@ -243,49 +227,23 @@
     cursor: zoom-out;
   }
 
-  /* .selected.large .detail {
-    flex-direction: column;
-  }
-  .selected.large .additional {
-    position: relative;
-  } */
-
-  /* .selected.large .additional {
-    transition: none;
-    display:none;
-  } */
-
   .selected.large .meta {
-    /* padding-left: 1em; */
-    /*display: none;*/
     visibility: hidden;
     transition: none;
   }
   .selected.large .additional {
-    /* padding-left: 1em; */
-    /*display: none;*/
     visibility: hidden;
     transition: none;
   }
-
-  /* .large .meta {
-    width: 80vw;
-  } */
 
   .additional {
     opacity: 0;
-
-    /* display: none; */
-    /* position: absolute; */
     flex-direction: column;
     visibility: hidden;
-    /* width: 45vw; */
   }
   .additional .beschreibung {
-    display: -webkit-box;
-    /* -webkit-line-clamp: 9;
-    -webkit-box-orient: vertical;
-    overflow: hidden; */
+    display: block;
+
   }
   .selected .additional {
     display: flex;
@@ -360,7 +318,6 @@
     transition: left 0.2s, opacity 0.2s;
   }
 
-
   .center:hover {
     left: -92px;
     opacity: 1;
@@ -394,34 +351,16 @@
     display: inline;
   }
 
-  .cloud {
-    position: absolute;
-    display: none;
-    left: -20px;
-    top: calc(60%);
-    width: 20px;
-    height: 40px;
-    background-color: aqua;
-  }
-
-  .selected .cloud {
-    display: inline;
-  }
-
   h2 {
     font-size: 1em;
     cursor: pointer;
     width: 30%;
-    /* text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; */
   }
   .selected h2 {
     white-space: inherit;
     width: inherit;
     font-size: 1.3em;
     margin-top: 0.5em;
-    /* margin-bottom: 2em; */
   }
   p {
     line-height: 1.4em;
@@ -445,11 +384,9 @@
   }
 
   .distance svg {
-    /* width: 10px; */
     position: relative;
     background-color: none;
     z-index: 2;
-    /* background-color: blueviolet; */
   }
 
   .animating .distance {
@@ -461,18 +398,6 @@
     color: #515151;
   }
 
-  /* .current:not(.selected) .metacontainer {
-     background: #ffffff8c; 
-  } */
-
-  /* .current .meta {
-    background: none;
-  } */
-
-  /* .current .distance div {
-    border-width: 7px;
-  } */
-
   .current .sobjects {
     display: none;
   }
@@ -482,11 +407,7 @@
     display: flex;
     background: white;
     border-radius: 6px;
-    padding: 1em;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    padding: 10px;
     align-items: center;
   }
   .link:hover {
@@ -498,14 +419,10 @@
   .link span {
     margin-left: 10px;
   }
-
   .dark .link {
     background-color: #525252
   }
 
-  b {
-    /* text-transform: capitalize; */
-  }
 </style>
 
 <div class="container" bind:this={container} class:dark={$darkmode}>
