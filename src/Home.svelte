@@ -67,6 +67,9 @@
   .home {
     pointer-events: visible;
   }
+  .head {
+    text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead, 0 -2px 3px #eeeeeead;
+  }
   /* 
   .head {
     padding: 1em;
