@@ -10,7 +10,7 @@
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
   import Liste from "./ListFlip.svelte";
-  import List from "./ListSimple.svelte";
+  import List from "./ListCanvas.svelte";
   import Debug from "./Debug.svelte";
   import Annotations from "./Annotations.svelte";
   import Monadic from "./MonadicD3.svelte";
@@ -60,12 +60,7 @@
 <main>
   <Dataloader>
     <Renderer>
-      <TextureLoader>
-
-        {#if $route.view === 'liste'}
-         <Liste id={$route.payload} />
-        {/if}
-      </TextureLoader>
+      <TextureLoader />
       <Cloud />
       <Annotations />
     </Renderer>

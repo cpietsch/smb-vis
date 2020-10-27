@@ -5,6 +5,7 @@
     renderer as pixiRenderer,
     container as pixiContainer,
     sprites,
+    texturesLoaded
   } from "./stores.js";
   import { get } from "svelte/store";
 
@@ -32,6 +33,7 @@
     }
     renderer.render(container);
     loading = false;
+    texturesLoaded.set(true)
   })();
 
   $: {

@@ -104,6 +104,12 @@
     }, 502)
   }
 
+  function loaded(e,sid){
+    if(sid === id){
+      console.log("LOADED", e, e.target.getBoundingClientRect());
+    }
+  }
+
   $: {
     if (id === "suche") {
       console.log($searchResults);
@@ -131,7 +137,16 @@
     // console.log(items);
   }
 
-  onMount(() => {
+
+  // function loaded(e){
+  //   console.log("!!!!!loaded", e)
+  // }
+
+  onMount(async () => {
+    await tick()
+    const pic = container.querySelector('#l'+id).querySelector(".picture")
+    const box = pic.getBoundingClientRect()
+    console.log("box", box)
     return () => {};
   });
 </script>
@@ -150,6 +165,7 @@
     justify-content: center;
     display: flex;
     color: #515151;
+    visibility: hidden;
   }
 
   .dark {
@@ -158,6 +174,7 @@
   }
 
   .liste {
+    
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -229,7 +246,7 @@
     display: flex;
 
     opacity: 1;
-    visibility: visible;
+    /* visibility: visible; */
     transition: visibility 0s, opacity 0.5s;
     transition-delay: 0.5s;
   }
@@ -405,6 +422,8 @@
 
 </style>
 
+<!-- <svelte:window on:load={loaded}/> -->
+
 <div class="container" bind:this={container} class:dark={$darkmode}>
   <Header />
   <div class="liste" class:animating>
@@ -422,8 +441,9 @@
           <div class="picture">
             <picture
               loading="lazy"
+              
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
-              <img loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
+              <img on:load={e => loaded(e,item.id)} loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
             </picture>
             <div
               class="center"
