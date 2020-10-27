@@ -37,6 +37,7 @@
     let current = id;
     let large = false;
     let animating = false;
+    let transition = 0;
     let container;
   
     const fields = [
@@ -50,8 +51,8 @@
   
     console.log("hello from list", id);
   
-    const baseUrl = "https://vikusviewer.fh-potsdam.de/smb/beide/data/1024/";
-  
+    const baseUrl = "https://vikusviewer.fh-potsdam.de/smb/beide/data/";
+
     let items = [];
   
     async function link(id, internal) {
@@ -104,13 +105,7 @@
         //.scrollIntoView()
       }, 502)
     }
-  
-    function loaded(e,sid){
-      if(sid === id){
-        console.log("LOADED", e, e.target.getBoundingClientRect());
-      }
-    }
-  
+
     $: {
       if (id === "suche") {
         console.log($searchResults);
@@ -131,33 +126,181 @@
             distance = score - distances[i + 1][1];
           }
           const data = $detailData.get(id);
-          return { id, score, data, distance, i };
+          const projection = $umapProjection.find((d) => d.id === id)
+          return { id, score, data, distance, i, projection };
         });
       }
   
       // console.log(items);
     }
-  
-  
-    // function loaded(e){
-    //   console.log("!!!!!loaded", e)
-    // }
+
+    let loadedMap = []
+    let loadedAll = false
+    
+    function loaded(e,sid){
+        console.log(loadedMap.length)
+        loadedMap.push(sid)
+        if(loadedMap.length === items.length) loadedAll = true
+    }
+
+    // $: loadedAll = loadedMap.length > 0 && loadedMap.length === items.length
+    $: {
+        console.log("loadedAll", loadedAll)
+        if(loadedAll){
+            domBoxes = getDomBoxes()
+            console.log("domBoxes", domBoxes)
+
+            canvasBoxes = getCanvasBoxes()
+            console.log("canvasBoxes", canvasBoxes)
+
+            transition = 1
+            setTimeout(() => (transition = 2), 100)
+            setTimeout(() => (transition = 3), 4000)
+        }
+    }
+
+
+    let domBoxes = [];
+    let canvasBoxes = [];
+
+    function getDomBoxes(){
+        return items.map(({ id, i }) => {
+            const pic = container.querySelector('#l'+id).querySelector(".picture")
+            const { x,y,width,height } = pic.getBoundingClientRect()
+            return { id, i, x,y,width,height }
+        })
+    }
+
+    function getCanvasBoxes(){
+        const { x, y, k } = $lastTransformed;
+        const transform = zoomIdentity.translate(x, y).scale(k);
+        const distances = $getSelectedDistances(id);
+        // console.log(distances);
+        return items.map((d, i) => {
+            const id = d.id;
+            const sprite = $sprites.get(d.id);
+            const {width,height} = sprite;
+            const w = width*transform.k;
+            const h = height*transform.k
+            const x = transform.applyX(d.projection.x) - w/2;
+            const y = transform.applyY(d.projection.y) -h/2;
+            return { id, i, x, y, width: w,height: h };
+        });
+    }
+
+    function domStyle(item) {
+        return `width:${item.width}px;
+            height:${item.height}px;
+            transform: translate(${item.x}px,${item.y}px);`;
+    }
+
+    function canvasStyle(id) {
+        const item = canvasBoxes.find(d => d.id === id)
+        return `width:${item.width}px;
+            height:${item.height}px;
+            transform: translate(${item.x}px,${item.y}px);`;
+    }
   
     onMount(async () => {
-      await tick()
-      const pic = container.querySelector('#l'+id).querySelector(".picture")
-      const box = pic.getBoundingClientRect()
-      console.log("box", box)
+    //   await tick()
+      
       return () => {};
     });
   </script>
+
+  
+  <!-- <svelte:window on:load={loaded}/> -->
+  
+  <div class="container" bind:this={container} class:dark={$darkmode} class:active={transition > 1}>
+    <Header />
+    <div class="transition" class:active={transition != 0}>
+        {#each domBoxes as item (item.id)}
+            <img src="{baseUrl}256/{item.id}.jpg" alt="" style={transition==1 ? canvasStyle(item.id) : domStyle(item)}>
+        {/each}
+    </div>
+    <div class="liste" class:animating class:active={transition == 3}>
+      {#each items as item (item.id)}
+        <div
+          class="item"
+          id="l{item.id}"
+          class:large={item.id === current && large}
+          class:current={item.id === id}
+          class:selected={item.id === current}>
+          <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
+          <div class="row detail"
+            on:click={(e) => ((current =  item.id), scroll(current))}>
+            
+            <div class="picture">
+              <picture
+                on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
+                <!-- <source srcset="{baseUrl}1024/{item.id}.jpg 1024w" > -->
+                <img on:load={e => loaded(e,item.id)} loadings="lazy" src="{baseUrl}256/{item.id}.jpg" alt={item.data._titel} />
+                <!-- {#if item.i < 10}
+                    <Sprite id={item.id} />
+                {/if} -->
+            </picture>
+              <div
+                class="center"
+                on:click|preventDefault={() => link(item.id, false)}>
+                <div class="arrow left" />
+                <span>Wolke</span>
+              </div>
+            </div>
+            <div class="metacontainer">
+              <div class="meta">
+                <h2
+                  on:clicks={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
+                  {item.data.titel}
+                </h2>
+                <div class="additional">
+                  <p class="beschreibung">{item.data.beschreibung}</p>
+                  <p><b>Sammlung</b><span>{item.data.sammlunglong}</span></p>
+                  {#each fields as field}
+                    {#if item.data[field[0]] !== ''}
+                      <p><b>{field[1]}</b><span>{item.data[field[0]]}</span></p>
+                    {/if}
+                  {/each}
+                  <p>
+                    <b>Lizenz</b><span>{item.data.museum},
+                      {item.data.fotograf},
+                      <a
+                        href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                        target="_blank">CC BY-NC-SA 4.0</a></span>
+                  </p>
+                  <p class="sobjects">
+                    <span
+                      class="link"
+                      on:click|preventDefault={() => link(item.id, true)}>
+                      <div class="arrow right" />
+                      <span>Zeige ähnliche Objekte als Pfad</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row distance" style="height: 45px">
+            {#if id != 'suche'}
+              <svg
+                style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
+                <path
+                  style="fill:none; stroke-width:2px; stroke:#515151;"
+                  d={svgPath(item.distance)} />
+              </svg>
+            {/if}
+          </div>
+        </div>
+      {/each}
+    </div>
+  </div>
+  
   
   <style>
     .container {
       width: 100%;
       height: 100%;
       position: absolute;
-      background-color: #eeeeee;
+      
       top: 0;
       
       overflow-y: scroll;
@@ -166,16 +309,39 @@
       justify-content: center;
       display: flex;
       color: #515151;
-      /* visibility: hidden; */
+      transition: background 0s;
+      transition-delay: 0.1s;
     }
-  
+
+    .container.active {
+        background: #eeeeee;
+    }
+
     .dark {
       background-color: #000;
       color: #cecece;
     }
+
+    .transition {
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        top:0;
+        left:0;
+        display: none;
+    }
+    .transition.active {
+        display: block;
+    }
+
+    .transition img {
+        position: absolute;
+        transition: transform 4s, width 4s, height 4s;
+        transition-timing-function: easeInOutCubic;
+    }
   
     .liste {
-      
       display: flex;
       flex-direction: column;
       flex-wrap: nowrap;
@@ -186,6 +352,10 @@
       max-width: 1200px;
       width: 80%;
       margin-top: 120px;
+      visibility: hidden;
+    }
+    .liste.active {
+        visibility:visible;
     }
   
     .item {
@@ -426,83 +596,4 @@
     }
   
   </style>
-  
-  <!-- <svelte:window on:load={loaded}/> -->
-  
-  <div class="container" bind:this={container} class:dark={$darkmode}>
-    <Header />
-    <div class="liste" class:animating>
-      {#each items as item (item.id)}
-        <div
-          class="item"
-          id="l{item.id}"
-          class:large={item.id === current && large}
-          class:current={item.id === id}
-          class:selected={item.id === current}>
-          <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
-          <div class="row detail"
-            on:click={(e) => ((current =  item.id), scroll(current))}>
-            
-            <div class="picture">
-              <picture
-                on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
-                <!-- <img on:load={e => loaded(e,item.id)} loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} /> -->
-                {#if item.i < 10}
-                    <Sprite id={item.id} />
-                {/if}
-            </picture>
-              <div
-                class="center"
-                on:click|preventDefault={() => link(item.id, false)}>
-                <div class="arrow left" />
-                <span>Wolke</span>
-              </div>
-            </div>
-            <div class="metacontainer">
-              <div class="meta">
-                <h2
-                  on:clicks={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
-                  {item.data.titel}
-                </h2>
-                <div class="additional">
-                  <p class="beschreibung">{item.data.beschreibung}</p>
-                  <p><b>Sammlung</b><span>{item.data.sammlunglong}</span></p>
-                  {#each fields as field}
-                    {#if item.data[field[0]] !== ''}
-                      <p><b>{field[1]}</b><span>{item.data[field[0]]}</span></p>
-                    {/if}
-                  {/each}
-                  <p>
-                    <b>Lizenz</b><span>{item.data.museum},
-                      {item.data.fotograf},
-                      <a
-                        href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-                        target="_blank">CC BY-NC-SA 4.0</a></span>
-                  </p>
-                  <p class="sobjects">
-                    <span
-                      class="link"
-                      on:click|preventDefault={() => link(item.id, true)}>
-                      <div class="arrow right" />
-                      <span>Zeige ähnliche Objekte als Pfad</span>
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row distance" style="height: 45px">
-            {#if id != 'suche'}
-              <svg
-                style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
-                <path
-                  style="fill:none; stroke-width:2px; stroke:#515151;"
-                  d={svgPath(item.distance)} />
-              </svg>
-            {/if}
-          </div>
-        </div>
-      {/each}
-    </div>
-  </div>
   
