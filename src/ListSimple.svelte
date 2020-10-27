@@ -293,8 +293,9 @@
   }
 
   .dark .selected .meta::before {
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.11), rgba(0, 0, 0, 0));
-    box-shadow: none;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.20), rgba(0, 0, 0, 0));
+    /* box-shadow: none; */
+    box-shadow: inset 55px -124px 114px -18px rgb(0, 0, 0);
   }
 
   .center {
@@ -437,7 +438,7 @@
         <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
         <div class="row detail"
           on:click={(e) => ((current =  item.id), scroll(current))}>
-          
+
           <div class="picture">
             <picture
               loading="lazy"
