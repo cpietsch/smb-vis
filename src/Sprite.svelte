@@ -16,6 +16,7 @@
     } from "./stores.js";
     import { RenderTexture, Sprite } from "pixi.js";
 
+    // does git username now works ?
 
     export let id;
     let loaded = false
