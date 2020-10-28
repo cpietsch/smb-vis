@@ -207,20 +207,23 @@
       selected = null;
     }
 
-    if (selected) {
-      zoomToExtend(
-        [selected],
-        Math.max(lastTransform.k, clusterZoomLevel),
-        500
-      ).then(() => {
-        stale = false;
-      });
-    }
-
     if ($selectedItem !== selected) {
       // lastSelected = selected;
       selectedItem.set(selected);
     }
+
+    if (selected) {
+      // zoomToExtend(
+      //   [selected],
+      //   Math.max(lastTransform.k, clusterZoomLevel),
+      //   500
+      // ).then(() => {
+      //   stale = false;
+      // });
+      window.location.hash = "#/cloud/" + selected.id;
+    }
+
+
 
     // highlight(lastSelected);
   }
