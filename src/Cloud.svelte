@@ -392,7 +392,7 @@
   }
 
   function zoomed(e) {
-    console.log(e);
+    // console.log(e);
     lastTransform = e.transform;
     container.scale.set(lastTransform.k);
     container.position.x = lastTransform.x;
