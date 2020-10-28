@@ -106,6 +106,8 @@
     }, 502);
   }
 
+  $: res = transition > 2 ? "1024" : "256";
+
   $: {
     if (id === "suche") {
       console.log($searchResults);
@@ -160,7 +162,7 @@
 
       transition = 1;
       setTimeout(() => (transition = 2), 100);
-      setTimeout(() => (transition = 3), 4000);
+      setTimeout(() => (transition = 3), 3100);
     }
   }
 
@@ -196,7 +198,10 @@
   function domStyle(item) {
     return `width:${item.width}px;
             height:${item.height}px;
-            transform: translate(${item.x}px,${item.y}px);`;
+            transform: translate(${item.x}px,${item.y}px);
+            z-index:${100 - item.i};
+            `;
+    //transition-delay: ${item.i * 0.01}s;
   }
 
   function canvasStyle(id) {
@@ -242,7 +247,7 @@
 
   .transition {
     position: absolute;
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 100%;
     height: 100%;
     top: 0;
@@ -255,8 +260,8 @@
 
   .transition img {
     position: absolute;
-    transition: transform 4s, width 4s, height 4s;
-    transition-timing-function: easeInOutCubic;
+    transition: transform 3s, width 3s, height 3s;
+    transition-timing-function: ease-in-out;
   }
 
   .liste {
@@ -550,11 +555,18 @@
             <picture
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
               <!-- <source srcset="{baseUrl}1024/{item.id}.jpg 1024w" > -->
+              <!-- {#if transition == 3}
+                <img
+                  loading="lazy"
+                  src="{baseUrl}1024/{item.id}.jpg"
+                  alt={item.data._titel} />
+              {/if} -->
               <img
                 on:load={(e) => loaded(e, item.id)}
                 loadings="lazy"
-                src="{baseUrl}256/{item.id}.jpg"
+                src="{baseUrl}{res}/{item.id}.jpg"
                 alt={item.data._titel} />
+
               <!-- {#if item.i < 10}
                     <Sprite id={item.id} />
                 {/if} -->
