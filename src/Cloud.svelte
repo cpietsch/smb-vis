@@ -86,12 +86,12 @@
     // renderProjection(lastProjection);
   }
 
-  searchstring.subscribe(s => {
-    if(s !== "" && lastTransform.k !== 1){
-      console.log("reset search")
-      resetZoom().catch(e => {}); //nasty catch
+  searchstring.subscribe((s) => {
+    if (s !== "" && lastTransform.k !== 1) {
+      console.log("reset search");
+      resetZoom().catch((e) => {}); //nasty catch
     }
-  })
+  });
 
   $: renderProjection($umapProjection);
 
@@ -116,10 +116,7 @@
     console.log($route, lastRoute);
     const id = $route.payload;
 
-    if (
-      (lastRoute.view === "" || lastRoute.view === "list") &&
-      $route.view === "cloud"
-    ) {
+    if ($route.view === "cloud" && lastRoute.view === "list") {
       fadeInAll().then(() => {
         if (id) {
           zoomToId(id).then(() => (stale = false));
@@ -139,6 +136,14 @@
           highlight({ id });
           // lastSelected = { id };
           selectedItem.set({ id });
+        });
+    }
+    if ($route.transition == "cloud") {
+      stale = true;
+      zoomToSimilars()
+        //.then(fadeOutOthers)
+        .then((d) => {
+          route.set({ ...$route, transition: "" });
         });
     }
 
@@ -223,8 +228,6 @@
       window.location.hash = "#/cloud/" + selected.id;
     }
 
-
-
     // highlight(lastSelected);
   }
 
@@ -289,13 +292,15 @@
 
   function resetZoom() {
     stale = true;
-    return selection
-      //.interrupt()
-      .transition()
-      .duration(1000)
-      .call(zoom.transform, zoomIdentity)
-      .on("end", () => (stale = false))
-      .end();
+    return (
+      selection
+        //.interrupt()
+        .transition()
+        .duration(1000)
+        .call(zoom.transform, zoomIdentity)
+        .on("end", () => (stale = false))
+        .end()
+    );
   }
 
   function zoomToPos(x, y, scale) {
@@ -342,16 +347,16 @@
       .end();
   }
 
-  // function zoomToSimilars() {
-  //   const { x, y, id } = lastSelected;
-  //   const distances = $getSelectedDistances(id);
+  function zoomToSimilars() {
+    const { x, y, id } = $selectedItem;
+    const distances = $getSelectedDistances(id);
 
-  //   const items = $umapProjection.filter(
-  //     (d) => distances && distances.find((e) => e[0] == d.id)
-  //   );
+    const items = $umapProjection.filter(
+      (d) => distances && distances.find((e) => e[0] == d.id)
+    );
 
-  //   return zoomToExtend(items);
-  // }
+    return zoomToExtend(items);
+  }
 
   function zoomToId(id) {
     const item = $umapProjection.find((d) => d.id == id);
@@ -387,13 +392,14 @@
   }
 
   function zoomed(e) {
+    console.log(e);
     lastTransform = e.transform;
     container.scale.set(lastTransform.k);
     container.position.x = lastTransform.x;
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
 
-    if ($selectedItem && lastTransform.k < clearZoomLevel) {
+    if ($selectedItem && lastTransform.k < clearZoomLevel && e.sourceEvent) {
       selectedItem.set(null);
       // lastSelected = null;
       // highlight(lastSelected);

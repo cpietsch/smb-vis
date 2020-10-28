@@ -18,14 +18,21 @@
   import { route } from "./stores";
   import TitleOverlaySingle from "./TitleOverlaySingle.svelte";
 
+  let lastRoute = $route;
+
   function hashchange() {
     const r = window.location.hash.substring(2).split("/");
     console.log("set route", r);
-    route.set({
+    const newRoute = {
       view: r[0],
       payload: r[1],
       extra: r[2],
-    });
+    };
+    if (lastRoute.view == "cloud" && newRoute.view == "list") {
+      newRoute.transition = "cloud";
+    }
+    lastRoute = { ...newRoute };
+    route.set(newRoute);
   }
 
   onMount(hashchange);
@@ -64,11 +71,11 @@
       <Cloud />
       <Annotations />
     </Renderer>
-  
+
     {#if $route.view === 'monadic'}
       <Monadic id={$route.payload} />
     {/if}
-    {#if $route.view === 'list'}
+    {#if $route.view === 'list' && $route.transition !== 'cloud'}
       <List id={$route.payload} />
     {/if}
   </Dataloader>

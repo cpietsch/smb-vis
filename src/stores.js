@@ -21,6 +21,7 @@ export const route = writable({
     view: "cloud",
     payload: undefined,
     extra: undefined,
+    transition: undefined
 })
 
 // export const container = readable(null, set => {
