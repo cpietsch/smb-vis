@@ -16,6 +16,7 @@
     searchResults,
     searchstring,
     state,
+    route,
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -35,6 +36,7 @@
   export let id;
 
   let current = id;
+  let lastCurrent = current;
   let large = false;
   let animating = false;
   let transition = 0;
@@ -67,6 +69,7 @@
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
+    return false;
   }
 
   function scrollTo(to, duration = 1000) {
@@ -96,6 +99,8 @@
   }
 
   function scroll(id) {
+    // if(id !== )
+    console.log("scroll", id, current);
     const div = container.querySelector("#l" + id);
     setTimeout(() => {
       const rect = div.getBoundingClientRect();
@@ -108,6 +113,13 @@
 
   $: res = transition > 2 ? "1024" : "256";
 
+  $: {
+    // console.log("current", current);
+    if (lastCurrent != current) {
+      scroll(current);
+      lastCurrent = current;
+    }
+  }
   $: {
     if (id === "suche") {
       console.log($searchResults);
@@ -144,7 +156,7 @@
   let loadedAll = false;
 
   function loaded(e, sid) {
-    console.log(loadedMap.length);
+    if (loadedAll) return;
     loadedMap.push(sid);
     if (loadedMap.length === items.length || loadedMap.length > 10)
       loadedAll = true;
@@ -152,8 +164,8 @@
 
   // $: loadedAll = loadedMap.length > 0 && loadedMap.length === items.length
   $: {
-    console.log("loadedAll", loadedAll);
-    if (loadedAll) {
+    console.log("loadedAll", loadedAll, $route, $route.transition);
+    if (loadedAll && $route.transition == "cloud-list") {
       domBoxes = getDomBoxes();
       console.log("domBoxes", domBoxes);
 
@@ -163,6 +175,9 @@
       transition = 1;
       setTimeout(() => (transition = 2), 100);
       setTimeout(() => (transition = 3), 3100);
+    }
+    if ($route.transition === undefined) {
+      transition = 3;
     }
   }
 
@@ -185,7 +200,7 @@
     return items.map((d, i) => {
       const id = d.id;
       const sprite = $sprites.get(d.id);
-      console.log(d, d.id, sprite);
+      // console.log(d, d.id, sprite);
       const { width, height } = sprite;
       const w = width * transform.k;
       const h = height * transform.k;
@@ -548,12 +563,10 @@
         class:current={item.id === id}
         class:selected={item.id === current}>
         <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
-        <div
-          class="row detail"
-          on:click={(e) => ((current = item.id), scroll(current))}>
+        <div class="row detail" on:click={(e) => (current = item.id)}>
           <div class="picture">
             <picture
-              on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
+              on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
               <!-- <source srcset="{baseUrl}1024/{item.id}.jpg 1024w" > -->
               <!-- {#if transition == 3}
                 <img
@@ -581,7 +594,7 @@
           <div class="metacontainer">
             <div class="meta">
               <h2
-                on:clicks={(e) => ((large = false), (current = current === item.id ? undefined : item.id), scroll(current))}>
+                on:clicks={(e) => ((large = false), (current = current === item.id ? undefined : item.id))}>
                 {item.data.titel}
               </h2>
               <div class="additional">

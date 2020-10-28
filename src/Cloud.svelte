@@ -143,7 +143,7 @@
       zoomToSimilars()
         //.then(fadeOutOthers)
         .then((d) => {
-          route.set({ ...$route, transition: "" });
+          route.set({ ...$route, transition: "cloud-list" });
         });
     }
 
@@ -348,7 +348,8 @@
   }
 
   function zoomToSimilars() {
-    const { x, y, id } = $selectedItem;
+    console.log($selectedItem);
+    const { id } = $selectedItem;
     const distances = $getSelectedDistances(id);
 
     const items = $umapProjection.filter(

@@ -22,7 +22,6 @@
 
   function hashchange() {
     const r = window.location.hash.substring(2).split("/");
-    console.log("set route", r);
     const newRoute = {
       view: r[0],
       payload: r[1],
@@ -31,6 +30,7 @@
     if (lastRoute.view == "cloud" && newRoute.view == "list") {
       newRoute.transition = "cloud";
     }
+    console.log("set route", lastRoute, newRoute);
     lastRoute = { ...newRoute };
     route.set(newRoute);
   }

@@ -18,10 +18,10 @@ export const container = writable()
 export const divContainer = writable()
 
 export const route = writable({
-    view: "cloud",
+    view: "",
     payload: undefined,
     extra: undefined,
-    transition: undefined
+    transition: ""
 })
 
 // export const container = readable(null, set => {
