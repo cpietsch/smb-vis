@@ -114,6 +114,7 @@
             const data = $detailData.get(id);
             return { id, i, score: 1, data, distance: 10 };
           })
+          .filter(d => d.data)
           .filter((a, i) => i < 30);
         console.log(items);
         current = undefined;
@@ -128,7 +129,7 @@
           const data = $detailData.get(id);
           const projection = $umapProjection.find((d) => d.id === id)
           return { id, score, data, distance, i, projection };
-        });
+        }).filter(d => d.data);
       }
   
       // console.log(items);
@@ -140,7 +141,7 @@
     function loaded(e,sid){
         console.log(loadedMap.length)
         loadedMap.push(sid)
-        if(loadedMap.length === items.length) loadedAll = true
+        if(loadedMap.length === items.length || loadedMap.length > 10) loadedAll = true
     }
 
     // $: loadedAll = loadedMap.length > 0 && loadedMap.length === items.length
@@ -213,7 +214,7 @@
   
   <div class="container" bind:this={container} class:dark={$darkmode} class:active={transition > 1}>
     <Header />
-    <div class="transition" class:active={transition != 0}>
+    <div class="transition" class:active={transition != 3}>
         {#each domBoxes as item (item.id)}
             <img src="{baseUrl}256/{item.id}.jpg" alt="" style={transition==1 ? canvasStyle(item.id) : domStyle(item)}>
         {/each}
