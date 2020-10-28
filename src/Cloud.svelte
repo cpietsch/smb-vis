@@ -138,13 +138,17 @@
           selectedItem.set({ id });
         });
     }
-    if ($route.transition == "cloud") {
+    if ($route.transition == "cloud" && $route.payload != "suche") {
       stale = true;
       zoomToSimilars()
         //.then(fadeOutOthers)
         .then((d) => {
           route.set({ ...$route, transition: "cloud-list" });
         });
+    }
+    if ($route.transition == "cloud" && $route.payload == "suche") {
+      stale = true;
+      route.set({ ...$route, transition: "cloud-list" });
     }
 
     lastRoute = { ...$route };

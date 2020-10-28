@@ -115,7 +115,7 @@
 
   $: {
     // console.log("current", current);
-    if (lastCurrent != current) {
+    if (lastCurrent != current && current) {
       scroll(current);
       lastCurrent = current;
     }
@@ -195,8 +195,6 @@
   function getCanvasBoxes() {
     const { x, y, k } = $lastTransformed;
     const transform = zoomIdentity.translate(x, y).scale(k);
-    const distances = $getSelectedDistances(id);
-    // console.log(distances);
     return items.map((d, i) => {
       const id = d.id;
       const sprite = $sprites.get(d.id);
