@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onDestroy, getContext } from "svelte";
   import { Container } from "pixi.js";
   import {

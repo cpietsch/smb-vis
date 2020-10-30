@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount } from "svelte";
   import {
     distancesCutoffScore,
@@ -179,7 +180,6 @@
     right: -3px;
   }
 
-
   .arrow {
     border: solid black;
     border-width: 0 3px 3px 0;
@@ -188,10 +188,9 @@
     position: relative;
     transform: rotate(-45deg);
     margin-right: 15px;
-    right:0;
+    right: 0;
     transition: right 0.3s;
   }
-
 </style>
 
 <!-- {#if data}
@@ -212,8 +211,8 @@
           on:wheel={wheelProxy}>
           {#if item.i == 0}
             <!-- <span class="icon"><img alt="Ähnliche Objekte" src="liste.png" /> -->
-              <!-- <span class="size">{items.length}</span> -->
-            <span class="arrow"></span>
+            <!-- <span class="size">{items.length}</span> -->
+            <span class="arrow" />
             <div
               class="close"
               on:click|stopPropagation={() => selectedItem.set(null)} />

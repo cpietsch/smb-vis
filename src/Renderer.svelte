@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, setContext } from "svelte";
   import { Renderer, Container } from "pixi.js";
   import {

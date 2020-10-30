@@ -1,8 +1,15 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, getContext, onDestroy, tick } from "svelte";
   import { scaleLinear, scaleLog } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
-  import { scales, container as pixiContainer, dimensions, margin, lastTransformed } from "./stores.js";
+  import {
+    scales,
+    container as pixiContainer,
+    dimensions,
+    margin,
+    lastTransformed,
+  } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
   import { get } from "svelte/store";
@@ -28,11 +35,10 @@
     .clamp(true);
 
   $: {
-    factor =
-      (Math.min($dimensions.width,$dimensions.height) / 10000) ;
+    factor = Math.min($dimensions.width, $dimensions.height) / 10000;
     // size.range([factor, factor / 5]);
     for (const sprite of sprites) {
-      const annotation = annotationsMap.get(sprite)
+      const annotation = annotationsMap.get(sprite);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
       sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
@@ -43,14 +49,14 @@
   $: visible = $lastTransformed.k < visibleScaleCutoff;
 
   $: {
-    console.log("change visibility of annos", visible)
+    console.log("change visibility of annos", visible);
     for (const sprite of sprites) {
-      sprite.visible = visible
+      sprite.visible = visible;
     }
   }
 
   onMount(async () => {
-    const container = get(pixiContainer)
+    const container = get(pixiContainer);
     const { annotations } = await json(baseUrl + "annotations.json");
     for (const annotation of annotations) {
       //   console.log(annotation);
@@ -64,7 +70,7 @@
       sprite.anchor.set(0.5);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
-      annotationsMap.set(sprite, annotation)
+      annotationsMap.set(sprite, annotation);
       // sprite.__asize = annotation.size;
       sprites.push(sprite);
       container.addChild(sprite);
@@ -84,7 +90,7 @@
   });
 
   onDestroy(() => {
-    const container = get(pixiContainer)
+    const container = get(pixiContainer);
     console.log("detstasdroyasd annos");
     for (const sprite of sprites) {
       container.removeChild(sprite);

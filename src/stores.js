@@ -1,3 +1,5 @@
+// made by christopher pietsch chrispie.com 2020
+
 import { writable, derived, readable, get } from 'svelte/store';
 import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";

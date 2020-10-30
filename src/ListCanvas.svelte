@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, setContext, tick } from "svelte";
   import Header from "./Header.svelte";
   import Sprite from "./Sprite.svelte";

@@ -2,8 +2,8 @@
   "name": "smb-vis",
   "url": "https://cpietsch.github.io/smb-vis/",
   "author": "Christopher Pietsch <cpietsch@gmail.com> (https://chrispie.com)",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
   "scripts": {
     "sdev": "svite",
     "sbuild": "svite build",

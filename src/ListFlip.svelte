@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, setContext } from "svelte";
   import {
     dimensions,
@@ -42,7 +43,7 @@
     // console.log(distances);
     const items = distances.map((e) =>
       $umapProjection.find((d) => e[0] == d.id)
-    )//.filter((d,i) => i < 5);
+    ); //.filter((d,i) => i < 5);
     mapped = items.map((d, i) => {
       const id = d.id;
       const x = transform.applyX(d.x);

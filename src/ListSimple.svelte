@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, setContext, tick } from "svelte";
   import Header from "./Header.svelte";
 
@@ -61,14 +62,14 @@
     }
 
     animating = true;
-    scrollTo(0)
+    scrollTo(0);
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
     setTimeout(() => (animating = false), 1000);
   }
 
-  function scrollTo(to, duration = 1000){
-    console.log("scrollTo", to)
+  function scrollTo(to, duration = 1000) {
+    console.log("scrollTo", to);
     return selection()
       .transition("scroll")
       .duration(duration)
@@ -81,7 +82,7 @@
       });
   }
 
-  function svgPath(distance){
+  function svgPath(distance) {
     return `
             M${2 + distance * 3} 0
             C ${2 + distance * 3} 15
@@ -90,22 +91,22 @@
             C 2 45
             ${2 + distance * 3} 50
             ${2 + distance * 3} 60
-          `
+          `;
   }
 
-  function scroll(id){
-    const div = container.querySelector('#l'+id)
+  function scroll(id) {
+    const div = container.querySelector("#l" + id);
     setTimeout(() => {
-      const rect = div.getBoundingClientRect()
-      if(rect.top < 0) {
-        scrollTo(container.scrollTop + rect.top -20, 400)
+      const rect = div.getBoundingClientRect();
+      if (rect.top < 0) {
+        scrollTo(container.scrollTop + rect.top - 20, 400);
       }
       //.scrollIntoView()
-    }, 502)
+    }, 502);
   }
 
-  function loaded(e,sid){
-    if(sid === id){
+  function loaded(e, sid) {
+    if (sid === id) {
       console.log("LOADED", e, e.target.getBoundingClientRect());
     }
   }
@@ -137,16 +138,15 @@
     // console.log(items);
   }
 
-
   // function loaded(e){
   //   console.log("!!!!!loaded", e)
   // }
 
   onMount(async () => {
-    await tick()
-    const pic = container.querySelector('#l'+id).querySelector(".picture")
-    const box = pic.getBoundingClientRect()
-    console.log("box", box)
+    await tick();
+    const pic = container.querySelector("#l" + id).querySelector(".picture");
+    const box = pic.getBoundingClientRect();
+    console.log("box", box);
     return () => {};
   });
 </script>
@@ -158,7 +158,7 @@
     position: absolute;
     background-color: #eeeeee;
     top: 0;
-    
+
     overflow-y: scroll;
     overflow-x: hidden;
 
@@ -174,7 +174,6 @@
   }
 
   .liste {
-    
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -240,7 +239,6 @@
   }
   .additional .beschreibung {
     display: block;
-
   }
   .selected .additional {
     display: flex;
@@ -250,7 +248,8 @@
     transition: visibility 0s, opacity 0.5s;
     transition-delay: 0.5s;
   }
-  .dark .metacontainer,.dark .selected .meta {
+  .dark .metacontainer,
+  .dark .selected .meta {
     background: #000;
   }
   .metacontainer {
@@ -293,14 +292,18 @@
   }
 
   .dark .selected .meta::before {
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.20), rgba(0, 0, 0, 0));
+    background: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.2),
+      rgba(0, 0, 0, 0)
+    );
     /* box-shadow: none; */
     box-shadow: inset 55px -124px 114px -18px rgb(0, 0, 0);
   }
 
   .center {
     position: absolute;
-    cursor:pointer;
+    cursor: pointer;
     display: none;
     left: -85px;
     top: calc(50% - 20px);
@@ -323,7 +326,7 @@
   }
 
   .dark .center {
-    background-color: #525252
+    background-color: #525252;
   }
 
   .arrow {
@@ -418,9 +421,8 @@
     margin-left: 10px;
   }
   .dark .link {
-    background-color: #525252
+    background-color: #525252;
   }
-
 </style>
 
 <!-- <svelte:window on:load={loaded}/> -->
@@ -436,15 +438,18 @@
         class:current={item.id === id}
         class:selected={item.id === current}>
         <!-- animates:flip={{ duration: 1000, easing: cubicInOut }} -->
-        <div class="row detail"
-          on:click={(e) => ((current =  item.id), scroll(current))}>
-
+        <div
+          class="row detail"
+          on:click={(e) => ((current = item.id), scroll(current))}>
           <div class="picture">
             <picture
               loading="lazy"
-              
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id), scroll(current))}>
-              <img on:load={e => loaded(e,item.id)} loading="lazy" src="{baseUrl}{item.id}.jpg" alt={item.data._titel} />
+              <img
+                on:load={(e) => loaded(e, item.id)}
+                loading="lazy"
+                src="{baseUrl}{item.id}.jpg"
+                alt={item.data._titel} />
             </picture>
             <div
               class="center"

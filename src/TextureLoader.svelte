@@ -1,11 +1,12 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onDestroy, getContext, setContext } from "svelte";
   import { getTextureStream } from "./utils/textureloader.js";
   import {
     renderer as pixiRenderer,
     container as pixiContainer,
     sprites,
-    texturesLoaded
+    texturesLoaded,
   } from "./stores.js";
   import { get } from "svelte/store";
 
@@ -33,7 +34,7 @@
     }
     renderer.render(container);
     loading = false;
-    texturesLoaded.set(true)
+    texturesLoaded.set(true);
   })();
 
   $: {

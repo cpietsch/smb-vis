@@ -1,4 +1,5 @@
 <script>
+  // made by christopher pietsch chrispie.com 2020
   import { onMount, getContext, setContext, tick } from "svelte";
   import { scaleLinear } from "d3-scale";
   import { quadtree as d3quadtree } from "d3-quadtree";
