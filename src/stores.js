@@ -144,7 +144,10 @@ export const searchIndex = derived(
     ([$detailData]) => {
         console.time("create index")
         const index = Array.from($detailData.values())
-            .map(d => ([d.id, Object.values(d).join(" ").toLowerCase()]))
+            .map(d => ([d.id, Object.entries(d)
+                .filter(([key]) => key !== "beschreibung")
+                .map(([key, value]) => value)
+                .join(" ").toLowerCase()]))
         console.timeEnd("create index")
         return index
     }
