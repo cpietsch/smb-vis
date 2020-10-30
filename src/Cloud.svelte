@@ -35,7 +35,7 @@
   const distanceCutoff = 5;
 
   let clusterZoomLevel = 8;
-  let clearZoomLevel = 3;
+  let clearZoomLevel = 1.05;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
