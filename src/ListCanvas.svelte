@@ -158,8 +158,7 @@
   function loaded(e, sid) {
     if (loadedAll) return;
     loadedMap.push(sid);
-    if (loadedMap.length === items.length || loadedMap.length > 10)
-      loadedAll = true;
+    if (loadedMap.length === items.length) loadedAll = true;
   }
 
   // $: loadedAll = loadedMap.length > 0 && loadedMap.length === items.length
