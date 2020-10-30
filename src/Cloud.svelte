@@ -31,7 +31,7 @@
   import { xml } from "d3-fetch";
 
   // const { renderer, container, outerContainer } = getContext("renderer")();
-  const maxZoomLevel = 20;
+  const maxZoomLevel = 45;
   const distanceCutoff = 5;
 
   let clusterZoomLevel = 8;
