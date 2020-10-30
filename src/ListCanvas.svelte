@@ -308,13 +308,16 @@
     transition: width 0.5s;
     display: flex;
     z-index: 10;
+    user-select: none;
   }
   .picture picture {
     z-index: 100;
     width: 100%;
+    user-select: none;
   }
   .picture img {
     width: 100%;
+    user-select: none;
   }
   /* :global(.picture canvas) {
       width: 100%;
@@ -564,6 +567,7 @@
         <div class="row detail" on:click={(e) => (current = item.id)}>
           <div class="picture">
             <picture
+              draggable="false"
               on:click={() => ((large = current === item.id ? !large : false), (current = item.id))}>
               <!-- <source srcset="{baseUrl}1024/{item.id}.jpg 1024w" > -->
               <!-- {#if transition == 3}
@@ -573,6 +577,7 @@
                   alt={item.data._titel} />
               {/if} -->
               <img
+                draggable="false"
                 on:load={(e) => loaded(e, item.id)}
                 loadings="lazy"
                 src="{baseUrl}{res}/{item.id}.jpg"
