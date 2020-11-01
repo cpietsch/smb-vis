@@ -43,7 +43,7 @@
   let animating = false;
   let transition = 0;
   let container;
-  let showMouseOver = current;
+  let showMouseOver = false;
 
   const fields = [
     ["idnr", "Ident.Nr."],
