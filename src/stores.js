@@ -48,6 +48,12 @@ export const detailData = readable(new Map(), set => {
     csv("data/export2010.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
+//export const annotations = readable(json("annotations/annotations.json").then(d => d.annotations));
+export const annotations = readable([], set => {
+    json("annotations/annotations.json").then(d => set(d.annotations))
+});
+
+
 export const sprites = derived(umapData, $data => {
     console.log("sprites creation")
     const sprites = new Map()

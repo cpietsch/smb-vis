@@ -1,8 +1,8 @@
 <script>
   import { onDestroy, getContext } from "svelte";
-  import { umapData, distances, detailData } from "./stores.js";
+  import { umapData, distances, detailData, annotations } from "./stores.js";
 </script>
 
-{#if $umapData.length && $distances.size && $detailData.size}
+{#if $umapData.length && $distances.size && $detailData.size && $annotations.length}
   <slot />
 {/if}

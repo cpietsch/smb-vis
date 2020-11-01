@@ -22,6 +22,7 @@
     renderer as pixiRenderer,
     container as pixiContainer,
     divContainer,
+    annotations,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -128,6 +129,13 @@
       console.log("reset");
 
       resetZoom();
+    } else if ($route.view === "cloud" && id == "cluster") {
+      const annotation = $annotations.find((d) => d.name === $route.extra);
+      const zoom = { x: $scales.x(annotation.cx), y: $scales.y(annotation.cy) };
+      console.log(zoom);
+      zoomToExtend([zoom], annotation.czoom).then(
+        () => ((container.__stale = false), (stale = false))
+      );
     } else if ($route.view === "cloud" && id) {
       // console.log(selection, "DOIT");
 
@@ -146,8 +154,7 @@
         .then((d) => {
           route.set({ ...$route, transition: "cloud-list" });
         });
-    }
-    if ($route.transition == "cloud" && $route.payload == "suche") {
+    } else if ($route.transition == "cloud" && $route.payload == "suche") {
       stale = true;
       route.set({ ...$route, transition: "cloud-list" });
     }
@@ -207,6 +214,10 @@
   function click(e) {
     console.log("click", lastTransform.k);
     if (stale) return;
+    if (container.__stale) {
+      container.__stale = false;
+      return;
+    }
     const m = pointer(e);
     const p = lastTransform.invert(m);
     let selected = quadtree.find(p[0], p[1]);
@@ -309,6 +320,7 @@
   }
 
   function zoomToPos(x, y, scale) {
+    console.log("zoomToPos", x, y);
     stale = true;
     return selection
       .transition()

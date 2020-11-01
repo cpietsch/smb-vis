@@ -9,6 +9,7 @@
     dimensions,
     margin,
     lastTransformed,
+    annotations,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -20,6 +21,7 @@
   import { Sprite, Texture } from "pixi.js";
 
   // make em small mogrify -geometry 1000x *.png
+  const container = get(pixiContainer);
 
   const baseUrl = "annotations/";
   const sprites = [];
@@ -55,10 +57,14 @@
     }
   }
 
+  function onClick(annotation) {
+    container.__stale = true; // very hacky
+    window.location.hash = "#/cloud/cluster/" + annotation.name;
+  }
+
   onMount(async () => {
-    const container = get(pixiContainer);
-    const { annotations } = await json(baseUrl + "annotations.json");
-    for (const annotation of annotations) {
+    // const container = get(pixiContainer);
+    for (const annotation of $annotations) {
       //   console.log(annotation);
       const sprite = Sprite.from(baseUrl + "big/" + annotation.name + ".png");
       sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
@@ -70,6 +76,9 @@
       sprite.anchor.set(0.5);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
+      sprite.interactive = true;
+      sprite.buttonMode = true;
+      sprite.on("pointerdown", () => onClick(annotation));
       annotationsMap.set(sprite, annotation);
       // sprite.__asize = annotation.size;
       sprites.push(sprite);
