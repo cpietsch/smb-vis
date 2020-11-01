@@ -16,10 +16,13 @@
     texturesLoaded,
   } from "./stores.js";
   import { RenderTexture, Sprite } from "pixi.js";
+  import { createEventDispatcher } from "svelte";
 
   // does git username now works ?
+  const dispatch = createEventDispatcher();
 
   export let id;
+  export let style;
   let loaded = false;
   let canvas;
   let container;
@@ -43,6 +46,10 @@
     // console.log(image)
     container.appendChild(image);
     loaded = true;
+    dispatch("load", {
+      w,
+      h,
+    });
     console.timeEnd("TEXTURE");
   }
 
@@ -64,7 +71,19 @@
   :global(.dynamicsprite canvas) {
     width: 100%;
   }
+  :global(.dynamicsprite.transition canvas) {
+    position: absolute;
+  }
+  .transition {
+    transition: transform 3s, width 3s, height 3s;
+    transition-timing-function: ease-in-out;
+    position: absolute;
+  }
 </style>
 
-<div bind:this={container} class="dynamicsprite" />
+<div
+  bind:this={container}
+  class="dynamicsprite"
+  class:transition={style}
+  {style} />
 <!-- <canvas bind:this={canvas} width={w} height={h}></canvas> -->

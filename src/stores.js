@@ -26,6 +26,8 @@ export const route = writable({
     transition: ""
 })
 
+export const experimental = writable(false)
+window.experimental = experimental
 // export const container = readable(null, set => {
 //     const c = new Container()
 //     c.sortableChildren = true

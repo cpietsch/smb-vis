@@ -18,6 +18,7 @@
     searchstring,
     state,
     route,
+    experimental,
   } from "./stores.js";
   import { get } from "svelte/store";
   import { flip } from "svelte/animate";
@@ -549,10 +550,16 @@
   <Header />
   <div class="transition" class:active={transition != 3}>
     {#each domBoxes as item (item.id)}
-      <img
-        src="{baseUrl}256/{item.id}.jpg"
-        alt=""
-        style={transition == 1 ? canvasStyle(item.id) : domStyle(item)} />
+      {#if !$experimental}
+        <img
+          src="{baseUrl}256/{item.id}.jpg"
+          alt=""
+          style={transition == 1 ? canvasStyle(item.id) : domStyle(item)} />
+      {:else}
+        <Sprite
+          id={item.id}
+          style={transition == 1 ? canvasStyle(item.id) : domStyle(item)} />
+      {/if}
     {/each}
   </div>
   <div class="liste" class:animating class:active={transition == 3}>
@@ -576,16 +583,16 @@
                   src="{baseUrl}1024/{item.id}.jpg"
                   alt={item.data._titel} />
               {/if} -->
-              <img
-                draggable="false"
-                on:load={(e) => loaded(e, item.id)}
-                loadings="lazy"
-                src="{baseUrl}{res}/{item.id}.jpg"
-                alt={item.data._titel} />
-
-              <!-- {#if item.i < 10}
-                    <Sprite id={item.id} />
-                {/if} -->
+              {#if !$experimental}
+                <img
+                  draggable="false"
+                  on:load={(e) => loaded(e, item.id)}
+                  loadings="lazy"
+                  src="{baseUrl}{res}/{item.id}.jpg"
+                  alt={item.data._titel} />
+              {:else}
+                <Sprite id={item.id} on:load={(e) => loaded(e, item.id)} />
+              {/if}
             </picture>
             <div
               class="center"
