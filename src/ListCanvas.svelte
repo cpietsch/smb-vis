@@ -43,6 +43,7 @@
   let animating = false;
   let transition = 0;
   let container;
+  let showMouseOver = current;
 
   const fields = [
     ["idnr", "Ident.Nr."],
@@ -497,12 +498,27 @@
   .distance {
     opacity: 1;
     transition: visibility 0s, opacity 1s;
+    position: relative;
   }
 
   .distance svg {
     position: relative;
     background-color: none;
     z-index: 2;
+  }
+
+  .mouseoverdistance {
+    position: absolute;
+    /* left: -40px; */
+    left: 5px;
+    top: 5px;
+    background: white;
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 200;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    font-size: 0.9em;
   }
 
   .animating .distance {
@@ -637,11 +653,19 @@
         <div class="row distance" style="height: 45px">
           {#if id != 'suche'}
             <svg
+              on:mouseover={() => (showMouseOver = item.id)}
+              on:mouseleave={() => (showMouseOver = false)}
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
                 style="fill:none; stroke-width:2px; stroke:#515151;"
                 d={svgPath(item.distance)} />
             </svg>
+            {#if showMouseOver == item.id}
+              <div class="mouseoverdistance">
+                Diese Kurve symbolisiert die Ähnlichkeit zwischen beiden
+                Objekten in Bild und Titel
+              </div>
+            {/if}
           {/if}
         </div>
       </div>
