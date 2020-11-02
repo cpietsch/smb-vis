@@ -108,8 +108,8 @@ export const scales = derived(
 );
 
 export const spriteScale = derived(
-    [scales, umapData],
-    ([$scales, $umapData]) => {
+    [scales],
+    ([$scales]) => {
         const spriteRes = 128
         const range = $scales.x.range()
         const span = range[1] - range[0]

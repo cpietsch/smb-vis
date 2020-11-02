@@ -6,8 +6,8 @@
   import {
     scales,
     container as pixiContainer,
-    dimensions,
-    margin,
+    renderer as pixiRenderer,
+    spriteScale,
     lastTransformed,
     annotations,
   } from "./stores.js";
@@ -22,6 +22,7 @@
 
   // make em small mogrify -geometry 1000x *.png
   const container = get(pixiContainer);
+  const renderer = get(pixiRenderer);
 
   const baseUrl = "annotations/";
   const sprites = [];
@@ -37,15 +38,14 @@
     .clamp(true);
 
   $: {
-    factor = Math.min($dimensions.width, $dimensions.height) / 10000;
-    // size.range([factor, factor / 5]);
+    factor = $spriteScale * 3;
     for (const sprite of sprites) {
       const annotation = annotationsMap.get(sprite);
       sprite.x = $scales.x(annotation.x);
       sprite.y = $scales.y(annotation.y);
       sprite.scale.x = sprite.scale.y = sizeTable[annotation.size] * factor;
     }
-    console.log(factor);
+    renderer.render(container);
   }
 
   $: visible = $lastTransformed.k < visibleScaleCutoff;
