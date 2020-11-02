@@ -178,7 +178,7 @@
 
       transition = 1;
       setTimeout(() => (transition = 2), 100);
-      setTimeout(() => (transition = 3), 3100);
+      setTimeout(() => (transition = 3), 2100);
     }
     if ($route.transition === undefined) {
       transition = 3;
@@ -190,7 +190,9 @@
 
   function getDomBoxes() {
     return items.map(({ id, i }) => {
-      const pic = container.querySelector("#l" + id).querySelector(".picture");
+      const pic = container
+        .querySelector("#l" + id)
+        .querySelector(".picture img");
       const { x, y, width, height } = pic.getBoundingClientRect();
       return { id, i, x, y, width, height };
     });
@@ -278,7 +280,7 @@
 
   .transition img {
     position: absolute;
-    transition: transform 3s, width 3s, height 3s;
+    transition: transform 2s, width 2s, height 2s;
     transition-timing-function: ease-in-out;
   }
 
@@ -550,7 +552,7 @@
     background: white;
     border-radius: 6px;
     padding: 10px;
-    padding-left:15px;
+    padding-left: 15px;
     padding-right: 15px;
     align-items: center;
   }
