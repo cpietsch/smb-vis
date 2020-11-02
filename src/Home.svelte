@@ -17,20 +17,21 @@
 
 <style>
   .box {
+    height: 100vh;
+    overflow-y: scroll;
+    direction: rtl;
     display: flex;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 100;
     padding: 1em;
-    /* margin: 1em;
-    margin-top: 0; */
-    pointer-events: none;
-    /* background: #fff; */
-    /* backdrop-filter: blur(2px); */
+    /* pointer-events: none; */
     flex-direction: column;
   }
-
+  .inner {
+    direction: ltr;
+  }
   .dark {
     color: #cecece;
   }
@@ -55,7 +56,7 @@
   }
 
   .intro {
-    width: 300px;
+    width: 340px;
     max-width: 100%;
     /* background: #FFF; */
     line-height: 1.4em;
@@ -91,73 +92,76 @@
   <h2>zweier musealer Sammlungen</h2>
   </div> -->
   <div class="box">
-    <div class="head">
-      <h1 on:click={reset}>Visuelle Exploration</h1>
-      <h2>zweier musealer Sammlungen</h2>
-    </div>
-    <div class="intro" class:visible>
-      <p>
-        Basierend auf Daten der Staatlichen Museen zu Berlin zeigt die
-        Visualisierung über 5000 ausgewählte Objekte aus den Sammlungen der
-        Alten Nationalgalerie und dem Museum Europäischer Kulturen. Die
-        unterschiedlichen Sammlungsobjekte sind zum Teil sehr unterschiedlich,
-        aber sie eint der Entstehungszeitraum des 19. Jahrhunderts.
-      </p>
-      <p>
-        In der Wolke werden die Objekte nach Bild- und Titel-Ähnlichkeit
-        algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander und
-        unterschiedliche weiter auseinander liegen. Dadurch gruppieren sich
-        besonders ähnliche Objekte. Um etwas Orientierung zu bieten, haben
-        Kuratorinnen der Sammlungen einige hervorstechende Gruppierungen
-        beispielhaft mit Stichwörtern versehen.
-      </p>
-      <p>
-        Zoomen Sie mit dem Touchpad oder Scrollrad in die Wolke hinein oder
-        klicken Sie auf ein Stichwort oder Bild, um näher an die Objekte
-        heranzukommen. Klicken und ziehen Sie den Hintergrund, um den
-        Sichtbereich zu verschieben. Klicken Sie auf ein Objekt, um dessen Titel
-        sowie besonders ähnliche Objekte durch Hervorhebung angezeigt zu
-        bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht
-        zu gelangen.
-      </p>
-      <p>
-        In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die
-        einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen. Die
-        Ausschläge zwischen den Objekten zeigen den Grad der Ähnlichkeit: Je
-        größer der Ausschlag, desto weiter entfernt und somit unähnlicher werden
-        die Objekte zum Start-Objekt im Vergleich zum vorherigen Objekt.
-      </p>
-      <p>
-        Die Visualisierung entstand in einer Forschungskooperation zwischen den
-        Staatlichen Museen zu Berlin und dem UCLAB der Fachhochschule Potsdam im
-        Rahmen des Projektes Museum4punkt0 mit Unterstützung des Museums
-        Europäischer Kulturen und der Alten Nationalgalerie Sammlungen. Die
-        Zielstellung des Projektes war es, das Potenzial assoziativer
-        Visualisierung sammlungsübergreifender Daten zu untersuchen. Weitere
-        Informationen und den Quellcode finden sich in der Projektdokumentation
-        auf GitHub.
-      </p>
+    <div class="inner">
+      <div class="head">
+        <h1 on:click={reset}>Visuelle Exploration</h1>
+        <h2>zweier musealer Sammlungen</h2>
+      </div>
+      <div class="intro" class:visible>
+        <p>
+          Basierend auf Daten der Staatlichen Museen zu Berlin zeigt die
+          Visualisierung über 5000 ausgewählte Objekte aus den Sammlungen der
+          Alten Nationalgalerie und dem Museum Europäischer Kulturen. Die
+          unterschiedlichen Sammlungsobjekte sind zum Teil sehr unterschiedlich,
+          aber sie eint der Entstehungszeitraum des 19. Jahrhunderts.
+        </p>
+        <p>
+          In der Wolke werden die Objekte nach Bild- und Titel-Ähnlichkeit
+          algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander
+          und unterschiedliche weiter auseinander liegen. Dadurch gruppieren
+          sich besonders ähnliche Objekte. Um etwas Orientierung zu bieten,
+          haben Kuratorinnen der Sammlungen einige hervorstechende Gruppierungen
+          beispielhaft mit Stichwörtern versehen.
+        </p>
+        <p>
+          Zoomen Sie mit dem Touchpad oder Scrollrad in die Wolke hinein oder
+          klicken Sie auf ein Stichwort oder Bild, um näher an die Objekte
+          heranzukommen. Klicken und ziehen Sie den Hintergrund, um den
+          Sichtbereich zu verschieben. Klicken Sie auf ein Objekt, um dessen
+          Titel sowie besonders ähnliche Objekte durch Hervorhebung angezeigt zu
+          bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht
+          zu gelangen.
+        </p>
+        <p>
+          In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die
+          einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen.
+          Die Ausschläge zwischen den Objekten zeigen den Grad der Ähnlichkeit:
+          Je größer der Ausschlag, desto weiter entfernt und somit unähnlicher
+          werden die Objekte zum Start-Objekt im Vergleich zum vorherigen
+          Objekt.
+        </p>
+        <p>
+          Die Visualisierung entstand in einer Forschungskooperation zwischen
+          den Staatlichen Museen zu Berlin und dem UCLAB der Fachhochschule
+          Potsdam im Rahmen des Projektes Museum4punkt0 mit Unterstützung des
+          Museums Europäischer Kulturen und der Alten Nationalgalerie
+          Sammlungen. Die Zielstellung des Projektes war es, das Potenzial
+          assoziativer Visualisierung sammlungsübergreifender Daten zu
+          untersuchen. Weitere Informationen und den Quellcode finden sich in
+          der Projektdokumentation auf GitHub.
+        </p>
 
-      <ul>
-        Team FHP:
-        <li>
-          Christopher Pietsch: Konzept, Datenanalyse & Prototypentwicklung,
-          Design
-        </li>
-        <li>Viktoria Brüggemann: Projektkoordination und Methodik</li>
-        <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
-        <li>Marian Dörk: Wissenschaftliche Leitung</li>
-      </ul>
+        <ul>
+          Team FHP:
+          <li>
+            Christopher Pietsch: Konzept, Datenanalyse & Prototypentwicklung,
+            Design
+          </li>
+          <li>Viktoria Brüggemann: Projektkoordination und Methodik</li>
+          <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
+          <li>Marian Dörk: Wissenschaftliche Leitung</li>
+        </ul>
 
-      <ul>
-        Team SMB:
-        <li>Stephanie Thom</li>
-        <li>Timo Schuhmacher</li>
-        <li>Katharina Fendius</li>
-        <li>Marian Dörk: Wissenschaftliche Leitung</li>
-      </ul>
+        <ul>
+          Team SMB:
+          <li>Stephanie Thom</li>
+          <li>Timo Schuhmacher</li>
+          <li>Katharina Fendius</li>
+          <li>Marian Dörk: Wissenschaftliche Leitung</li>
+        </ul>
 
-      <p>Datenschutz & Impressum</p>
+        <p>Datenschutz & Impressum</p>
+      </div>
     </div>
   </div>
 </div>
