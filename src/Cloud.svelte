@@ -214,10 +214,10 @@
   function click(e) {
     console.log("click", lastTransform.k);
     if (stale) return;
-    if (container.__stale) {
-      container.__stale = false;
-      return;
-    }
+    // if (container.__stale) {
+    //   container.__stale = false;
+    //   return;
+    // }
     const m = pointer(e);
     const p = lastTransform.invert(m);
     let selected = quadtree.find(p[0], p[1]);
@@ -242,6 +242,11 @@
       //   stale = false;
       // });
       window.location.hash = "#/cloud/" + selected.id;
+    }
+
+    if (!selected && container.__annotation) {
+      window.location.hash = "#/cloud/cluster/" + container.__annotation;
+      container.__annotation = false;
     }
 
     // highlight(lastSelected);

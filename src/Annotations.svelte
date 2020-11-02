@@ -58,8 +58,9 @@
   }
 
   function onClick(annotation) {
-    container.__stale = true; // very hacky
-    window.location.hash = "#/cloud/cluster/" + annotation.name;
+    console.log("annotation", annotation);
+    container.__annotation = annotation.name; // very hacky
+    // window.location.hash = "#/cloud/cluster/" + annotation.name;
   }
 
   onMount(async () => {
