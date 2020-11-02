@@ -213,25 +213,13 @@
     }
 
     if ($selectedItem !== selected) {
-      // lastSelected = selected;
       selectedItem.set(selected);
     }
 
-    if (selected) {
-      // zoomToExtend(
-      //   [selected],
-      //   Math.max(lastTransform.k, clusterZoomLevel),
-      //   500
-      // ).then(() => {
-      //   stale = false;
-      // });
-      // setView("cloud", selected.id)
-      // setView({
-      //   view: "cloud",
-      //   id: selected.id
-      // })
+    if (selected && lastSelected == selected) {
+      window.location.hash = "#/list/" + selected.id;
+    } else if (selected && lastSelected != selected) {
       window.location.hash = "#/cloud/" + selected.id;
-      // history.pushState({ time: Date.now() }, "", "#/cloud/" + selected.id);
     }
 
     if (!selected && container.__annotation) {
@@ -239,6 +227,7 @@
       container.__annotation = false;
     }
 
+    lastSelected = selected;
     // highlight(lastSelected);
   }
 
@@ -373,8 +362,17 @@
 
   function zoomToId(id) {
     const item = $umapProjection.find((d) => d.id == id);
+    let duration = 1500;
+    // if (lastSelected) {
+    //   const lastItem = $umapProjection.find((d) => d.id == lastSelected);
+    //   const a = lastItem.x - item.x;
+    //   const b = lastItem.x - item.y;
+    //   console.log(item, lastItem);
+    //   const distance = Math.sqrt(a * a + b * b);
+    //   console.log("travel distance", distance);
+    // }
 
-    return zoomToExtend([item]);
+    return zoomToExtend([item], maxZoomLevel, duration);
   }
 
   function zoomToExtend(items, minZoom = maxZoomLevel, duration = 1500) {
