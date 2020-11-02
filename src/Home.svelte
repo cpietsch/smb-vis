@@ -50,6 +50,7 @@
     margin: 0;
     text-transform: uppercase;
     pointer-events: all;
+    font-weight: 700;
   }
   h2 {
     font-size: 1.2em;
@@ -77,7 +78,7 @@
     pointer-events: visible;
   }
   .intro > p:first-child {
-    font-weight: 400;
+    font-weight: 600;
   }
 
   .home {

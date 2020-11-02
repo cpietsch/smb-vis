@@ -44,7 +44,7 @@
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;500;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap");
   @media (min-width: 640px) {
     main {
       max-width: none;
