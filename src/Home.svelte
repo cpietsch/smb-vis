@@ -117,7 +117,7 @@
     display: none;
     position: fixed;
     bottom: 0px;
-    height: 50%;
+    height: 230px;
     max-width: 100%;
     width: 390px;
     z-index: 400;
@@ -127,7 +127,7 @@
     background: linear-gradient(0deg, #eeeeee, #eeeeee00 100%);
   }
   .dark .gradient {
-    background: linear-gradient(0deg, #000 70%, #00000000 100%);
+    background: linear-gradient(0deg, #000, #00000000 100%);
   }
 </style>
 
