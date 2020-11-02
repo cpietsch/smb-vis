@@ -27,11 +27,13 @@
   let backgroundColorLight = 0xeeeeee;
   let backgroundColorDark = 0x000000;
 
-  // setContext("renderer", () => ({
-  //   renderer,
-  //   container,
-  //   outerContainer,
-  // }));
+  let timer;
+  const debounceDimensions = (d) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      dimensions.set(d);
+    }, 100);
+  };
 
   $: divContainer.set(outerContainer);
 
@@ -65,10 +67,7 @@
     }
     // if (!renderer) renderer = createRenderer(width, height);
 
-    dimensions.set({
-      width,
-      height,
-    });
+    debounceDimensions({ width, height });
   });
 
   function createRenderer(view, width, height) {
