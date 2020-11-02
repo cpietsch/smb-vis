@@ -25,6 +25,7 @@
     left: 0;
     z-index: 100;
     padding: 1em;
+    padding-left: 2em;
     /* pointer-events: none; */
     flex-direction: column;
   }
@@ -32,6 +33,7 @@
   .box.visible {
     overflow-y: scroll;
     height: 100vh;
+    padding-left: 1em;
   }
   .inner {
     direction: ltr;
@@ -75,6 +77,7 @@
   .intro.visible {
     opacity: 1;
     height: auto;
+    padding-bottom: 100px;
     pointer-events: visible;
   }
   .intro > p:first-child {
@@ -98,6 +101,18 @@
     padding: 1em;
     background: linear-gradient(#eee, rgba(238, 238, 238, 0));
   } */
+
+  .gradient {
+    position: fixed;
+    bottom: 0px;
+    height: 230px;
+    max-width: 100%;
+    width: 390px;
+    z-index: 400;
+    left: 15px;
+    pointer-events: none;
+    background: linear-gradient(0deg, #eeeeee, #eeeeee00 100%);
+  }
 </style>
 
 <div class="home" class:dark={$darkmode}>
@@ -106,6 +121,7 @@
   <h2>zweier musealer Sammlungen</h2>
   </div> -->
   <div class="box" class:visible>
+    <div class="gradient" />
     <div class="inner">
       <div class="head" on:click={reset}>
         <h1>Visuelle Exploration</h1>
