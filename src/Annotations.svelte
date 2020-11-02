@@ -37,7 +37,13 @@
     .domain([1, 20])
     .clamp(true);
 
+  const opactiy = scaleLinear()
+    .domain([visibleScaleCutoff - 4, visibleScaleCutoff])
+    .range([1, 0])
+    .clamp(true);
+
   $: {
+    console.log("resize annos");
     factor = $spriteScale * 3;
     for (const sprite of sprites) {
       const annotation = annotationsMap.get(sprite);
@@ -48,12 +54,13 @@
     renderer.render(container);
   }
 
-  $: visible = $lastTransformed.k < visibleScaleCutoff;
-
   $: {
-    console.log("change visibility of annos", visible);
+    const visible = $lastTransformed.k < visibleScaleCutoff;
+    const opacity = opactiy($lastTransformed.k);
+    // console.log("change visibility of annos", visible);
     for (const sprite of sprites) {
       sprite.visible = visible;
+      sprite.alpha = opacity;
     }
   }
 
