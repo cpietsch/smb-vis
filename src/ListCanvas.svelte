@@ -44,6 +44,7 @@
   let transition = 0;
   let container;
   let showMouseOver = false;
+  let maxSearchResults = 100;
 
   const fields = [
     ["idnr", "Ident.Nr."],
@@ -115,6 +116,7 @@
   }
 
   $: res = transition > 2 ? "1024" : "256";
+  $: loading = transition > 2 ? "lazy" : "eager";
 
   $: {
     // console.log("current", current);
@@ -133,7 +135,7 @@
           return { id, i, score: 1, data, distance: 10, projection };
         })
         .filter((d) => d.projection)
-        .filter((a, i) => i < 30);
+        .filter((a, i) => i < maxSearchResults);
       console.log(items);
       current = undefined;
     } else {
@@ -488,8 +490,8 @@
   }
 
   b {
-    width: 150px;
-    min-width: 150px;
+    width: 170px;
+    min-width: 170px;
   }
 
   .item:last-child .distance {
@@ -604,7 +606,7 @@
                 <img
                   draggable="false"
                   on:load={(e) => loaded(e, item.id)}
-                  loadings="lazy"
+                  {loading}
                   src="{baseUrl}{res}/{item.id}.jpg"
                   alt={item.data._titel} />
               {:else}

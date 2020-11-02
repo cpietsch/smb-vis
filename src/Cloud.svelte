@@ -15,7 +15,6 @@
     spriteScale,
     lastTransformed,
     getSelectedDistances,
-    history,
     route,
     anchor,
     searchstring,
@@ -30,31 +29,16 @@
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { extent } from "d3-array";
   import { filters } from "pixi.js";
-  import { xml } from "d3-fetch";
 
-  // const { renderer, container, outerContainer } = getContext("renderer")();
   const maxZoomLevel = 45;
   const distanceCutoff = 5;
 
-  let clusterZoomLevel = 8;
   let clearZoomLevel = 1.05;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
 
   console.log("init cloud");
-
-  // $: {
-  //   console.log("clid", query);
-  //   // const { x, y, scale } = query;
-  //   const x = parseFloat(query.x);
-  //   const y = parseFloat(query.y);
-  //   const scale = parseFloat(query.scale);
-
-  //   if (x && y && scale && selection) {
-  //     zoomToExtend([{ x, y }], scale);
-  //   }
-  // }
 
   const blur = new filters.BlurFilter();
 
@@ -88,12 +72,12 @@
     // renderProjection(lastProjection);
   }
 
-  searchstring.subscribe((s) => {
-    if (s !== "" && lastTransform.k !== 1) {
-      console.log("reset search");
-      resetZoom().catch((e) => {}); //nasty catch
-    }
-  });
+  // searchstring.subscribe((s) => {
+  //   if (s !== "" && lastTransform.k !== 1) {
+  //     console.log("reset search");
+  //     resetZoom().catch((e) => {}); //nasty catch
+  //   }
+  // });
 
   $: renderProjection($umapProjection);
 
@@ -241,7 +225,13 @@
       // ).then(() => {
       //   stale = false;
       // });
+      // setView("cloud", selected.id)
+      // setView({
+      //   view: "cloud",
+      //   id: selected.id
+      // })
       window.location.hash = "#/cloud/" + selected.id;
+      // history.pushState({ time: Date.now() }, "", "#/cloud/" + selected.id);
     }
 
     if (!selected && container.__annotation) {

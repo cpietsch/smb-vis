@@ -36,6 +36,10 @@
     route.set(newRoute);
   }
 
+  function popstate(event, a) {
+    console.log(event, a);
+  }
+
   onMount(hashchange);
 </script>
 
@@ -63,7 +67,7 @@
   }
 </style>
 
-<svelte:window on:hashchange={hashchange} />
+<svelte:window on:hashchange={hashchange} on:popstate={popstate} />
 
 <main>
   <Dataloader>
