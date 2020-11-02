@@ -118,6 +118,9 @@
     pointer-events: none;
     background: linear-gradient(0deg, #eeeeee, #eeeeee00 100%);
   }
+  .dark .gradient {
+    background: linear-gradient(0deg, #000, #00000000 100%);
+  }
 </style>
 
 <div class="home" class:dark={$darkmode}>
@@ -190,7 +193,6 @@
           <li>Stephanie Thom</li>
           <li>Timo Schuhmacher</li>
           <li>Katharina Fendius</li>
-          <li>Marian Dörk: Wissenschaftliche Leitung</li>
         </ul>
 
         <p>Datenschutz & Impressum</p>
