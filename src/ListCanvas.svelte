@@ -656,19 +656,11 @@
         <div class="row distance" style="height: 45px">
           {#if id != 'suche'}
             <svg
-              on:mouseover={() => (showMouseOver = item.id)}
-              on:mouseleave={() => (showMouseOver = false)}
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
                 style="fill:none; stroke-width:2px; stroke:#515151;"
                 d={svgPath(item.distance)} />
             </svg>
-            {#if showMouseOver == item.id}
-              <div class="mouseoverdistance">
-                Diese Kurve symbolisiert die Ähnlichkeit zwischen beiden
-                Objekten in Bild und Titel
-              </div>
-            {/if}
           {/if}
         </div>
       </div>
