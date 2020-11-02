@@ -102,7 +102,12 @@
     background: linear-gradient(#eee, rgba(238, 238, 238, 0));
   } */
 
+  .visible .gradient {
+    display: block;
+  }
+
   .gradient {
+    display: none;
     position: fixed;
     bottom: 0px;
     height: 230px;
