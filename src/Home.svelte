@@ -77,7 +77,7 @@
   .intro.visible {
     opacity: 1;
     height: auto;
-    padding-bottom: 100px;
+    padding-bottom: 2em;
     pointer-events: visible;
   }
   .intro > p:first-child {
@@ -104,6 +104,12 @@
 
   img {
     width: 90%;
+  }
+
+  a {
+    color:#000;
+    font-weight: 600;
+    text-decoration: none;
   }
 
   .visible .gradient {
@@ -145,54 +151,29 @@
       </div>
       <div class="intro" class:visible>
         <p>
-          Basierend auf Daten der Staatlichen Museen zu Berlin zeigt die
-          Visualisierung über 5000 ausgewählte Objekte aus den Sammlungen der
-          Alten Nationalgalerie und dem Museum Europäischer Kulturen. Die
-          unterschiedlichen Sammlungsobjekte sind zum Teil sehr unterschiedlich,
-          aber sie eint der Entstehungszeitraum des 19. Jahrhunderts.
+         Basierend auf Daten der Staatlichen Museen zu Berlin zeigt die Visualisierung über 5000 ausgewählte Objekte aus dem Bestand der Alten Nationalgalerie und dem Museum Europäischer Kulturen. Die Sammlungsobjekte—von Miniaturgemälden über Fotografien bis zu Alltagsgegenständen—eint der Entstehungszeitraum des 19. Jahrhunderts.
         </p>
-        <img src="info/wolke.svg">
+        <img src="info/wolke.svg" alt="Wolke-Pictogram">
         <p>
-          In der Wolke werden die Objekte nach Bild- und Titel-Ähnlichkeit
-          algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander
-          und unterschiedliche weiter auseinander liegen. Dadurch gruppieren
-          sich besonders ähnliche Objekte. Um etwas Orientierung zu bieten,
-          haben Kuratorinnen der Sammlungen einige hervorstechende Gruppierungen
-          beispielhaft mit Stichwörtern versehen.
+          In der Wolke werden die Objekte nach Bildinhalten und Titelangaben algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander und unterschiedliche weiter auseinander liegen. Zur Orientierung sind die Gruppierungen mit Stichwörtern versehen, die händisch hinzugefügt wurden.
         </p>
         <p>
-          Zoomen Sie mit dem Touchpad oder Scrollrad in die Wolke hinein oder
-          klicken Sie auf ein Stichwort oder Bild, um näher an die Objekte
-          heranzukommen. Klicken und ziehen Sie den Hintergrund, um den
-          Sichtbereich zu verschieben. Klicken Sie auf ein Objekt, um dessen
-          Titel sowie besonders ähnliche Objekte durch Hervorhebung angezeigt zu
-          bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht
-          zu gelangen.
+          Zoomen Sie mit dem Touchpad oder Scrollrad in die Wolke hinein oder klicken Sie auf ein Stichwort oder Bild, um näher an die Objekte heranzukommen. Klicken und ziehen Sie den Hintergrund, um den Sichtbereich zu verschieben. Klicken Sie auf ein Objekt, um dessen Titel sowie besonders ähnliche Objekte durch Hervorhebung angezeigt zu bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht zu gelangen.
         </p>
-        <img src="info/liste.svg">
+        <img src="info/liste.svg" alt="Listen-Pictogram">
         <p>
-          In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die
-          einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen.
-          Die Ausschläge zwischen den Objekten zeigen den Grad der Ähnlichkeit:
-          Je größer der Ausschlag, desto weiter entfernt und somit unähnlicher
-          werden die Objekte zum Start-Objekt im Vergleich zum vorherigen
-          Objekt.
+          In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen. Die Ausschläge des Fadens zwischen den Objekten zeigen die abnehmende Ähnlichkeit an: Je größer der Ausschlag, desto weiter entfernt und somit unähnlicher ist  das nächste Objekt zum oben ausgewählten Objekt.
         </p>
         <p>
-          Die Visualisierung entstand in einer Forschungskooperation zwischen
-          den Staatlichen Museen zu Berlin und dem UCLAB der Fachhochschule
-          Potsdam im Rahmen des Projektes Museum4punkt0 mit Unterstützung des
-          Museums Europäischer Kulturen und der Alten Nationalgalerie
-          Sammlungen. Die Zielstellung des Projektes war es, das Potenzial
-          assoziativer Visualisierung sammlungsübergreifender Daten zu
-          untersuchen. Weitere Informationen und den Quellcode finden sich in
-          der Projektdokumentation auf GitHub.
+          Die Visualisierung entstand in einer Forschungskooperation zwischen den <a href="https://www.smb.museum" target="_blank">Staatlichen Museen zu Berlin</a> und dem <a href="https://uclab.fh-potsdam.de/" target="_blank">UCLAB der Fachhochschule Potsdam</a> im Rahmen des Projektes <a href="https://www.museum4punkt0.de" target="_blank">Museum4punkt0</a> mit Unterstützung des Museums Europäischer Kulturen und der Alten Nationalgalerie. Die Zielstellung des Projektes war es, das Potenzial assoziativer Visualisierung sammlungsübergreifender Daten zu untersuchen. 
+        </p>
+        <p>
+          Weitere Informationen und den Quellcode finden sich in der <a href="https://github.com/cpietsch/smb-vis" target="_blank">Projektdokumentation auf GitHub</a>.
         </p>
         <p>Team FHP</p>
         <ul>
           <li>
-            Christopher Pietsch: Konzept, Datenanalyse & Prototypentwicklung,
-            Design
+            Christopher Pietsch: Konzept, Design, Datenanalyse & Prototypentwicklung
           </li>
           <li>Viktoria Brüggemann: Projektkoordination und Methodik</li>
           <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
