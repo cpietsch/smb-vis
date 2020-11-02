@@ -49,7 +49,7 @@
       const transform = zoomIdentity.translate(x, y).scale(k);
       const padding = k * 1.3;
 
-      mapped = items.map((d, i) => {
+      mapped = [items[0]].map((d, i) => {
         if (!d) console.log(items);
         const id = d.id;
         const x = transform.applyX(d.x);
@@ -59,7 +59,7 @@
         return { x, y, id, i, data };
       });
 
-      mapped = [mapped[0]];
+      // mapped = [mapped[0]];
 
       // console.log(mapped, items);
     } else mapped = [];
@@ -191,6 +191,11 @@
     right: 0;
     transition: right 0.3s;
   }
+
+  .dark .close:before,
+  .dark .close:after {
+    background: #FFF;
+  }
 </style>
 
 <!-- {#if data}
@@ -202,7 +207,7 @@
   {/if} -->
 
 {#if data}
-  <div class="container">
+  <div class="container" class:dark={$darkmode}>
     {#each mapped as item}
       <div class="item" style={style(item)}>
         <div

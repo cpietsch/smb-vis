@@ -423,6 +423,7 @@
   .center {
     position: absolute;
     cursor: pointer;
+    align-items: center;
     display: none;
     left: -85px;
     top: calc(50% - 20px);
@@ -448,11 +449,17 @@
     background-color: #525252;
   }
 
+  .dark .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+  }
+
   .arrow {
     border: solid black;
     border-width: 0 3px 3px 0;
     display: inline-block;
     padding: 5px;
+    margin-right: 4px;
     position: relative;
   }
 
@@ -468,7 +475,7 @@
   }
 
   .selected .center {
-    display: inline;
+    display: flex;
   }
 
   h2 {
@@ -543,6 +550,8 @@
     background: white;
     border-radius: 6px;
     padding: 10px;
+    padding-left:15px;
+    padding-right: 15px;
     align-items: center;
   }
   .link:hover {
