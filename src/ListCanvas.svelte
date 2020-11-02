@@ -386,7 +386,7 @@
     padding-left: 1em;
     /* transition: visibility 0s;
       transition-delay: 0.5s; */
-    font-size: 0.9em;
+    /* font-size: 0.9em; */
   }
   .selected .meta {
     padding-left: 2em;

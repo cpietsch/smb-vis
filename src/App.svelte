@@ -44,7 +44,7 @@
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;500;700&display=swap");
   @media (min-width: 640px) {
     main {
       max-width: none;
@@ -64,7 +64,7 @@
 
   main {
     height: 100%;
-    font-family: "Roboto", sans-serif;
+    font-family: "Titillium Web", sans-serif;
     /* font-size: 12px; */
   }
 </style>

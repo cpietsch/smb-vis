@@ -46,14 +46,14 @@
   }
 
   h1 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin: 0;
     text-transform: uppercase;
     pointer-events: all;
   }
   h2 {
-    font-size: 1em;
-    margin-top: 0.4em;
+    font-size: 1.2em;
+    margin-top: -0.3em;
     margin-bottom: 0;
     text-transform: uppercase;
   }
