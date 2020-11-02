@@ -255,8 +255,9 @@
     background: #eeeeee;
   }
 
-  .dark {
-    background-color: #000;
+  .dark,
+  .container.active.dark {
+    background: #000;
     color: #cecece;
   }
 
