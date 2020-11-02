@@ -65,7 +65,7 @@
   main {
     height: 100%;
     font-family: "Roboto", sans-serif;
-    font-size: 12px;
+    /* font-size: 12px; */
   }
 </style>
 
