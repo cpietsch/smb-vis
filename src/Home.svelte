@@ -50,7 +50,6 @@
     margin: 0;
     text-transform: uppercase;
     pointer-events: all;
-    cursor: pointer;
   }
   h2 {
     font-size: 1em;
@@ -60,6 +59,7 @@
   }
 
   .intro {
+    padding-top: 1em;
     width: 340px;
     height: 0px;
     overflow: hidden;
@@ -76,11 +76,15 @@
     height: auto;
     pointer-events: visible;
   }
+  .intro > p:first-child {
+    font-weight: 400;
+  }
 
   .home {
     pointer-events: visible;
   }
   .head {
+    cursor: pointer;
     text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead,
       0 -2px 3px #eeeeeead;
   }
@@ -102,8 +106,8 @@
   </div> -->
   <div class="box" class:visible>
     <div class="inner">
-      <div class="head">
-        <h1 on:click={reset}>Visuelle Exploration</h1>
+      <div class="head" on:click={reset}>
+        <h1>Visuelle Exploration</h1>
         <h2>zweier musealer Sammlungen</h2>
       </div>
       <div class="intro" class:visible>
@@ -149,9 +153,8 @@
           untersuchen. Weitere Informationen und den Quellcode finden sich in
           der Projektdokumentation auf GitHub.
         </p>
-
+        <p>Team FHP</p>
         <ul>
-          Team FHP:
           <li>
             Christopher Pietsch: Konzept, Datenanalyse & Prototypentwicklung,
             Design
@@ -160,9 +163,8 @@
           <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
           <li>Marian Dörk: Wissenschaftliche Leitung</li>
         </ul>
-
+        <p>Team SMB</p>
         <ul>
-          Team SMB:
           <li>Stephanie Thom</li>
           <li>Timo Schuhmacher</li>
           <li>Katharina Fendius</li>

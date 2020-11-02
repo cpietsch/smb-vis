@@ -9,7 +9,7 @@ import { Sprite, Texture, Container, Renderer } from "pixi.js";
 
 console.log("STORE INIT")
 
-export const margin = { top: 20, right: 100, bottom: 20, left: 350 };
+export const margin = { top: 20, right: 100, bottom: 20, left: 390 };
 
 export const renderer = writable()
 
