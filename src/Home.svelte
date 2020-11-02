@@ -5,7 +5,10 @@
 
   import { route } from "./stores";
 
-  $: visible = $lastTransformed.k < visibleScaleCutoff && ($route.view != "list" && $route.view != "monadic");
+  $: visible =
+    $lastTransformed.k < visibleScaleCutoff &&
+    $route.view != "list" &&
+    $route.view != "monadic";
 
   function reset() {
     window.location.hash = "#/cloud/reset";
@@ -68,10 +71,12 @@
     pointer-events: visible;
   }
   .head {
-    text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead, 0 -2px 3px #eeeeeead;
+    text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead,
+      0 -2px 3px #eeeeeead;
   }
   .dark .head {
-    text-shadow: -2px 0 3px #000, 0 2px 3px #000, 2px 0 3px #000, 0 -2px 3px #000;
+    text-shadow: -2px 0 3px #000, 0 2px 3px #000, 2px 0 3px #000,
+      0 -2px 3px #000;
   }
   /* 
   .head {
@@ -90,18 +95,69 @@
       <h1 on:click={reset}>Visuelle Exploration</h1>
       <h2>zweier musealer Sammlungen</h2>
     </div>
-    <p class="intro" class:visible>
-      … ist eine explorative Sammlungsvisualisierung mit Daten der Staatliche
-      Museen zu Berlin. Aktuell enthält die Visualisierung 5140 Objekte aus den
-      Sammlungen der
-      <b>Alten Nationalgalerie</b>
-      und dem
-      <b>Museum Europäischer Kulturen</b>
-      und dem Entstehungszeitraum des 19. Jahrhunderts. Die Visualisierung zeigt
-      die Sammlungsobjekte angeordnet nach Bild- und Titel-Ähnlichkeit (d.h.
-      Objekte mit ähnlichen Abbildungen und Titeln liegen visuell nahe zusammen)
-      und ermöglicht bei Auswahl von Objekten oder bei Schlagwortsuche die
-      Erkundung individueller Ähnlichkeits-Pfade.
-    </p>
+    <div class="intro" class:visible>
+      <p>
+        Basierend auf Daten der Staatlichen Museen zu Berlin zeigt die
+        Visualisierung über 5000 ausgewählte Objekte aus den Sammlungen der
+        Alten Nationalgalerie und dem Museum Europäischer Kulturen. Die
+        unterschiedlichen Sammlungsobjekte sind zum Teil sehr unterschiedlich,
+        aber sie eint der Entstehungszeitraum des 19. Jahrhunderts.
+      </p>
+      <p>
+        In der Wolke werden die Objekte nach Bild- und Titel-Ähnlichkeit
+        algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander und
+        unterschiedliche weiter auseinander liegen. Dadurch gruppieren sich
+        besonders ähnliche Objekte. Um etwas Orientierung zu bieten, haben
+        Kuratorinnen der Sammlungen einige hervorstechende Gruppierungen
+        beispielhaft mit Stichwörtern versehen.
+      </p>
+      <p>
+        Zoomen Sie mit dem Touchpad oder Scrollrad in die Wolke hinein oder
+        klicken Sie auf ein Stichwort oder Bild, um näher an die Objekte
+        heranzukommen. Klicken und ziehen Sie den Hintergrund, um den
+        Sichtbereich zu verschieben. Klicken Sie auf ein Objekt, um dessen Titel
+        sowie besonders ähnliche Objekte durch Hervorhebung angezeigt zu
+        bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht
+        zu gelangen.
+      </p>
+      <p>
+        In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die
+        einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen. Die
+        Ausschläge zwischen den Objekten zeigen den Grad der Ähnlichkeit: Je
+        größer der Ausschlag, desto weiter entfernt und somit unähnlicher werden
+        die Objekte zum Start-Objekt im Vergleich zum vorherigen Objekt.
+      </p>
+      <p>
+        Die Visualisierung entstand in einer Forschungskooperation zwischen den
+        Staatlichen Museen zu Berlin und dem UCLAB der Fachhochschule Potsdam im
+        Rahmen des Projektes Museum4punkt0 mit Unterstützung des Museums
+        Europäischer Kulturen und der Alten Nationalgalerie Sammlungen. Die
+        Zielstellung des Projektes war es, das Potenzial assoziativer
+        Visualisierung sammlungsübergreifender Daten zu untersuchen. Weitere
+        Informationen und den Quellcode finden sich in der Projektdokumentation
+        auf GitHub.
+      </p>
+
+      <ul>
+        Team FHP:
+        <li>
+          Christopher Pietsch: Konzept, Datenanalyse & Prototypentwicklung,
+          Design
+        </li>
+        <li>Viktoria Brüggemann: Projektkoordination und Methodik</li>
+        <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
+        <li>Marian Dörk: Wissenschaftliche Leitung</li>
+      </ul>
+
+      <ul>
+        Team SMB:
+        <li>Stephanie Thom</li>
+        <li>Timo Schuhmacher</li>
+        <li>Katharina Fendius</li>
+        <li>Marian Dörk: Wissenschaftliche Leitung</li>
+      </ul>
+
+      <p>Datenschutz & Impressum</p>
+    </div>
   </div>
 </div>
