@@ -39,7 +39,7 @@
     direction: ltr;
   }
   .dark {
-    color: #cecece;
+    color: #e0e0e0;
   }
 
   .blur {
@@ -102,24 +102,32 @@
     background: linear-gradient(#eee, rgba(238, 238, 238, 0));
   } */
 
+  img {
+    width: 90%;
+  }
+
   .visible .gradient {
     display: block;
   }
 
+  .box:hover .gradient {
+    opacity: 0;
+  }
   .gradient {
     display: none;
     position: fixed;
     bottom: 0px;
-    height: 230px;
+    height: 50%;
     max-width: 100%;
     width: 390px;
     z-index: 400;
     left: 15px;
+    transition: opacity 0.5s;
     pointer-events: none;
     background: linear-gradient(0deg, #eeeeee, #eeeeee00 100%);
   }
   .dark .gradient {
-    background: linear-gradient(0deg, #000, #00000000 100%);
+    background: linear-gradient(0deg, #000 70%, #00000000 100%);
   }
 </style>
 
@@ -143,6 +151,7 @@
           unterschiedlichen Sammlungsobjekte sind zum Teil sehr unterschiedlich,
           aber sie eint der Entstehungszeitraum des 19. Jahrhunderts.
         </p>
+        <img src="info/wolke.svg">
         <p>
           In der Wolke werden die Objekte nach Bild- und Titel-Ähnlichkeit
           algorithmisch angeordnet, so dass ähnliche Objekte nahe beieinander
@@ -160,6 +169,7 @@
           bekommen. Klicken Sie auf den Titel des Objekts, um in die Pfadansicht
           zu gelangen.
         </p>
+        <img src="info/liste.svg">
         <p>
           In der Pfadansicht werden jene Objekte in einer Liste angezeigt, die
           einem ausgewählten Objekt ähneln oder einer Suchanfrage entsprechen.
