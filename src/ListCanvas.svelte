@@ -393,7 +393,7 @@
     padding-bottom: 200px;
     background: #eee;
     transition: visibility;
-    transition-delay: 0.5s;
+    /* transition-delay: 0.5s; */
     /* box-shadow: 10px 0 5px -2px #888; */
     /* background: #f9f9f9; */
   }

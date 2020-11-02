@@ -55,6 +55,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    background: #eee;
   }
 
   :global(*, *:before, *:after) {
