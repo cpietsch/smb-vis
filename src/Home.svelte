@@ -17,8 +17,7 @@
 
 <style>
   .box {
-    height: 100vh;
-    overflow-y: scroll;
+    overflow-y: hidden;
     direction: rtl;
     display: flex;
     position: absolute;
@@ -28,6 +27,11 @@
     padding: 1em;
     /* pointer-events: none; */
     flex-direction: column;
+  }
+
+  .box.visible {
+    overflow-y: scroll;
+    height: 100vh;
   }
   .inner {
     direction: ltr;
@@ -57,15 +61,20 @@
 
   .intro {
     width: 340px;
+    height: 0px;
+    overflow: hidden;
     max-width: 100%;
     /* background: #FFF; */
     line-height: 1.4em;
     opacity: 0;
     transition: opacity 0.5s;
+    pointer-events: none;
     /* display: inline; */
   }
-  .visible {
+  .intro.visible {
     opacity: 1;
+    height: auto;
+    pointer-events: visible;
   }
 
   .home {
@@ -91,7 +100,7 @@
   <h1>Visuelle Exploration</h1>
   <h2>zweier musealer Sammlungen</h2>
   </div> -->
-  <div class="box">
+  <div class="box" class:visible>
     <div class="inner">
       <div class="head">
         <h1 on:click={reset}>Visuelle Exploration</h1>
