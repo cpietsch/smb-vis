@@ -424,6 +424,7 @@
 
     if ($selectedItem && lastTransform.k < clearZoomLevel && e.sourceEvent) {
       selectedItem.set(null);
+      window.location.hash = "#/cloud/";
       // lastSelected = null;
       // highlight(lastSelected);
     }
