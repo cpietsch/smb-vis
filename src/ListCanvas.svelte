@@ -646,8 +646,10 @@
                   {/if}
                 {/each}
                 <p>
-                  <b>Lizenz</b><span>Staatliche Museen zu Berlin, Museum
-                    Europäischer Kulturen,
+                  <b>Lizenz</b><span>{item.data.sammlunglong
+                      .split(',')
+                      .reverse()
+                      .join(', ')},
                     {item.data.fotograf},
                     <a
                       href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
