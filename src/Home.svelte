@@ -97,6 +97,11 @@
     text-shadow: -2px 0 3px #000, 0 2px 3px #000, 2px 0 3px #000,
       0 -2px 3px #000;
   }
+
+  .cloud .head,
+  .cloud .dark .head {
+    text-shadow: none;
+  }
   /* 
   .head {
     padding: 1em;
@@ -138,15 +143,11 @@
     background: linear-gradient(0deg, #eeeeee, #eeeeee00 100%);
   }
   .dark .gradient {
-    background: linear-gradient(0deg, #000, #00000000 100%);
+    background: linear-gradient(0deg, #232323, #23232300 100%);
   }
 </style>
 
-<div class="home" class:dark={$darkmode}>
-  <!-- <div class="box blur">
-  <h1>Visuelle Exploration</h1>
-  <h2>zweier musealer Sammlungen</h2>
-  </div> -->
+<div class="home" class:dark={$darkmode} class:cloud={$route.view === 'list'}>
   <div class="box" class:visible>
     <div class="gradient" />
     <div class="inner">

@@ -25,7 +25,7 @@
   const renderPromise = writable(Promise);
 
   let backgroundColorLight = 0xeeeeee;
-  let backgroundColorDark = 0x000000;
+  let backgroundColorDark = 0x232323;
 
   let timer;
   const debounceDimensions = (d) => {

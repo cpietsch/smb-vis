@@ -261,7 +261,7 @@
 
   .dark,
   .container.active.dark {
-    background: #000;
+    background: #232323;
     color: #cecece;
   }
 
@@ -372,7 +372,7 @@
   }
   .dark .metacontainer,
   .dark .selected .meta {
-    background: #000;
+    background: #232323;
   }
   .metacontainer {
     /* margin: 20px; */
@@ -414,12 +414,8 @@
   }
 
   .dark .selected .meta::before {
-    background: linear-gradient(
-      to left,
-      rgba(255, 255, 255, 0.11),
-      rgba(0, 0, 0, 0)
-    );
-    box-shadow: inset 55px -124px 114px -18px rgb(0, 0, 0);
+    background: linear-gradient(to left, rgb(0 0 0 / 31%), rgba(0, 0, 0, 0));
+    box-shadow: inset 55px -124px 114px -18px rgb(35 35 35);
   }
 
   .center {

@@ -13,6 +13,11 @@
     z-index: 200;
     pointer-events: none;
     user-select: none;
+    transition: background 0.5s;
+  }
+
+  .dark.shadow {
+    background: #3a3a3aeb;
   }
 
   .shadow {
@@ -22,7 +27,10 @@
   }
 </style>
 
-<div class="header" class:shadow={$route.view === 'list' && !$darkmode}>
+<div
+  class="header"
+  class:dark={$darkmode}
+  class:shadow={$route.view === 'list'}>
   <Home />
   <Search />
 </div>
