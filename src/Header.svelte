@@ -6,7 +6,7 @@
 
 <style>
   .header {
-    height: 120px;
+    height: 85px;
     width: 100%;
     position: absolute;
     top: 0;
@@ -16,7 +16,9 @@
   }
 
   .shadow {
-    background: linear-gradient(#eee, rgba(238, 238, 238, 0));
+    /* background: linear-gradient(#eee, rgba(238, 238, 238, 0)); */
+    background: #ffffffeb;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 </style>
 

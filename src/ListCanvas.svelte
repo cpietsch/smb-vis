@@ -576,7 +576,7 @@
   bind:this={container}
   class:dark={$darkmode}
   class:active={transition > 1}>
-  <Header />
+  <!-- <Header /> -->
   <div class="transition" class:active={transition != 3}>
     {#each domBoxes as item (item.id)}
       {#if !$experimental}
