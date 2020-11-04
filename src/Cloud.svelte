@@ -375,7 +375,7 @@
     return zoomToExtend([item], maxZoomLevel, duration);
   }
 
-  function zoomToExtend(items, minZoom = maxZoomLevel, duration = 1500) {
+  function zoomToExtend(items, minZoom = maxZoomLevel) {
     stale = true;
     const { width, height } = $dimensions;
     const [x0, x1] = extent(items, (d) => d.x);
@@ -383,20 +383,26 @@
     console.log(x0, x1, y0, y1);
     console.log(items);
 
+    const transform = zoomIdentity
+      .translate(width / 2, height / 2)
+      .scale(
+        Math.min(minZoom, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height))
+      )
+      .translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+
+    const a = transform.x / transform.k - lastTransform.x / lastTransform.k;
+    const b = transform.y / transform.k - lastTransform.y / lastTransform.k;
+
+    const distance = Math.sqrt(a * a + b * b);
+    console.log(distance);
+    const duration = Math.log(distance) * 400;
+    console.log(duration);
     return selection
       .transition()
       .duration(duration)
       .call(
         zoom.transform,
-        zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(
-            Math.min(
-              minZoom,
-              0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
-            )
-          )
-          .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
+        transform
         //[x, y] // do i need the anchor ?
       )
       .end();
