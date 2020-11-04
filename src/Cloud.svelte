@@ -111,7 +111,7 @@
     }
     if ($route.view === "cloud" && id === "reset") {
       console.log("reset");
-
+      selectedItem.set(undefined);
       resetZoom();
     } else if ($route.view === "cloud" && id == "cluster") {
       const annotation = $annotations.find((d) => d.name === $route.extra);
@@ -416,7 +416,7 @@
     //   // lastSelected = null;
     //   // highlight(lastSelected);
     // }
-    
+
     // if(e.sourceEvent) {
     //   mousemove(e)
     // } else {
