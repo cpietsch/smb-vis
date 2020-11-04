@@ -53,6 +53,7 @@
     text-transform: uppercase;
     pointer-events: all;
     font-weight: 700;
+    margin-top: -13px;
   }
   h2 {
     font-size: 1.2em;

@@ -331,7 +331,7 @@
     }
    */
   .selected {
-    z-index: 10;
+    z-index: 100;
   }
   .selected .picture {
     width: 50%;
@@ -521,16 +521,15 @@
 
   .mouseoverdistance {
     position: absolute;
-    /* left: -40px; */
     left: 5px;
     top: 5px;
+    width: 40%;
     background: white;
     border-radius: 6px;
-    padding: 5px;
+    padding: 10px;
     z-index: 200;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     pointer-events: none;
-    font-size: 0.9em;
   }
 
   .animating .distance {
@@ -670,11 +669,19 @@
         <div class="row distance" style="height: 45px">
           {#if id != 'suche'}
             <svg
+              on:mouseover={() => (showMouseOver = item.id)}
+              on:mouseleave={() => (showMouseOver = false)}
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
                 style="fill:none; stroke-width:2px; stroke:#515151;"
                 d={svgPath(item.distance)} />
             </svg>
+            {#if showMouseOver == item.id}
+              <div class="mouseoverdistance">
+                Je größer der Ausschlag, desto weiter entfernt und somit
+                unähnlicher ist das nächste Objekt zum oben ausgewählten Objekt.
+              </div>
+            {/if}
           {/if}
         </div>
       </div>
