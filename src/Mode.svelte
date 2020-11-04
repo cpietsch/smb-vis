@@ -24,7 +24,7 @@
     right: 10px;
     z-index: 300;
     cursor: pointer;
-    padding: 5px;
+    padding: 10px;
   }
   .icon {
     width: 18px;

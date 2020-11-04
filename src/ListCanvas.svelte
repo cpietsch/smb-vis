@@ -419,7 +419,7 @@
       rgba(255, 255, 255, 0.11),
       rgba(0, 0, 0, 0)
     );
-    box-shadow: none;
+    box-shadow: inset 55px -124px 114px -18px rgb(0, 0, 0);
   }
 
   .center {
