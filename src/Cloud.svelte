@@ -9,6 +9,7 @@
     dimensions,
     sprites,
     selectedItem,
+    hoverItem,
     selectedDistances,
     state,
     umapProjection,
@@ -189,6 +190,7 @@
     }
     selection.style("cursor", selected ? "pointer" : "auto");
 
+    hoverItem.set(selected);
     // if (lastSelected !== selected) {
     //   lastSelected = selected;
     //   highlight(lastSelected)
@@ -380,8 +382,6 @@
     const { width, height } = $dimensions;
     const [x0, x1] = extent(items, (d) => d.x);
     const [y0, y1] = extent(items, (d) => d.y);
-    console.log(x0, x1, y0, y1);
-    console.log(items);
 
     const transform = zoomIdentity
       .translate(width / 2, height / 2)
@@ -392,11 +392,9 @@
 
     const a = transform.x / transform.k - lastTransform.x / lastTransform.k;
     const b = transform.y / transform.k - lastTransform.y / lastTransform.k;
-
     const distance = Math.sqrt(a * a + b * b);
-    console.log(distance);
     const duration = Math.log(distance) * 400;
-    console.log(duration);
+
     return selection
       .transition()
       .duration(duration)

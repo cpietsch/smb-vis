@@ -4,6 +4,7 @@
   import {
     distancesCutoffScore,
     selectedItem,
+    hoverItem,
     detailData,
     darkmode,
     history,
@@ -34,7 +35,8 @@
       // console.log(distances);
       items = distances
         .map((e) => $umapProjection.find((d) => e[0] == d.id))
-        .filter((d) => d);
+        .filter((d) => d)
+        .filter((d, i) => $lastTransformed.k > 10 || i == 0);
     } else {
       items = [];
     }
@@ -48,8 +50,8 @@
       // console.log(x, y, k);
       const transform = zoomIdentity.translate(x, y).scale(k);
       const padding = k * 1.3;
-
-      mapped = [items[0]].map((d, i) => {
+      //mapped = [items[0]].map((d, i) => {
+      mapped = items.map((d, i) => {
         if (!d) console.log(items);
         const id = d.id;
         const x = transform.applyX(d.x);
@@ -70,7 +72,6 @@
             transform: translate(${item.x}px,${item.y}px);
             z-index: ${100 - item.i};
             opacity: ${1 - item.i / (items.length * 1.5)};
-            //pointer-events: ${item.i == 0 ? "all" : "none"};
           `;
   }
 
@@ -173,6 +174,15 @@
     cursor: pointer;
     pointer-events: visible;
   }
+  .simple {
+    padding: 0em;
+    background: none;
+    margin: none;
+    pointer-events: none;
+  }
+  .simple:hover {
+    box-shadow: none;
+  }
   .inner:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
@@ -194,7 +204,7 @@
 
   .dark .close:before,
   .dark .close:after {
-    background: #FFF;
+    background: #fff;
   }
 </style>
 
@@ -212,6 +222,7 @@
       <div class="item" style={style(item)}>
         <div
           class="inner"
+          class:simple={item.i != 0}
           on:click|stopPropagation={() => link(item.id)}
           on:wheel={wheelProxy}>
           {#if item.i == 0}
@@ -221,8 +232,8 @@
             <div
               class="close"
               on:click|stopPropagation={() => selectedItem.set(null)} />
-            <span>{item.data.titel}</span>
           {/if}
+          <span>{item.data.titel}</span>
         </div>
       </div>
     {/each}

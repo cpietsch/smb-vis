@@ -82,6 +82,8 @@ export const anchor = writable()
 
 export const selectedItem = writable(undefined)
 
+export const hoverItem = writable(undefined)
+
 export const dimensions = writable({ width: 500, height: 500 });
 
 export const scales = derived(
