@@ -8,6 +8,7 @@
     detailData,
     darkmode,
     history,
+    sprites,
     anchor,
     getSelectedDistances,
     umapProjection,
@@ -32,9 +33,14 @@
     if ($selectedItem) {
       const { id } = $selectedItem;
       const distances = $getSelectedDistances(id);
-      // console.log(distances);
+      console.log(distances);
       items = distances
         .map((e) => $umapProjection.find((d) => e[0] == d.id))
+        .map((d) => {
+          const data = $detailData.get(d.id);
+          const { width, height } = $sprites.get(d.id);
+          return { data, ...d, width, height: height + 0 };
+        })
         .filter((d) => d);
     } else {
       items = [];
@@ -48,16 +54,17 @@
       const { x, y, k } = $lastTransformed;
       // console.log(x, y, k);
       const transform = zoomIdentity.translate(x, y).scale(k);
-      const padding = k * 1.3;
+
       //mapped = [items[0]].map((d, i) => {
       mapped = items
-        .filter((d, i) => $lastTransformed.k >= 30 || i == 0)
+        .filter((d, i) => k >= 30 || i == 0)
         .map((d, i) => {
-          if (!d) console.log(items);
-          const id = d.id;
-          const x = transform.applyX(d.x);
-          const y = transform.applyY(d.y) + padding;
-          const data = $detailData.get(id);
+          const { id, data, height } = d;
+          // if (!d) console.log(items);
+          // console.log(k, height);
+          const padding = (height * k) / 2 + 5;
+          const x = parseInt(transform.applyX(d.x));
+          const y = parseInt(transform.applyY(d.y) + padding);
 
           return { x, y, id, i, data };
         });
@@ -161,9 +168,8 @@
     left: -50%;
     max-width: 300px;
     /* overflow: hidden; */
-    margin: 1em;
     background: white;
-    padding: 1em;
+    padding: 10px;
     border-radius: 6px;
     /* display: flex; */
     /* flex-flow: column; */
