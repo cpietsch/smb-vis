@@ -38,8 +38,8 @@
         .map((e) => $umapProjection.find((d) => e[0] == d.id))
         .map((d) => {
           const data = $detailData.get(d.id);
-          const { width, height } = $sprites.get(d.id);
-          return { data, ...d, width, height: height + 0 };
+          const height = $sprites.get(d.id).height + 0;
+          return { data, ...d, height };
         })
         .filter((d) => d);
     } else {
