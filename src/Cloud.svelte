@@ -210,6 +210,11 @@
     if (!selected) return;
     const distance = Math.hypot(p[0] - selected.x, p[1] - selected.y);
 
+    if (lastTransform.k < 3) {
+      zoomToId(selected.id, 15).then(() => (stale = false));
+      return;
+    }
+
     if (distance > distanceCutoff) {
       selected = null;
     }
@@ -362,19 +367,9 @@
     return zoomToExtend(items);
   }
 
-  function zoomToId(id) {
+  function zoomToId(id, zoomlevel = maxZoomLevel) {
     const item = $umapProjection.find((d) => d.id == id);
-    let duration = 1500;
-    // if (lastSelected) {
-    //   const lastItem = $umapProjection.find((d) => d.id == lastSelected);
-    //   const a = lastItem.x - item.x;
-    //   const b = lastItem.x - item.y;
-    //   console.log(item, lastItem);
-    //   const distance = Math.sqrt(a * a + b * b);
-    //   console.log("travel distance", distance);
-    // }
-
-    return zoomToExtend([item], maxZoomLevel, duration);
+    return zoomToExtend([item], zoomlevel);
   }
 
   function zoomToExtend(items, minZoom = maxZoomLevel) {
