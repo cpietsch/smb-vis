@@ -36,12 +36,12 @@
       console.log(distances);
       items = distances
         .map((e) => $umapProjection.find((d) => e[0] == d.id))
+        .filter((d) => d)
         .map((d) => {
           const data = $detailData.get(d.id);
           const height = $sprites.get(d.id).height + 0;
           return { data, ...d, height };
-        })
-        .filter((d) => d);
+        });
     } else {
       items = [];
     }

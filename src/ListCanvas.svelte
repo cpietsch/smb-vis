@@ -62,18 +62,18 @@
   let items = [];
 
   async function link(id, internal) {
+    setTimeout(() => searchstring.set(""), 100);
     if (!internal) {
       window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
-      setTimeout(() => searchstring.set(""), 100);
+
       return;
     }
-
     animating = true;
     scrollTo(0);
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
-    setTimeout(() => (animating = false), 1000);
+    // setTimeout(() => (animating = false), 1000);
     return false;
   }
 
@@ -505,12 +505,14 @@
   }
 
   .distance {
+    pointer-events: none;
     opacity: 1;
     transition: visibility 0s, opacity 1s;
     position: relative;
   }
 
   .distance svg {
+    pointer-events: all;
     position: relative;
     background-color: none;
     z-index: 2;
