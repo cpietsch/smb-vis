@@ -64,7 +64,7 @@
 
   .intro {
     padding-top: 1em;
-    width: 400px;
+    width: 375px;
     height: 0px;
     overflow: hidden;
     max-width: 100%;
