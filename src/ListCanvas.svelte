@@ -65,6 +65,7 @@
     if (!internal) {
       window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
+      setTimeout(() => searchstring.set(""), 100);
       return;
     }
 
@@ -669,7 +670,7 @@
               on:mouseleave={() => (showMouseOver = false)}
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
-                style="fill:none; stroke-width:2px; stroke:#515151;"
+                style="fill:none; stroke-width:2px; stroke:rgb(162 162 162);"
                 d={svgPath(item.distance)} />
             </svg>
             {#if showMouseOver == item.id}

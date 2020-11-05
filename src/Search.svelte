@@ -131,9 +131,11 @@
       <path d="M23 23 L30 30" />
     </svg>
   </form>
-  {#if numResults && $searchstring != ''}
+  {#if $searchstring != ''}
     <div class="button" on:click={handleSubmit}>
-      Ergebnisse ({numResults}) als Liste anzeigen
+      {#if numResults == 0}
+        Keine Ergebnisse
+      {:else}{numResults} Ergebnisse als Liste anzeigen{/if}
     </div>
   {/if}
 </div>

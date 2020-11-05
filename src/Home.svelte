@@ -56,7 +56,7 @@
     margin-top: -13px;
   }
   h2 {
-    font-size: 1.2em;
+    font-size: 1.24em;
     margin-top: -0.3em;
     margin-bottom: 0;
     text-transform: uppercase;
@@ -64,7 +64,7 @@
 
   .intro {
     padding-top: 1em;
-    width: 340px;
+    width: 400px;
     height: 0px;
     overflow: hidden;
     max-width: 100%;
@@ -135,7 +135,7 @@
     bottom: 0px;
     height: 230px;
     max-width: 100%;
-    width: 390px;
+    width: 420px;
     z-index: 400;
     left: 15px;
     transition: opacity 0.5s;

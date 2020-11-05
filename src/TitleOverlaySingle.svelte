@@ -35,8 +35,7 @@
       // console.log(distances);
       items = distances
         .map((e) => $umapProjection.find((d) => e[0] == d.id))
-        .filter((d) => d)
-        .filter((d, i) => $lastTransformed.k > 10 || i == 0);
+        .filter((d) => d);
     } else {
       items = [];
     }
@@ -51,15 +50,17 @@
       const transform = zoomIdentity.translate(x, y).scale(k);
       const padding = k * 1.3;
       //mapped = [items[0]].map((d, i) => {
-      mapped = items.map((d, i) => {
-        if (!d) console.log(items);
-        const id = d.id;
-        const x = transform.applyX(d.x);
-        const y = transform.applyY(d.y) + padding;
-        const data = $detailData.get(id);
+      mapped = items
+        .filter((d, i) => $lastTransformed.k >= 30 || i == 0)
+        .map((d, i) => {
+          if (!d) console.log(items);
+          const id = d.id;
+          const x = transform.applyX(d.x);
+          const y = transform.applyY(d.y) + padding;
+          const data = $detailData.get(id);
 
-        return { x, y, id, i, data };
-      });
+          return { x, y, id, i, data };
+        });
 
       // mapped = [mapped[0]];
 
@@ -71,7 +72,6 @@
     return `
             transform: translate(${item.x}px,${item.y}px);
             z-index: ${100 - item.i};
-            opacity: ${1 - item.i / (items.length * 1.5)};
           `;
   }
 
@@ -174,10 +174,14 @@
     cursor: pointer;
     pointer-events: visible;
   }
+  .dark .inner {
+    color: #fff;
+    background: #525252;
+  }
   .simple {
-    padding: 0em;
-    background: none;
-    margin: none;
+    /* padding: 0em; */
+    background: none !important;
+    /* margin: none; */
     pointer-events: none;
   }
   .simple:hover {
@@ -200,6 +204,10 @@
     margin-right: 15px;
     right: 0;
     transition: right 0.3s;
+  }
+  .dark .arrow {
+    border: solid #eee;
+    border-width: 0 3px 3px 0;
   }
 
   .dark .close:before,
@@ -231,7 +239,7 @@
             <span class="arrow" />
             <div
               class="close"
-              on:click|stopPropagation={() => selectedItem.set(null)} />
+              on:click|stopPropagation={() => selectedItem.set(undefined)} />
           {/if}
           <span>{item.data.titel}</span>
         </div>

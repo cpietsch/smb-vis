@@ -36,9 +36,6 @@
   }
 </style>
 
-<div class="mode">
-  <div
-    class="icon"
-    class:dark={$darkmode}
-    on:click={() => darkmode.update((d) => !d)} />
+<div class="mode" on:click={() => darkmode.update((d) => !d)}>
+  <div class="icon" class:dark={$darkmode} />
 </div>
