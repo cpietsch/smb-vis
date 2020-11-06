@@ -66,14 +66,13 @@
     if (!internal) {
       window.scrollTo({ top: 0 });
       window.location.hash = "#/cloud/" + id;
-
       return;
     }
     animating = true;
     scrollTo(0);
     // window.scrollTo({ top: 0, behavior: "smooth" });
     window.location.hash = "#/list/" + id;
-    // setTimeout(() => (animating = false), 1000);
+    setTimeout(() => (animating = false), 1000);
     return false;
   }
 
