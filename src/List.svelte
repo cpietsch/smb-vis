@@ -109,12 +109,11 @@
       .duration(duration)
       .ease(cubicInOut)
       .tween("scroll", function () {
-        // const scroll = interpolateNumber(container.scrollTop, to);
-        const scroll = interpolateNumber(window.scrollY, to);
+        const scroll = interpolateNumber(container.scrollTop, to);
+        // const scroll = interpolateNumber(window.scrollY, to);
         return function (t) {
-          // container.scrollTop = scroll(t);
-          // console.log(scroll(t))
-          window.scrollTo(0,scroll(t))
+          container.scrollTop = scroll(t);
+          // window.scrollTo(0,scroll(t))
         };
       });
   }
@@ -137,8 +136,8 @@
     setTimeout(() => {
       const rect = div.getBoundingClientRect();
       if (rect.top < 0) {
-        scrollTo(window.scrollY + rect.top - 100, 400);
-        // scrollTo(container.scrollTop + rect.top - 20, 400);
+        // scrollTo(window.scrollY + rect.top - 100, 400);
+        scrollTo(container.scrollTop + rect.top - 100, 400);
       }
     }, 502);
   }
@@ -212,17 +211,18 @@
 <style>
   .container {
     width: 100%;
-    /*height: 100%;*/
+    height: 100%;
     position: absolute;
     top: 0px;
     left: 0px;
-  /*  overflow-y: scroll;
-    overflow-x: hidden;*/
+    overflow-y: scroll;
+    overflow-x: hidden;
     justify-content: center;
     display: flex;
     color: #515151;
     transition: background 0s;
     transition-delay: 0.1s;
+    flex-wrap : wrap;
   }
 
   .container.active {
