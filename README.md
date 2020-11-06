@@ -1,7 +1,4 @@
 ﻿# Visuelle Exploration zweier musealer Sammlungen
-URL: https://cpietsch.github.io/smb-vis/
-
-**Work in progress...**
 
 ### Description
 Visual exploration of two museum collections is an exploratory visualization of collections with data from the Staatliche Museen zu Berlin. The visualization currently contains 5,140 objects from the collections of the Alte Nationalgalerie and the Museum of European Cultures and from the 19th century. The visualization shows the collection objects arranged according to image and title similarity (i.e. objects with similar images and titles are visually close together) and enables the exploration of individual similarity paths when selecting objects or searching for keywords.
@@ -12,15 +9,17 @@ This prototype is part of the project museum4punkt0 - Digital Strategies for the
 The project museum4punkt0 is funded by the Federal Government Commissioner for Culture and the Media in accordance with a resolution issued by the German Bundestag (Parliament of the Federal Republic of Germany).
 
 ### Installation
-Nodejs is required to execute the following commands.
+Nodejs is required to build the visualization. Run the following command in order to install the packages needed for the build and dev environment.
 ```
 npm i
-npm run dev
-npm run build
 ```
 
+### Development
+There are 2 build systems included. Running `npm run dev` will start up the default svelte build system including hotreloading. A faster alternative is running svite via `npm run sdev` which will also run a hot reloading environment on port 3000. Svite (vite) is a web dev build tool that serves your code via native ES Module imports during dev.
+
 ### Usage
-The public folder will be copied to a web server after running `npm run build`. Alternatively, GitHub can also be used to host the visualization. The gh-pages branch is used for this via `npm run deploy`.
+Run `npm run build` and copy the /public folder to a webserver. Alternatively, GitHub can be used to host the visualization. Run `npm run deploy` to build and deploy the visualization to github.io via the gh-pages branch.
+We recommend using a webserver with gzip and http2 enabled in order to reduce loading times dramatically.
 
 ### Contributing
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
