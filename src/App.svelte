@@ -1,7 +1,6 @@
 <script>
   // made by christopher pietsch chrispie.com 2020
   import { onMount } from "svelte";
-
   import Renderer from "./Renderer.svelte";
   import TextureLoader from "./TextureLoader.svelte";
   import Mode from "./Mode.svelte";

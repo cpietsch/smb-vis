@@ -8,7 +8,7 @@
   .header {
     height: 85px;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     z-index: 200;
     pointer-events: none;
@@ -22,7 +22,7 @@
 
   .shadow {
     /* background: linear-gradient(#eee, rgba(238, 238, 238, 0)); */
-    background: #ffffffeb;
+    background: rgba(255, 255, 255, 0.91);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 </style>

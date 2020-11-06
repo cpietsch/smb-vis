@@ -1,7 +1,11 @@
 <script>
   // made by christopher pietsch chrispie.com 2020
   import { onDestroy, getContext, setContext } from "svelte";
-  import { getTextureStream } from "./utils/textureloader.js";
+  /*
+  import 'core-js/symbol'
+  import 'core-js/modules/es7.symbol.async-iterator'
+  */
+  import { getTextureStreamCallback } from "./utils/textureloader.js";
   import {
     renderer as pixiRenderer,
     container as pixiContainer,
@@ -21,14 +25,26 @@
 
   (async () => {
     console.log("textzreloader", renderer);
-    const textureStream = getTextureStream(url);
-
-    for await (const [id, texture] of textureStream) {
+    const textureStream = await getTextureStreamCallback(url, ([id, texture]) => {
       textures.set(id, texture);
       const sprite = $sprites.get(id);
       if (sprite) sprite.texture = texture;
-      if (++loaded % 300 === 0) renderer.render(container);
+      if (++loaded % 300 === 0) {
+        renderer.render(container);
+      }
+    });
+   
+    // this does not work in old browser and no polyfill changes that
+    /*
+    const textureStream = getTextureStream(url)
+    for await (const [id, texture] of textureStream) {
+      console.log(a)
+    textures.set(id, texture);
+    const sprite = $sprites.get(id);
+    if (sprite) sprite.texture = texture;
+    if (++loaded % 300 === 0) renderer.render(container);
     }
+    */
     renderer.render(container);
     loading = false;
     texturesLoaded.set(true);

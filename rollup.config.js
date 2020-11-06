@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
+import babel from 'rollup-plugin-babel';  
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -58,6 +59,14 @@ export default {
         }),
         commonjs(),
         nodePolyfills(),
+        // production && 
+        babel({
+            exclude: [
+                // 'node_modules/**',
+                /\/core-js\//,
+            ],
+            extensions: ['.svelte', '.js', '.jsx', '.es6', '.es', '.mjs', '.ts']
+        }),
         // In dev mode, call `npm run start` once
         // the bundle has been generated
         !production && serve(),

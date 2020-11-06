@@ -33,6 +33,7 @@
 
   form {
     width: 100%;
+    position: relative;
   }
 
   .searchinput {
@@ -45,6 +46,7 @@
     padding: 0.8em;
     z-index: 100;
     pointer-events: visible;
+    -webkit-appearance: none;
   }
 
   .searchinput + svg {
@@ -52,6 +54,9 @@
     margin-top: 14px;
     position: absolute;
     cursor: pointer;
+    top: 0;
+    z-index: 100;
+    right: 15px;
   }
 
   .searchinput + svg {

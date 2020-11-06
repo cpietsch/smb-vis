@@ -109,9 +109,12 @@
       .duration(duration)
       .ease(cubicInOut)
       .tween("scroll", function () {
-        const scroll = interpolateNumber(container.scrollTop, to);
+        // const scroll = interpolateNumber(container.scrollTop, to);
+        const scroll = interpolateNumber(window.scrollY, to);
         return function (t) {
-          container.scrollTop = scroll(t);
+          // container.scrollTop = scroll(t);
+          // console.log(scroll(t))
+          window.scrollTo(0,scroll(t))
         };
       });
   }
@@ -134,7 +137,8 @@
     setTimeout(() => {
       const rect = div.getBoundingClientRect();
       if (rect.top < 0) {
-        scrollTo(container.scrollTop + rect.top - 20, 400);
+        scrollTo(window.scrollY + rect.top - 100, 400);
+        // scrollTo(container.scrollTop + rect.top - 20, 400);
       }
     }, 502);
   }
@@ -168,8 +172,8 @@
       const pic = container
         .querySelector("#l" + id)
         .querySelector(".picture img");
-      const { x, y, width, height } = pic.getBoundingClientRect();
-      return { id, i, x, y, width, height };
+      const { x, y, width, height, top, left } = pic.getBoundingClientRect();
+      return { id, i, x: x?x:left, y: y?y:top, width, height };
     });
   }
 
@@ -208,11 +212,12 @@
 <style>
   .container {
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     position: absolute;
-    top: 0;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    top: 0px;
+    left: 0px;
+  /*  overflow-y: scroll;
+    overflow-x: hidden;*/
     justify-content: center;
     display: flex;
     color: #515151;
@@ -234,8 +239,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: 0px;
     display: none;
   }
   .transition.active {
@@ -353,7 +358,7 @@
     position: absolute;
     width: 150px;
     height: 100%;
-    top: 0;
+    top: 0px;
     left: -150px;
     z-index: 6;
     background: linear-gradient(to left, rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0));
@@ -434,7 +439,7 @@
   }
   p {
     line-height: 1.4em;
-    margin-top: 0;
+    margin-top: 0px;
     display: flex;
     align-items: center;
   }
@@ -609,7 +614,7 @@
               on:mouseleave={() => (showMouseOver = false)}
               style="height: 60px;width: {5 + item.distance * 3}px; left:{-(item.distance * 3)}px; top:-10px">
               <path
-                style="fill:none; stroke-width:2px; stroke:rgb(162 162 162);"
+                style="fill:none; stroke-width:2px; stroke:rgb(162,162,162);"
                 d={svgPath(item.distance)} />
             </svg>
             {#if showMouseOver == item.id}
