@@ -26,7 +26,6 @@
     z-index: 100;
     padding: 1em;
     padding-left: 2em;
-    /* pointer-events: none; */
     flex-direction: column;
   }
 
@@ -40,11 +39,6 @@
   }
   .dark {
     color: #e0e0e0;
-  }
-
-  .blur {
-    filter: blur(3px);
-    color: #000;
   }
 
   h1 {
@@ -68,12 +62,10 @@
     height: 0px;
     overflow: hidden;
     max-width: 100%;
-    /* background: #FFF; */
     line-height: 1.4em;
     opacity: 0;
     transition: opacity 0.5s;
     pointer-events: none;
-    /* display: inline; */
   }
   .intro.visible {
     opacity: 1;
@@ -102,11 +94,6 @@
   .cloud .dark .head {
     text-shadow: none;
   }
-  /* 
-  .head {
-    padding: 1em;
-    background: linear-gradient(#eee, rgba(238, 238, 238, 0));
-  } */
 
   img {
     width: 90%;

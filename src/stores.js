@@ -5,7 +5,6 @@ import { scaleLinear } from "d3-scale";
 import { extent } from "d3-array";
 import { csv, json } from "d3-fetch";
 import { Sprite, Texture, Container, Renderer } from "pixi.js";
-// import flexsearch from "flexsearch";
 
 console.log("STORE INIT")
 
@@ -27,14 +26,6 @@ export const route = writable({
 })
 
 export const experimental = writable(false)
-window.experimental = experimental
-// export const container = readable(null, set => {
-//     const c = new Container()
-//     c.sortableChildren = true
-//     set(c)
-
-//     return () => c.destroy()
-// })
 
 export const umapData = readable([], set => {
     csv("data/umap.csv", ({ id, x, y }) => ({
@@ -48,7 +39,6 @@ export const detailData = readable(new Map(), set => {
     csv("data/export2010.csv").then(data => set(new Map(data.map(d => [d.id, d]))))
 });
 
-//export const annotations = readable(json("annotations/annotations.json").then(d => d.annotations));
 export const annotations = readable([], set => {
     json("annotations/annotations.json").then(d => set(d.annotations))
 });
@@ -121,36 +111,6 @@ export const spriteScale = derived(
     }
 );
 
-// export const searchIndex = derived(
-//     [detailData],
-//     ([$detailData]) => {
-//         console.time("create index")
-//         const index = new flexsearch("memory");
-//         for (let [key, value] of  $detailData) {
-//             index.add(key, Object.values(value).join(" "))
-//         }
-//         console.log(index)
-//         console.timeEnd("create index")
-//         return index
-//     }
-// );
-
-// export const searchResults = derived(
-//     [searchIndex, searchstring, detailData],
-//     ([$searchIndex, $searchstring, $detailData]) => {
-//         if($searchstring === ""){
-//             return Array.from($detailData.values()).map(d => d.id)
-//         } else {
-//             console.log($searchstring, $searchIndex)
-//             console.time("search")
-//             const items = $searchIndex.search($searchstring)
-//             console.log(items)
-//             console.timeEnd("search")
-//             return items
-//         }
-//     }
-// );
-
 export const searchIndex = derived(
     [detailData],
     ([$detailData]) => {
@@ -205,17 +165,6 @@ export const distances = readable(new Map(), set => {
             set(new Map(data.map(d => [d.id, d])))
         )
 });
-
-export const selectedDistances = derived(
-    [selectedItem, distances, distancesCutoffScore],
-    ([$item, $distances, $score]) => {
-        // console.log($item, $distances, $score)
-        return []
-        // if (!$item || !$distances.size) { return [] }
-        // else {
-        //     return $distances.get($item.id).distances.filter((d) => d[1] > $score)
-        // }
-    })
 
 export const getSelectedDistances = derived(
     [distances, distancesCutoffScore],

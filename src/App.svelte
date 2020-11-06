@@ -4,20 +4,16 @@
 
   import Renderer from "./Renderer.svelte";
   import TextureLoader from "./TextureLoader.svelte";
-  // import Stage from "./Stage.svelte";
-  // import Layout from "./Layout.svelte";
   import Mode from "./Mode.svelte";
   import Header from "./Header.svelte";
   import Dataloader from "./Dataloader.svelte";
   import Cloud from "./Cloud.svelte";
-  import Liste from "./ListFlip.svelte";
-  import List from "./ListCanvas.svelte";
-  import Debug from "./Debug.svelte";
+  import List from "./List.svelte";
   import Annotations from "./Annotations.svelte";
   import Monadic from "./MonadicD3.svelte";
 
   import { route } from "./stores";
-  import TitleOverlaySingle from "./TitleOverlaySingle.svelte";
+  import TitleOverlaySingle from "./TitleOverlay.svelte";
 
   let lastRoute = $route;
 
@@ -34,10 +30,6 @@
     console.log("set route", lastRoute, newRoute);
     lastRoute = { ...newRoute };
     route.set(newRoute);
-  }
-
-  function popstate(event, a) {
-    console.log(event, a);
   }
 
   onMount(hashchange);
@@ -69,7 +61,7 @@
   }
 </style>
 
-<svelte:window on:hashchange={hashchange} on:popstate={popstate} />
+<svelte:window on:hashchange={hashchange} />
 
 <main>
   <Dataloader>

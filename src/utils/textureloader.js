@@ -1,5 +1,6 @@
-import { BaseTexture, Rectangle, Texture } from "pixi.js"
+// made by christopher pietsch chrispie.com 2020
 
+import { BaseTexture, Rectangle, Texture } from "pixi.js"
 
 function loadImage(url) {
     return new Promise((resolve, reject) => {

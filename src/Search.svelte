@@ -1,18 +1,5 @@
 <script>
-  import { onMount } from "svelte";
-  import {
-    distancesCutoffScore,
-    selectedItem,
-    darkmode,
-    history,
-    anchor,
-    searchstring,
-    // searchItems,
-    lastTransformed,
-    searchResults,
-  } from "./stores.js";
-  import { get } from "svelte/store";
-  import { flip } from "svelte/animate";
+  import { searchstring, searchResults } from "./stores.js";
 
   $: numResults = $searchResults.length;
   let timer;
@@ -29,10 +16,6 @@
     window.scrollTo({ top: 0 });
     window.location.hash = "#/list/suche/" + $searchstring;
   }
-
-  onMount(() => {
-    return () => {};
-  });
 </script>
 
 <style>
@@ -105,7 +88,6 @@
 
 <div class="search">
   <form on:submit|preventDefault={handleSubmit}>
-    <!-- <label for="search">Suche ({$searchResults.length})</label> -->
     <input
       type="search"
       class="searchinput"

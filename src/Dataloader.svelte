@@ -1,5 +1,4 @@
 <script>
-  import { onDestroy, getContext } from "svelte";
   import { umapData, distances, detailData, annotations } from "./stores.js";
 </script>
 

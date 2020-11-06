@@ -13,17 +13,14 @@
   let loading = true;
   let loaded = 0;
 
-  const url =
-    "https://vikusviewer.fh-potsdam.de/smb/beide/data/sprites-jpg/web_web_full.json";
-
-  // const { renderer, container } = getContext("renderer")();
+  const url = "data/sprites/web_web_full.json";
 
   const renderer = get(pixiRenderer);
   const container = get(pixiContainer);
   const textures = new Map();
 
   (async () => {
-    console.log("textzreloader§", renderer);
+    console.log("textzreloader", renderer);
     const textureStream = getTextureStream(url);
 
     for await (const [id, texture] of textureStream) {
@@ -49,8 +46,6 @@
   });
 </script>
 
-{#if loading}
-  <div>LOADING! {loaded}</div>
-{:else}
+{#if !loading}
   <slot />
 {/if}

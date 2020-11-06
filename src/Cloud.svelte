@@ -5,20 +5,16 @@
   import { quadtree as d3quadtree } from "d3-quadtree";
   import {
     scales,
-    umapData,
     dimensions,
     sprites,
     selectedItem,
     hoverItem,
-    selectedDistances,
-    state,
     umapProjection,
     spriteScale,
     lastTransformed,
     getSelectedDistances,
     route,
     anchor,
-    searchstring,
     renderer as pixiRenderer,
     container as pixiContainer,
     divContainer,
@@ -29,26 +25,20 @@
   import { get } from "svelte/store";
   import { zoom as d3zoom, zoomTransform, zoomIdentity } from "d3-zoom";
   import { extent } from "d3-array";
-  import { filters } from "pixi.js";
+  console.log("init cloud");
 
   const maxZoomLevel = 45;
   const distanceCutoff = 5;
 
-  let clearZoomLevel = 1.05;
   let lastTransform = zoomIdentity;
   let stale = false;
   let lastSelected;
-
-  console.log("init cloud");
-
-  const blur = new filters.BlurFilter();
+  let lastProjection = $umapProjection;
+  let lastRoute = { ...$route };
 
   const renderer = get(pixiRenderer);
   const container = get(pixiContainer);
   const outer = get(divContainer);
-
-  let lastProjection = $umapProjection;
-
   const zoom = d3zoom()
     .scaleExtent([1, maxZoomLevel])
     .translateExtent([
@@ -57,30 +47,8 @@
     ])
     .clickDistance(2)
     .filter((e) => !stale)
-    .on("zoom", zoomed)
-    .on("end", end);
-
-  // resize handler
-  $: {
-    const { width, height } = $dimensions;
-    console.log("resize cloude");
-    selection.call(
-      zoom.translateExtent([
-        [0, 0],
-        [$dimensions.width, $dimensions.height],
-      ])
-    );
-    // renderProjection(lastProjection);
-  }
-
-  // searchstring.subscribe((s) => {
-  //   if (s !== "" && lastTransform.k !== 1) {
-  //     console.log("reset search");
-  //     resetZoom().catch((e) => {}); //nasty catch
-  //   }
-  // });
-
-  $: renderProjection($umapProjection);
+    .on("zoom", zoomed);
+  // .on("end", end);
 
   const selection = select(outer)
     .call(zoom)
@@ -88,17 +56,24 @@
     .on("pointermove", mousemove)
     .on("contextmenu", contextmenu);
 
-  // console.log($dimensions);
-  // test("HALLLOO");
+  $: {
+    const { width, height } = $dimensions;
+    console.log("resize cloude");
+    selection.call(
+      zoom.translateExtent([
+        [0, 0],
+        [width, height],
+      ])
+    );
+  }
 
+  $: highlight($selectedItem);
+  $: renderProjection($umapProjection);
   $: quadtree = d3quadtree()
     .x((d) => d.x)
     .y((d) => d.y)
     .addAll($umapProjection);
 
-  function animateToList() {}
-
-  let lastRoute = { ...$route };
   $: {
     console.log($route, lastRoute);
     const id = $route.payload;
@@ -122,13 +97,10 @@
         () => ((container.__stale = false), (stale = false))
       );
     } else if ($route.view === "cloud" && id) {
-      // console.log(selection, "DOIT");
-
       zoomToId(id)
         .then(() => (stale = false))
         .then(() => {
           highlight({ id });
-          // lastSelected = { id };
           selectedItem.set({ id });
         });
     }
@@ -147,27 +119,18 @@
     lastRoute = { ...$route };
   }
 
-  $: highlight($selectedItem);
-
   function highlight(item) {
     if (item) {
-      // && lastTransform.k >= clearZoomLevel
-      // if (item) {
-      //await tick();
       const distancesFiltered = $getSelectedDistances(item.id);
       const newProjection = $umapProjection.map((d) => {
         const inDistance = distancesFiltered.find((e) => e[0] == d.id);
         const alpha = inDistance ? 1 : 0.1;
-        const filters = distancesFiltered.find((e) => e[0] == d.id)
-          ? []
-          : [blur];
         const active = item ? item.id === d.id : false;
         return {
           ...d,
           scale: active ? $spriteScale * 1.2 : d.scale,
           zIndex: inDistance ? (active ? 2 : 1) : 0,
           alpha,
-          // filters
         };
       });
       lastProjection = newProjection;
@@ -189,21 +152,13 @@
       selected = null;
     }
     selection.style("cursor", selected ? "pointer" : "auto");
-
     hoverItem.set(selected);
-    // if (lastSelected !== selected) {
-    //   lastSelected = selected;
-    //   highlight(lastSelected)
-    // }
   }
 
   function click(e) {
     console.log("click", lastTransform.k);
     if (stale) return;
-    // if (container.__stale) {
-    //   container.__stale = false;
-    //   return;
-    // }
+
     const m = pointer(e);
     const p = lastTransform.invert(m);
     let selected = quadtree.find(p[0], p[1]);
@@ -235,36 +190,7 @@
     }
 
     lastSelected = selected;
-    // highlight(lastSelected);
   }
-
-  // function clickOld() {
-  //   console.log("lastTransform", lastTransform.k);
-  //   if (stale) return;
-  //   if (lastSelected === null) {
-  //     return resetZoom();
-  //   }
-  //   if (lastTransform.k >= clusterZoomLevel) {
-  //     console.log(history);
-  //     history.update((h) => [...h, lastSelected.id]);
-  //     return zoomToSimilars()
-  //       .then(fadeOutOthers)
-  //       .then((d) => {
-  //         // console.log(d);
-  //         // stale = false;
-  //         // state.set("list");
-  //         window.location.hash = "/list/" + lastSelected.id;
-  //       });
-  //   }
-
-  //   if (lastTransform.k !== clusterZoomLevel) {
-  //     return zoomToExtend([lastSelected], clusterZoomLevel).then(() => {
-  //       stale = false;
-  //       console.log(lastTransform);
-  //     });
-  //     //return zoomToPos($selectedItem.x, $selectedItem.y, zoomTo);
-  //   }
-  // }
 
   function contextmenu(e) {
     const m = pointer(e);
@@ -277,7 +203,6 @@
   }
 
   function renderProjection(projection) {
-    // console.log("render");
     for (const d of projection) {
       const s = $sprites.get(d.id);
       if (!s) {
@@ -290,7 +215,6 @@
       s.scale.set(d.scale);
       s.zIndex = d.zIndex;
       s.visible = d.visible;
-      // s.filters = d.filters
     }
     renderer.render(container);
   }
@@ -402,46 +326,15 @@
   }
 
   function zoomed(e) {
-    // console.log(e);
     lastTransform = e.transform;
     container.scale.set(lastTransform.k);
     container.position.x = lastTransform.x;
     container.position.y = lastTransform.y;
     lastTransformed.set({ ...lastTransform });
-
-    // if ($selectedItem && lastTransform.k < clearZoomLevel && e.sourceEvent) {
-    //   selectedItem.set(null);
-    //   window.location.hash = "#/cloud/";
-    //   // lastSelected = null;
-    //   // highlight(lastSelected);
-    // }
-
-    // if(e.sourceEvent) {
-    //   mousemove(e)
-    // } else {
-    //   renderer.render(container);
-    // }
     renderer.render(container);
   }
 
   function end({ transform }) {
-    // asd
-    // console.log(transform);
-
-    // const center = transform.invert([
-    //   $dimensions.width / 2,
-    //   $dimensions.height / 2,
-    // ]);
-    // var queryParams = new URLSearchParams(
-    //   window.location.hash.replace("#", "?")
-    // );
-    // // queryParams.set("center", center.map((d) => d.toFixed(0)).join("."));
-    // queryParams.set("x", center[0].toFixed(2));
-    // queryParams.set("y", center[1].toFixed(2));
-    // queryParams.set("scale", transform.k.toFixed(2));
-    // history.pushState(null, null, "#" + queryParams.toString());
-    // // window.location.hash = "#" + queryParams.toString();
-
     lastTransform = transform;
     lastTransformed.set({ ...transform });
   }

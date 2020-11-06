@@ -1,28 +1,21 @@
 <script>
   // made by christopher pietsch chrispie.com 2020
-  import { onMount, setContext } from "svelte";
+  import { onMount } from "svelte";
   import { Renderer, Container } from "pixi.js";
   import {
     dimensions,
     sprites,
-    state,
     darkmode,
     renderer,
     container,
     divContainer,
   } from "./stores.js";
-  import { writable, derived, readable, get } from "svelte/store";
+  import { get } from "svelte/store";
 
   console.log("init renderer");
+
   let canvas;
   let outerContainer;
-
-  let c = new Container();
-  c.sortableChildren = true;
-  container.set(c);
-  // container.sortableChildren = true;
-
-  const renderPromise = writable(Promise);
 
   let backgroundColorLight = 0xeeeeee;
   let backgroundColorDark = 0x232323;
@@ -34,6 +27,10 @@
       dimensions.set(d);
     }, 100);
   };
+
+  let c = new Container();
+  c.sortableChildren = true;
+  container.set(c);
 
   $: divContainer.set(outerContainer);
 
@@ -65,8 +62,6 @@
     if (!get(renderer)) {
       renderer.set(createRenderer(canvas, width, height));
     }
-    // if (!renderer) renderer = createRenderer(width, height);
-
     debounceDimensions({ width, height });
   });
 
@@ -86,9 +81,7 @@
 
   onMount(() => {
     console.log("mount");
-
     resizeObserver.observe(outerContainer);
-    //renderer.set(createRenderer(canvas))
 
     return () => {
       console.log("destroy renderer");
@@ -98,7 +91,6 @@
       }
       $container.destroy();
       $renderer.destroy();
-      //$pixiRenderer.destroy()
       resizeObserver.disconnect();
     };
   });
@@ -110,17 +102,11 @@
     height: 100%;
     overflow: hidden;
   }
-
-  .hide {
-    display: none;
-  }
-
   canvas {
     position: absolute;
   }
 </style>
 
-<!-- svelte-ignores non-top-level-reactive-declaration -->
 <div class="renderer" bind:this={outerContainer}>
   <canvas bind:this={canvas} />
   {#if $renderer}

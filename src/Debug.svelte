@@ -1,31 +1,19 @@
 <script>
   // made by christopher pietsch chrispie.com 2020
-  import { onMount } from "svelte";
   import {
     distancesCutoffScore,
-    selectedItem,
     darkmode,
-    history,
     anchor,
     searchstring,
-    // searchItems,
     lastTransformed,
     searchResults,
   } from "./stores.js";
-  import { get } from "svelte/store";
-  import { flip } from "svelte/animate";
-
-  // $: console.log($fuseSearch)
 
   function handleSubmit() {
     console.log($searchstring);
     window.scrollTo({ top: 0 });
     window.location.hash = "#/list/suche/" + $searchstring;
   }
-
-  onMount(() => {
-    return () => {};
-  });
 </script>
 
 <style>
@@ -54,11 +42,6 @@
 
   .item * {
     padding: 0.5rem;
-  }
-
-  img {
-    width: 30%;
-    position: relative;
   }
 </style>
 
