@@ -47,7 +47,6 @@ Team SMB
 - Stephanie Thom
 - Timo Schuhmacher
 - Katharina Fendius
-- Data protection & imprint
 
 ### License
 MIT License
