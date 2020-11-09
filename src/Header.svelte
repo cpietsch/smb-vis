@@ -12,7 +12,6 @@
     top: 0;
     z-index: 200;
     pointer-events: none;
-    user-select: none;
     transition: background 0.5s;
   }
 

@@ -84,6 +84,7 @@
     cursor: pointer;
     text-shadow: -2px 0 3px #eeeeeead, 0 2px 3px #eeeeeead, 2px 0 3px #eeeeeead,
       0 -2px 3px #eeeeeead;
+    user-select: none;
   }
   .dark .head {
     text-shadow: -2px 0 3px #000, 0 2px 3px #000, 2px 0 3px #000,
