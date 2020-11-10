@@ -53,8 +53,22 @@
   const selection = select(outer)
     .call(zoom)
     .on("click", click)
+    .on("pointerdown", pointerdown)
+    .on("pointerup", pointerup)
     .on("pointermove", mousemove)
     .on("contextmenu", contextmenu);
+
+  let lastTouch = {};
+  function pointerup(event) {
+    const dx = event.clientX - lastTouch.clientX;
+    const dy = event.clientY - lastTouch.clientY;
+    const noDrag = dx * dx + dy * dy < 10;
+    if (noDrag) click(event);
+    console.log("noDrag", noDrag);
+  }
+  function pointerdown({ clientX, clientY }) {
+    lastTouch = { clientX, clientY };
+  }
 
   $: {
     const { width, height } = $dimensions;

@@ -1,14 +1,17 @@
 <script>
-  import { lastTransformed, darkmode } from "./stores.js";
+  import { lastTransformed, darkmode, mobile } from "./stores.js";
 
   const visibleScaleCutoff = 1.01;
+
+  let closeMobile = false;
 
   import { route } from "./stores";
 
   $: visible =
     $lastTransformed.k < visibleScaleCutoff &&
     $route.view != "list" &&
-    $route.view != "monadic";
+    $route.view != "monadic" &&
+    !closeMobile;
 
   function reset() {
     window.location.hash = "#/cloud/reset";
@@ -27,6 +30,17 @@
     padding: 1em;
     padding-left: 2em;
     flex-direction: column;
+  }
+
+  .mobile {
+    background: #eee;
+    z-index: 1000;
+  }
+  .mobile .intro {
+    pointer-events: all;
+  }
+  .visible.mobile .gradient {
+    display: none;
   }
 
   .box.visible {
@@ -61,7 +75,7 @@
     width: 375px;
     height: 0px;
     overflow: hidden;
-    max-width: 100%;
+    max-width: 90%;
     line-height: 1.4em;
     opacity: 0;
     transition: opacity 0.5s;
@@ -70,7 +84,7 @@
   .intro.visible {
     opacity: 1;
     height: auto;
-    padding-bottom: 2em;
+    padding-bottom: 3em;
     pointer-events: visible;
   }
   .intro > p:first-child {
@@ -133,10 +147,29 @@
   .dark .gradient {
     background: linear-gradient(0deg, #232323, #23232300 100%);
   }
+
+  hr {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-color: #cccccc;
+  }
+
+  .closeButton {
+    cursor: pointer;
+    display: flex;
+    background: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 600;
+  }
 </style>
 
 <div class="home" class:dark={$darkmode} class:cloud={$route.view === 'list'}>
-  <div class="box" class:visible>
+  <div class="box" class:visible class:mobile={$mobile}>
     <div class="gradient" />
     <div class="inner">
       <div class="head" on:click={reset}>
@@ -176,6 +209,14 @@
           Ähnlichkeit an: Je größer der Ausschlag, desto weiter entfernt und
           somit unähnlicher ist das nächste Objekt zum oben ausgewählten Objekt.
         </p>
+        {#if $mobile}
+          <div class="closeButton" on:click={() => (closeMobile = true)}>
+            Zur Visualisierung
+          </div>
+        {:else}
+          <hr noshade="true" />
+        {/if}
+
         <p>
           Die Visualisierung entstand in einer Forschungskooperation zwischen
           den

@@ -8,8 +8,6 @@ import { Sprite, Texture, Container, Renderer } from "pixi.js";
 
 console.log("STORE INIT")
 
-export const margin = { top: 20, right: 100, bottom: 20, left: 390 };
-
 export const renderer = writable()
 
 export const searchstring = writable("")
@@ -76,12 +74,19 @@ export const hoverItem = writable(undefined)
 
 export const dimensions = writable({ width: 500, height: 500 });
 
-export const scales = derived(
-    [dimensions, umapData],
-    ([$dimensions, $umapData]) => {
+// export const margin = { top: 20, right: 100, bottom: 20, left: 390 };
+export const mobile = derived(dimensions, ($dimensions) => $dimensions.width < 500);
 
-        const width = $dimensions.width - margin.right - margin.left
-        const height = $dimensions.height - margin.bottom - margin.top
+export const margin = derived(mobile, ($mobile) => {
+    return $mobile ? { top: 20, right: 20, bottom: 20, left: 20 } : { top: 20, right: 100, bottom: 20, left: 390 }
+});
+
+export const scales = derived(
+    [dimensions, umapData, margin],
+    ([$dimensions, $umapData, $margin]) => {
+
+        const width = $dimensions.width - $margin.right - $margin.left
+        const height = $dimensions.height - $margin.bottom - $margin.top
         const min = Math.min(width, height)
         const xDiff = (width - min) / 2
         const yDiff = (height - min) / 2
@@ -89,20 +94,20 @@ export const scales = derived(
         return {
             x: scaleLinear()
                 .nice()
-                .range([margin.left + xDiff, min + margin.left + xDiff])
+                .range([$margin.left + xDiff, min + $margin.left + xDiff])
                 .domain(extent($umapData, (d) => d.x)),
             y: scaleLinear()
                 .nice()
-                .range([min - margin.top + yDiff, margin.top + yDiff])
+                .range([min - $margin.top + yDiff, $margin.top + yDiff])
                 .domain(extent($umapData, (d) => d.y))
         }
     }
 );
 
+
 export const spriteScale = derived(
     [scales],
     ([$scales]) => {
-        const spriteRes = 128
         const range = $scales.x.range()
         const span = range[1] - range[0]
         const scale = span / 30000
