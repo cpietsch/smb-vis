@@ -28,7 +28,7 @@ export const route = writable({
 export const experimental = writable(false)
 
 export const umapData = readable([], set => {
-    csv("data/umap.csv", ({ id, x, y }) => ({
+    csv("data/umap-space.csv", ({ id, x, y }) => ({
         id,
         x: +x,
         y: +y,
