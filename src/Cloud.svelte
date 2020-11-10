@@ -88,7 +88,9 @@
     if ($route.view === "cloud" && id === "reset") {
       console.log("reset");
       selectedItem.set(undefined);
-      resetZoom();
+      fadeInAll()
+        .then(resetZoom)
+        .then(() => ((container.__stale = false), (stale = false)));
     } else if ($route.view === "cloud" && id == "cluster") {
       const annotation = $annotations.find((d) => d.name === $route.extra);
       const zoom = { x: $scales.x(annotation.cx), y: $scales.y(annotation.cy) };
