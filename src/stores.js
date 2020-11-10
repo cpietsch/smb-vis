@@ -72,7 +72,7 @@ export const selectedItem = writable(undefined)
 
 export const hoverItem = writable(undefined)
 
-export const dimensions = writable({ width: 500, height: 500 });
+export const dimensions = writable({ width: window.innerWidth, height: window.innerHeight });
 
 // export const margin = { top: 20, right: 100, bottom: 20, left: 390 };
 export const mobile = derived(dimensions, ($dimensions) => $dimensions.width < 500);

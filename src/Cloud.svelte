@@ -52,7 +52,7 @@
 
   const selection = select(outer)
     .call(zoom)
-    .on("click", click)
+    // .on("click", click)
     .on("pointerdown", pointerdown)
     .on("pointerup", pointerup)
     .on("pointermove", mousemove)

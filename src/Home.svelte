@@ -36,6 +36,9 @@
     background: #eee;
     z-index: 1000;
   }
+  .dark .mobile {
+    background: rgb(43, 43, 43);
+  }
   .mobile .intro {
     pointer-events: all;
   }
@@ -71,7 +74,6 @@
   }
 
   .intro {
-    padding-top: 1em;
     width: 375px;
     height: 0px;
     overflow: hidden;
@@ -166,6 +168,13 @@
     flex-direction: column;
     font-weight: 600;
   }
+  .closeButton span {
+    font-weight: 100;
+    opacity: 0.7;
+  }
+  .dark .closeButton {
+    color: #000;
+  }
 </style>
 
 <div class="home" class:dark={$darkmode} class:cloud={$route.view === 'list'}>
@@ -212,6 +221,7 @@
         {#if $mobile}
           <div class="closeButton" on:click={() => (closeMobile = true)}>
             Zur Visualisierung
+            <span>Optimiert für Tablets und Desktop</span>
           </div>
         {:else}
           <hr noshade="true" />

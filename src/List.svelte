@@ -172,7 +172,7 @@
         .querySelector("#l" + id)
         .querySelector(".picture img");
       const { x, y, width, height, top, left } = pic.getBoundingClientRect();
-      return { id, i, x: x?x:left, y: y?y:top, width, height };
+      return { id, i, x: x ? x : left, y: y ? y : top, width, height };
     });
   }
 
@@ -222,7 +222,7 @@
     color: #515151;
     transition: background 0s;
     transition-delay: 0.1s;
-    flex-wrap : wrap;
+    flex-wrap: wrap;
   }
 
   .container.active {
@@ -361,6 +361,7 @@
     top: 0px;
     left: -150px;
     z-index: 6;
+    pointer-events: none;
     background: linear-gradient(to left, rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0));
     box-shadow: inset 55px -124px 114px -18px rgb(238, 238, 238);
   }
