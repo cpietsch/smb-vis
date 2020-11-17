@@ -47,6 +47,7 @@
     margin: 0;
     box-sizing: border-box;
     background: #eee;
+    font-size: 15px;
   }
 
   :global(*, *:before, *:after) {
