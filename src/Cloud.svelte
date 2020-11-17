@@ -19,6 +19,7 @@
     container as pixiContainer,
     divContainer,
     annotations,
+    searchstring,
   } from "./stores.js";
   import { select, pointer } from "d3-selection";
   import { interpolate as d3interpolate } from "d3-interpolate";
@@ -28,7 +29,7 @@
   console.log("init cloud");
 
   const maxZoomLevel = 45;
-  const distanceCutoff = 5;
+  const distanceCutoff = 3;
 
   let lastTransform = zoomIdentity;
   let stale = false;
@@ -102,6 +103,7 @@
     if ($route.view === "cloud" && id === "reset") {
       console.log("reset");
       selectedItem.set(undefined);
+      searchstring.set("");
       fadeInAll()
         .then(resetZoom)
         .then(() => ((container.__stale = false), (stale = false)));
@@ -144,7 +146,7 @@
         const active = item ? item.id === d.id : false;
         return {
           ...d,
-          scale: active ? $spriteScale * 1.2 : d.scale,
+          scale: active ? $spriteScale * 1 : d.scale,
           zIndex: inDistance ? (active ? 2 : 1) : 0,
           alpha,
         };
