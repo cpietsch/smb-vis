@@ -45,5 +45,8 @@
     "rollup-plugin-terser": "^7.0.0",
     "sirv-cli": "^1.0.0",
     "svite": "^0.8.0"
+  },
+  "engines": {
+    "node": "^15"
   }
 }
