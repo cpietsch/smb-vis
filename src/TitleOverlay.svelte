@@ -42,8 +42,8 @@
       const { x, y, k } = $lastTransformed;
       const transform = zoomIdentity.translate(x, y).scale(k);
 
-      mapped = items
-        .filter((d, i) => k >= 30 || i == 0)
+      mapped = [items[0]]
+        //items.filter((d, i) => k >= 30 || i == 0)
         .map((d, i) => {
           const { id, data, height } = d;
           const padding = (height * k) / 2 + 5;
@@ -91,24 +91,29 @@
 
   .close {
     position: absolute;
-    right: -33px;
-    top: 16px;
-    width: 32px;
-    height: 32px;
-    opacity: 0.6;
+    width: 29px;
+    height: 29px;
+    padding: 6px;
+    /* opacity: 0.6; */
+    border-radius: 25px;
     cursor: pointer;
+    background: #dadada;
+    right: -15px;
+    top: -16px;
+    pointer-events: all;
   }
-  .close:hover {
-    opacity: 1;
+  .close:hover:before,
+  .close:hover:after {
+    background-color: #000;
   }
   .close:before,
   .close:after {
     position: absolute;
-    left: 15px;
+    left: 13px;
     content: " ";
-    height: 20px;
+    height: 17px;
     width: 3px;
-    background-color: #333;
+    background-color: #888888;
   }
   .close:before {
     transform: rotate(45deg);
@@ -179,13 +184,13 @@
           class:simple={item.i != 0}
           on:click|stopPropagation={() => link(item.id)}
           on:wheel={wheelProxy}>
+          <!-- {#if item.i == 0}<span class="arrow" />{/if} -->
+          <span><b>{item.data.titel}</b> im Pfad anzeigen</span>
           {#if item.i == 0}
-            <span class="arrow" />
             <div
               class="close"
               on:click|stopPropagation={() => selectedItem.set(undefined)} />
           {/if}
-          <span>{item.data.titel}</span>
         </div>
       </div>
     {/each}
