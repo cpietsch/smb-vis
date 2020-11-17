@@ -118,8 +118,8 @@
 
   a {
     color: #000;
-    font-weight: 600;
-    text-decoration: none;
+    /* font-weight: 600; */
+    /* text-decoration: none; */
   }
 
   .dark a {
@@ -154,6 +154,7 @@
     margin-bottom: 30px;
     margin-top: 30px;
     border-color: #cccccc;
+    width: 50%;
   }
 
   .closeButton {
@@ -175,6 +176,29 @@
   .dark .closeButton {
     color: #000;
   }
+
+  .dark .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+  }
+
+  .arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    padding: 5px;
+    margin-right: 4px;
+    position: relative;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    opacity: 0.9;
+    display: none;
+  }
+  .cloud .arrow {
+    display: inline-block;
+  }
 </style>
 
 <div class="home" class:dark={$darkmode} class:cloud={$route.view === 'list'}>
@@ -183,7 +207,8 @@
     <div class="inner">
       <div class="head" on:click={reset}>
         <h1>Visuelle Exploration</h1>
-        <h2>zweier musealer Sammlungen</h2>
+        <h2>zwei musealer Sammlungen</h2>
+        <div class="arrow" />
       </div>
       <div class="intro" class:visible>
         <p>
@@ -260,14 +285,25 @@
           <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
           <li>Marian Dörk: Wissenschaftliche Leitung</li>
         </ul>
-        <p>Team SMB</p>
+        <p>Museum4punkt0 Teilprojekt M1 SMB</p>
         <ul>
-          <li>Stephanie Thom</li>
-          <li>Timo Schuhmacher</li>
-          <li>Katharina Fendius</li>
+          <li>Stephanie Thom: Museologin, Steuerung Museumsdokumentation</li>
+          <li>
+            Timo Schuhmacher: Wissenschaftlicher Mitarbeiter – Bildung &
+            Vermittlung
+          </li>
+          <li>
+            Katharina Fendius: Teilprojektsteuerung / Wissenschaftliche
+            Projektreferentin der Stellv. Generaldirektorin der Staatlichen
+            Museen zu Berlin
+          </li>
         </ul>
 
-        <p>Datenschutz & Impressum</p>
+        <p>
+          <a
+            href="https://www.preussischer-kulturbesitz.de/service/impressum-rechte.html"
+            target="_blank">Datenschutz & Impressum</a>
+        </p>
       </div>
     </div>
   </div>
