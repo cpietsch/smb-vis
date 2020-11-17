@@ -384,12 +384,12 @@
     padding: 10px;
     padding-left: 15px;
     padding-right: 45px;
-    opacity: 0.7;
+    opacity: 0.9;
     transition: left 0.2s, opacity 0.2s;
   }
 
   .center:hover {
-    left: -92px;
+    left: -88px;
     opacity: 1;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
@@ -412,12 +412,12 @@
     position: relative;
   }
 
-  .left {
+  .arrow.left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
 
-  .right {
+  .arrow.right {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
     top: 3px;
@@ -596,6 +596,7 @@
                       href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
                       target="_blank">CC BY-NC-SA 4.0</a></span>
                 </p>
+                <p><b>Bild- & Titelähnlichkeit</b><span>{item.score}%</span></p>
                 <p class="sobjects">
                   <span
                     class="link"
