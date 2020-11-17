@@ -89,12 +89,43 @@
     cursor: pointer;
     pointer-events: all;
   }
+
+  .close {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    opacity: 0.6;
+    cursor: pointer;
+    right: 11px;
+    top: 12px;
+    /* background: #fff; */
+    /* z-index: 100; */
+    pointer-events: all;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+  .close:before,
+  .close:after {
+    position: absolute;
+    left: 15px;
+    content: " ";
+    height: 20px;
+    width: 3px;
+    background-color: #333;
+  }
+  .close:before {
+    transform: rotate(45deg);
+  }
+  .close:after {
+    transform: rotate(-45deg);
+  }
 </style>
 
 <div class="search">
   <form on:submit|preventDefault={handleSubmit}>
     <input
-      type="search"
+      type="input"
       class="searchinput"
       placeholder="Suche"
       autocomplete="off"
@@ -117,6 +148,9 @@
       <circle cx="14" cy="14" r="12" />
       <path d="M23 23 L30 30" />
     </svg>
+    {#if $searchstring != ''}
+      <div class="close" on:click={() => searchstring.set('')} />
+    {/if}
   </form>
   {#if $searchstring != ''}
     <div class="button" on:click={handleSubmit}>
