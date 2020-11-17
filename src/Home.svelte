@@ -191,9 +191,9 @@
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
     position: absolute;
-    top: 20px;
-    left: 15px;
-    opacity: 0.9;
+    top: 29px;
+    left: 14px;
+    opacity: 1;
     display: none;
   }
   .cloud .arrow {
