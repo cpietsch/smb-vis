@@ -207,7 +207,7 @@
     <div class="inner">
       <div class="head" on:click={reset}>
         <h1>Visuelle Exploration</h1>
-        <h2>zwei musealer Sammlungen</h2>
+        <h2>zweier musealer Sammlungen</h2>
         <div class="arrow" />
       </div>
       <div class="intro" class:visible>
