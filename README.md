@@ -43,10 +43,10 @@ Team FHP
 - Mark-Jan Bludau: Concept development and screen design
 - Marian Dörk: Scientific Director
 
-Team SMB
-- Stephanie Thom
-- Timo Schuhmacher
-- Katharina Fendius
+Museum4punkt0 Teilprojekt M1 SMB
+- Stephanie Thom: Museologin, Steuerung Museumsdokumentation
+- Timo Schuhmacher: Wissenschaftlicher Mitarbeiter – Bildung & Vermittlung
+- Katharina Fendius: Teilprojektsteuerung / Wissenschaftliche Projektreferentin der Stellv. Generaldirektorin der Staatlichen Museen zu Berlin
 
 ### License
 MIT License
