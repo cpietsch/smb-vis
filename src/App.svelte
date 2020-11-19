@@ -31,6 +31,12 @@
     route.set(newRoute);
   }
 
+  function handleKeydown(event) {
+    if (event.key == "Escape") {
+      window.location.hash = "#/cloud/reset";
+    }
+  }
+
   onMount(hashchange);
 </script>
 
@@ -61,7 +67,7 @@
   }
 </style>
 
-<svelte:window on:hashchange={hashchange} />
+<svelte:window on:hashchange={hashchange} on:keydown={handleKeydown} />
 
 <main>
   <Dataloader>

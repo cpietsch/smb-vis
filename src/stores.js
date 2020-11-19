@@ -1,4 +1,6 @@
 // made by christopher pietsch chrispie.com 2020
+console.log = () => { };
+
 import 'whatwg-fetch';
 import { writable, derived, readable, get } from 'svelte/store';
 import { scaleLinear } from "d3-scale";

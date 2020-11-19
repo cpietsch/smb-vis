@@ -330,7 +330,7 @@
     const a = transform.x / transform.k - lastTransform.x / lastTransform.k;
     const b = transform.y / transform.k - lastTransform.y / lastTransform.k;
     const distance = Math.sqrt(a * a + b * b);
-    const duration = Math.log(distance) * 400;
+    const duration = Math.log(distance) * 200;
 
     return selection
       .transition()
