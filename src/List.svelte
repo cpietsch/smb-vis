@@ -13,6 +13,7 @@
     searchstring,
     route,
     experimental,
+    imageBaseUrl,
   } from "./stores.js";
   import { selection } from "d3-selection";
   import { interpolateNumber } from "d3-interpolate";
@@ -44,7 +45,6 @@
     ["material", "Material und Technik"],
     ["abmessung", "Abmessungen und Gewicht"],
   ];
-  const baseUrl = "https://vikusviewer.fh-potsdam.de/smb/beide/data/";
 
   $: res = transition > 2 ? "1024" : "256";
   $: loading = transition > 2 ? "lazy" : "eager";
@@ -524,7 +524,7 @@
     {#each domBoxes as item (item.id)}
       {#if !$experimental}
         <img
-          src="{baseUrl}256/{item.id}.jpg"
+          src="{imageBaseUrl}256/{item.id}.jpg"
           alt=""
           style={transition == 1 ? canvasStyle(item.id) : domStyle(item)} />
       {:else}
@@ -559,7 +559,7 @@
                   draggable="false"
                   on:load={(e) => loaded(e, item.id)}
                   {loading}
-                  src="{baseUrl}{res}/{item.id}.jpg"
+                  src="{imageBaseUrl}{res}/{item.id}.jpg"
                   alt={item.data._titel} />
               {:else}
                 <Sprite id={item.id} on:load={(e) => loaded(e, item.id)} />

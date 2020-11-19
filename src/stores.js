@@ -10,6 +10,8 @@ import { Sprite, Texture, Container, Renderer } from "pixi.js";
 
 console.log("STORE INIT")
 
+export const imageBaseUrl = "https://vikusviewer.fh-potsdam.de/smb/beide/data/";
+
 export const renderer = writable()
 
 export const searchstring = writable("")
