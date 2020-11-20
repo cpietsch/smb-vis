@@ -596,7 +596,11 @@
                       href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
                       target="_blank">CC BY-NC-SA 4.0</a></span>
                 </p>
-                <p><b>Bild- & Titelähnlichkeit</b><span>{item.score}%</span></p>
+                {#if id != 'suche' && item.i}
+                  <p>
+                    <b>Bild- & Titelähnlichkeit</b><span>{item.score}%</span>
+                  </p>
+                {/if}
                 <p class="sobjects">
                   <span
                     class="link"
