@@ -25,7 +25,7 @@ We recommend using a webserver with gzip and http2 enabled in order to reduce lo
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
 
 ### About
-Based on data from the National Museums in Berlin, the visualization shows over 5000 selected objects from the holdings of the Alte Nationalgalerie and the Museum of European Cultures. The objects in the collection - from miniature paintings and photographs to everyday objects - come from the 19th century.
+Based on data from the Berlin State Museums, the visualization shows over 5000 selected objects from the holdings of the Alte Nationalgalerie and the Museum of European Cultures. The objects in the collection - from miniature paintings and photographs to everyday objects - come from the 19th century.
 
 In the cloud, the objects are algorithmically arranged according to image content and title information, so that similar objects are close to one another and different ones are further apart. For orientation purposes, the groupings are provided with keywords that were added manually.
 
@@ -33,7 +33,7 @@ Use the touchpad or scroll wheel to zoom into the cloud, or click on a keyword o
 
 In the path view, those objects are displayed in a list that are similar to a selected object or that correspond to a search query. The rashes of the thread between the objects indicate the decreasing similarity: the larger the rash, the further away and thus more dissimilar is the next object to the object selected above.
 
-The visualization was created in a research cooperation between the National Museums in Berlin and the UCLAB of the Potsdam University of Applied Sciences as part of the Museum4punkt0 project with the support of the Museum of European Cultures and the Old National Gallery. The aim of the project was to investigate the potential of associative visualization of cross-collection data.
+The visualization was created in a research cooperation between the Berlin State Museums and the UCLAB of the Potsdam University of Applied Sciences as part of the museum4punkt0 project with the support of the Museum of European Cultures and the Old National Gallery. The aim of the project was to investigate the potential of associative visualization of cross-collection data.
 
 Further information and the source code can be found in the project documentation on GitHub.
 
@@ -43,7 +43,7 @@ Team FHP
 - Mark-Jan Bludau: Concept development and screen design
 - Marian Dörk: Scientific Director
 
-Museum4punkt0 Teilprojekt M1 SMB
+museum4punkt0 Teilprojekt M1 SMB
 - Stephanie Thom: Museologin, Steuerung Museumsdokumentation
 - Timo Schuhmacher: Wissenschaftlicher Mitarbeiter – Bildung & Vermittlung
 - Katharina Fendius: Teilprojektsteuerung / Wissenschaftliche Projektreferentin der Stellv. Generaldirektorin der Staatlichen Museen zu Berlin
