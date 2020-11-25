@@ -29,6 +29,7 @@
     z-index: 100;
     padding: 1em;
     padding-left: 2em;
+		padding-right: 0;
     flex-direction: column;
   }
 
@@ -50,6 +51,7 @@
     overflow-y: scroll;
     height: 100vh;
     padding-left: 1em;
+		padding-right: 0;
   }
   .inner {
     direction: ltr;
@@ -74,10 +76,9 @@
   }
 
   .intro {
-    width: 375px;
+    width: 350px;
     height: 0px;
     overflow: hidden;
-    max-width: 90%;
     line-height: 1.4em;
     opacity: 0;
     transition: opacity 0.5s;
