@@ -51,7 +51,7 @@ Museum4punkt0 Teilprojekt M1 SMB
 ### License
 MIT License
 
-Copyright (c) Christopher Pietsch and contributors
+Copyright © 2020 Staatliche Museen zu Berlin / UCLAB FH Potsdam
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
