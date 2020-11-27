@@ -264,7 +264,7 @@
           im Rahmen des Projektes
           <a
             href="https://www.museum4punkt0.de"
-            target="_blank">Museum4punkt0</a>
+            target="_blank">museum4punkt0</a>
           mit Unterstützung des Museums Europäischer Kulturen und der Alten
           Nationalgalerie. Die Zielstellung des Projektes war es, das Potenzial
           assoziativer Visualisierung sammlungsübergreifender Daten zu
@@ -286,7 +286,7 @@
           <li>Mark-Jan Bludau: Konzeptentwicklung und Screendesign</li>
           <li>Marian Dörk: Wissenschaftliche Leitung</li>
         </ul>
-        <p>Museum4punkt0 Teilprojekt M1 SMB</p>
+        <p>museum4punkt0 Teilprojekt M1 SMB</p>
         <ul>
           <li>Stephanie Thom: Museologin, Steuerung Museumsdokumentation</li>
           <li>
