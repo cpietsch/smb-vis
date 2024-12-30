@@ -3,6 +3,8 @@
 ### Description
 Visual exploration of two museum collections is an exploratory visualization of collections with data from the Staatliche Museen zu Berlin. The visualization currently contains 5,140 objects from the collections of the Alte Nationalgalerie and the Museum of European Cultures and from the 19th century. The visualization shows the collection objects arranged according to image and title similarity (i.e. objects with similar images and titles are visually close together) and enables the exploration of individual similarity paths when selecting objects or searching for keywords.
 
+→ [more information about the research process and results](https://www.museum4punkt0.de/ergebnis/visuelle-exploration-zweier-musealer-sammlungen/) (in German)
+
 ### Funding
 This prototype is part of the project museum4punkt0 - Digital Strategies for the Museum of the Future, sub-project Rethinking Visitor Journeys. Further information: www.museum4punkt0.de/en/.
 
